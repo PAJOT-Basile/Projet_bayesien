@@ -24,7 +24,10 @@ library(lme4)
 
 ```{r echo=FALSE}
 # Importation du fichier 
- <- read.table(file = , header = TRUE, sep = "\t")
+gopher <- read.csv(file = "./gopher.csv", header = TRUE, sep = ";", dec=".", stringsAsFactors = TRUE)
+summary(gopher)
+str(gopher)
+view(gopher)
 ```
 
 # **Lecture et exploration des données**

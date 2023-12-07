@@ -1,0 +1,88 @@
+---
+title: "Projet HAB904B"
+author: "Basile Pajot, Marion Themeze--Leroy,"
+date: "`r Sys.Date()`"
+output: 
+  pdf_document : 
+    number_sections: TRUE
+    toc : TRUE 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r echo=FALSE}
+# Chargement des pakages nécessaires
+library(tidyverse)
+library(cowplot)
+library(R2jags)
+library(lme4)
+```
+
+
+```{r echo=FALSE}
+# Importation du fichier 
+ <- read.table(file = , header = TRUE, sep = "\t")
+```
+
+# **Lecture et exploration des données**
+Lisez les données, et assurez vous que les variables sont au bon format. Calculez des statistiques descriptives des données, et proposez des visualisations graphiques. Commentez ce que vous retenez de l'exploration des données.
+
+```{r echo=FALSE}
+ggplot(, aes(x=, y=)) +
+  geom_point() +
+  labs(caption = "",
+       x = "") +
+  theme(plot.caption = element_text(hjust = 0, face = "italic", size = 12))
+```
+
+```{r echo=FALSE, fig.height=7.5, fig.width=14}
+# D'abord, on définit les graphiques
+p_1 <- ggplot(L, aes(x=, y=, fill=)) + 
+  geom_boxplot() + 
+  labs(x="", fill = "", caption = "") + 
+  theme(plot.caption = element_text(hjust = 0, face = "italic", size = 14))
+
+p_2 <- ggplot(Limosa, aes(x=fPeriod, y=IntakeRate,fill= fPeriod)) + 
+  geom_boxplot() + 
+  labs(x="", fill = "", caption = "") + 
+  theme(plot.caption = element_text(hjust = 0, face = "italic", size = 14))
+
+# Puis on les organise dans l'espace
+plot_grid(nrow=1, ncol=2,
+          p_1,
+          p_2)
+```
+# **Ajustement d'un modèle simple**
+Une analyse statistique passe toujours par l'ajustement d'un premier modèle simple. Commencez par décrire le modèle qui vous semble pertinent pour répondre à une des questions traitées dans l'article, en vous aidant d'équations ou pas, et en justifiant son utilisation. Rappelez les hypothèses sur lesquelles repose le modèle. Notez qu'il ne vous est pas demandé de vérifier la validité de ces hypothèses (l'analyse des résidus). Vous pouvez ignorer les effets aléatoires sur les pentes (slopes) et ne considérer que des modèles avec un effet aléatoire sur l'ordonnée à l'origine (intercept).
+
+$Y_{ijk}$   
+$\mu_0$ l'intercept moyen  
+$\mu_1$ la pente moyenne  
+$\alpha_{i}$ effet spécifique dû à la modalité i du facteur D 
+$\beta_{j}$ effet spécifique dû à la modalité j du facteur C 
+$\gamma_{i}$ terme correctif de la pente, associé à la modalité i du facteur B
+$\delta_{j}$ terme correctif de la pente, associé à la modalité j du facteur A
+$U_{0k}$ l'écart de l'intercept pour le kème X par rapport à l'intercept moyen  
+$\epsilon_{ijkl}$ erreur résiduelle 
+
+$$Y_{ijkl}=\mu_0 + \mu_1*Time_{kl} + \alpha_{i} + \beta_{j}+\gamma_{i}*Time_{il}+\delta_{j}*Time_{jl} + U_{0k}+ \epsilon_{ijkl} \space\space\space\space i=1,2,3 \space\space\space\space j=1,2,3 \space\space\space\space k=1,...,20$$
+
+# **Comparaison de modèles**
+En vous aidant de l'article, formez quelques hypothèses et construirez les modèles correspondant. Ajustez et comparez ces modèles pour déterminer l'hypothèse la mieux supportée par les données. N'oubliez de standardiser les variables explicatives continues avec la fonction scale() de R par exemple. Dans le cas d'une variable année, la standardisation est un peu différente, n'utilisez pas la fonction scale(). Si year <- c(2006, 2007, ... 2021) par exemple, utilisez simplement la variable year - 2005 qui vaut (1, 2, .... 16) pour avoir toujours une variable entière, mais qui commence à 1 et ne prend plus de grandes valeurs.
+
+
+Le modèle null : pas de covariable, pas d'effet aléatoire 
+Modèle où on ajoute les effets aléatoires 
+Modèle avec les covariables explicatives : une, l'autre, les deux 
+Eventuellement tester une intéraction si elle est pertinente
+Partir directement avec les effets aléatoires (prendre en compte la structuration des données)
+
+# **Inférence et interprétation des résultats**
+Sur la base du meilleur modèle, donnez les estimations des paramètres ainsi qu'une mesure de l'incertitude associée. Interprétez vos résultats.
+
+# **Discussion**
+Comparez vos résultats à ceux du papier. Sont-ils semblables ou différents? Pourquoi selon vous? Si cela vous semble pertinent, proposez des pistes d'amélioration de l'analyse.
+

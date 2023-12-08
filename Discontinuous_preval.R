@@ -14,24 +14,24 @@ gopher$H<-ifelse(gopher$prev>= 25,1,0) #tranform prev as discontinuous with H=0 
 
 set.seed(2023)
 gopher_discont_prev <-function(){
-  for (i in 1:n){
-    y[i]~dpois(lambda[i])
-    log(lambda[i])<-mu + beta*x[i] + log(A[i])
+  for (i in 1:N){
+    S[i] ~ dpois(lambda[i])
+    logit(lambda[i]) <- mu.0 + b.prev * disc_prev[i] + log(A[i])
   }
-  mu~dnorm(0,0.001)
-  beta~dnorm(0,0.001)
+  mu.0 ~ dnorm(0,0.001)
+  b.prev ~ dnorm(0,0.001)
 }
 
-datax <- list(n=length(gopher$shells),
-              x=gopher$H,
-              y=gopher$shells,
+datax <- list(N = length(gopher$shells),
+              disc_prev = gopher$H,
+              S = gopher$shells,
               A = gopher$Area
 )
-init1 <- list(mu=0.5,beta=0.5)
-init2 <- list(mu= -0.5,beta= -0.5)
+init1 <- list(mu.0=0.5,b.prev=0.5)
+init2 <- list(mu.0= -0.5,b.prev= -0.5)
 inits <- list(init1,init2)
 
-params <- c("mu","beta")
+params <- c("mu.0","b.prev")
 
 M2 <- jags(data=datax,
            inits=inits,
@@ -45,6 +45,6 @@ M2 <- jags(data=datax,
 M2
 
 #
-traceplot(M2,mfrow=c(3,1),varname=c('mu','beta','deviance'),ask=FALSE)
+traceplot(M2,mfrow=c(3,1),varname=c('mu.0','b.prev','deviance'),ask=FALSE)
 head(M2$BUGSoutput$sims.matrix)
 acf(M2$BUGSoutput$sims.matrix[,2])

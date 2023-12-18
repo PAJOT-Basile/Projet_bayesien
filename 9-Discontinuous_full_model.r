@@ -7,12 +7,12 @@ set.seed(2023)
 
 # Data importation
 gopher <- read.csv("gopher.csv", header=TRUE, stringsAsFactors=TRUE, sep=";", dec=".") %>% 
-  mutate(standprev = (prev - mean(prev)) / sd(prev),
-         Cov.y.1 = ifelse(gopher$year == 2005, 1, 0),
-         Cov.y.2 = ifelse(gopher$year == 2006, 1, 0))
+  mutate(H = ifelse(prev >= 25, 1, 0),
+         Cov.y.1 = ifelse(year == 2005, 1, 0),
+         Cov.y.2 = ifelse(year == 2006, 1, 0))
 
 # The random model
-random_model <- function(){
+disc_full_model <- function(){
   # This model takes into account a random effect for the site
   # Likelihood
   for(i in 1:N){
@@ -36,7 +36,7 @@ datax <- list(
   N = gopher$year %>% 
     length(),
   S = gopher$shells,
-  prev = gopher$standprev,
+  prev = gopher$H,
   A = gopher$Area,
   site = gopher$Site %>% 
     as.numeric(),
@@ -68,26 +68,26 @@ init2 <- list(
 init <- list(init1, init2)
 
 # Iteration parameters
-nb.iterations <- 100000
-nb.burnin <- 1000
+nb.iterations <- 9000
+nb.burnin <- 4500
 
 # Run the model
-M2 <- jags(
+M9 <- jags(
   data = datax,
   parameters.to.save = params,
   inits = init,
-  model.file = random_model,
+  model.file = disc_full_model,
   n.chains = 2,
   n.iter = nb.iterations,
   n.burnin = nb.burnin,
   n.thin = 1
 )
 
-M2
-traceplot(M2, mfrow=c(2, 3), ask=FALSE)
+M9
+traceplot(M9, mfrow=c(2, 3), ask=FALSE)
 par(mfrow=c(1, 1))
 
-res <- M2$BUGSoutput$sims.matrix %>% 
+res <- M9$BUGSoutput$sims.matrix %>% 
   as.data.frame()
 
 # Looking at the distribution
@@ -98,7 +98,7 @@ hist(res$alpha.y.2)
 hist(res$sd.s)
 
 # Calculating the mean number of shells per individual 
-shells <- gopher$Area * exp(res$mu.0 + res$b.prev * gopher$standprev + res$alpha.y.1 * gopher$Cov.y.1 + res$alpha.y.2 * gopher$Cov.y.2 + rnorm(1, mean=0, sd=res$sd.s))
+shells <- gopher$Area * exp(res$mu.0 + res$b.prev * gopher$H + res$alpha.y.1 * gopher$Cov.y.1 + res$alpha.y.2 * gopher$Cov.y.2 + rnorm(1, mean=0, sd=res$sd.s))
 
 hist(shells)
 mean(shells)

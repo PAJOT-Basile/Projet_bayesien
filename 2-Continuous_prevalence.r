@@ -40,11 +40,11 @@ init2 <- list("mu.0"=-0.5, "b.prev"=-0.5)
 init <- list(init1, init2)
 
 # We define the iteration parameters
-nb.iterations <- 10000
-nb.burnin <- 100
+nb.iterations <- 9000
+nb.burnin <- 4500
 
 # We run the model
-M1 <- jags(
+M2 <- jags(
   data = datax,
   inits = init,
   parameters.to.save = params,
@@ -55,12 +55,12 @@ M1 <- jags(
   n.thin=1
 )
 
-M1
+M2
 
-traceplot(M1, mfrow=c(1, 3), ask=FALSE)
+traceplot(M2, mfrow=c(1, 3), ask=FALSE)
 par(mfrow=c(1, 1))
 
-res <- M1$BUGSoutput$sims.matrix %>% 
+res <- M2$BUGSoutput$sims.matrix %>% 
   as.data.frame()
 
 # Looking at the distribution

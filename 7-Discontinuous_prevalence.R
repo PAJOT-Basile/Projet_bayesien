@@ -33,18 +33,18 @@ inits <- list(init1,init2)
 
 params <- c("mu.0","b.prev")
 
-M2 <- jags(data=datax,
+M7 <- jags(data=datax,
            inits=inits,
            parameters.to.save = params,
            model.file=gopher_discont_prev,
            n.chains = 2,
-           n.iter = 10000,
-           n.burnin = 100,
+           n.iter = 9000,
+           n.burnin = 4500,
            n.thin=1)
 
-M2
+M7
 
 #
-traceplot(M2,mfrow=c(3,1),varname=c('mu.0','b.prev','deviance'),ask=FALSE)
-head(M2$BUGSoutput$sims.matrix)
-acf(M2$BUGSoutput$sims.matrix[,2])
+traceplot(M7,mfrow=c(3,1),varname=c('mu.0','b.prev','deviance'),ask=FALSE)
+head(M7$BUGSoutput$sims.matrix)
+acf(M7$BUGSoutput$sims.matrix[,2])

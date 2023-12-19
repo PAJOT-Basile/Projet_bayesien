@@ -19,6 +19,7 @@ library(tidyverse)
 library(cowplot)
 library(R2jags)
 library(lme4)
+library(gtsummary)
 ```
 
 
@@ -26,59 +27,94 @@ library(lme4)
 # Importation du fichier 
 gopher <- read.csv(file = "./gopher.csv", header = TRUE, sep = ";", dec=".", stringsAsFactors = TRUE)
 gopher$year<-as.factor(gopher$year)
+gopher$total_turtle<-gopher$Area*gopher$density
 summary(gopher)
 str(gopher)
 view(gopher)
 ```
 
 # **Lecture et exploration des données**
+
+## La variable à expliquer
+
+La variable d'intérêt à expliquer, est `Shells`, soit le nombre de carapaces de 
+tortues trouvées lors des relevés sur le terrain. Cette variable est un proxy pour estimer le nombre de tortues mortes. 
+Nous voulons déterminer si : 
+- le nombre de carapaces to establish whether either (1) the number of shell remains found was correlated with seroprevalence in a given site and year or (2) the number of shell remains found was greater in high- than in low-prevalence sites.
+
+## Les variables explicatives d'intérêt
+
+-  `Prev` est une variable explicative qualitative qui correspond au taux de tortues séropostives pour à *Mycoplasma agassizii*. 
+
+- `Site` est une variable qualitative qui correspond au sité d'étude où ont été faits les relevés. Elle a 10 modalités : 
+le parc national *Big Shoals (BS)*, l'aire de gestion de la faune sauvage *Camp Blanding (CB)*, l'aire de gestion de la faune sauvage et de l'environnement *Cecil Field/Branan Field (CF)*, une *propriété privé en Floride centrale (CE)*, le parc national *Fort Cooper (FC)*, l'aire de gestion de la faune sauvage *Flying Eagle (FE)*, le parc national *Gold Head Branch (GH)*, l'aire de gestion de la faune sauvage et de l'environnement *Perry Oldenburg (OL)*,la station biologique *Ordway-Swisher (OR)*, l'aire de gestion de la pêche *Tenoroc Fish (TE)*.
+
+-  `Area` est une variable quantitative qui correspond à l'aire couverte par site lors des relevés. 
+
+-  `Year` est une variable qualitative qui correspond à l'année pour laquelle les relevés ont été faits. Ella a 3 modalités : 2004, 2005, 2006. 
+
+
 Lisez les données, et assurez vous que les variables sont au bon format. Calculez des statistiques descriptives des données, et proposez des visualisations graphiques. Commentez ce que vous retenez de l'exploration des données.
 
 ```{r echo=FALSE}
+F1<- ggplot(gopher, aes(x=year, y=shells, fill=year)) +
+  geom_boxplot() +
+  labs(caption= "Figure 1 : Le nombre de carapaces en fonction de l'année",
+       x = "Année") +
+  theme(plot.caption = element_text(hjust = 0, face = "italic", size = 12))
+F2<- ggplot(gopher, aes(x=Site, y=shells, fill=Site)) +
+  geom_boxplot() +
+  labs(caption= "Figure 2 : Le nombre de carapaces en fonction du site",
+       x = "Site") +
+  theme(plot.caption = element_text(hjust = 0, face = "italic", size = 12))
 
+plot_grid(nrow=1, ncol=2,
+          F1,
+          F2)
+```
+
+Le nombre de carapaces de tortues mortes varie en fonction des année et du site d'étude. Ainsi, ces deux 
+```{r echo=FALSE}
+ggplot(gopher, aes(x=Area, y=shells)) +
+  geom_point()
+```
+
+```{r echo=FALSE}
 ggplot(gopher, aes(x=prev, y=shells,color=Site, shape=year)) +
   geom_point() +
-  geom_jitter(height = 0.1) +
   facet_wrap(~Site)+
-  labs(caption= "Figure 1 : Le nombre de carapaces en fonction de la prevalence de tortues séropositives",
-       x = "prev") +
+  labs(caption= "Figure 1 : Le nombre de carapaces en fonction de la prevalence de tortues séropositives dans la zone d'étude, par site par année",
+       x = "Prévalence de tortues séropositives à Mycoplasma agassizii",
+       y= "Carapaces de tortues") +
   theme(plot.caption = element_text(hjust = 0, face = "italic", size = 12))
+```
 
+
+La prévalence diffère en fonction des sites (Fig 1). 
+Pour un même site
+
+
+```{r echo=FALSE}
 ggplot(gopher, aes(x=year, y=shells, color=Site)) +
   geom_point() +
-  geom_jitter(height = 0.06) +
-  labs(caption= "Figure 1 : Le nombre de carapaces en fonction de l'année et du site d'étude",
-       x = "Année") +
-  theme(plot.caption = element_text(hjust = 0, face = "italic", size = 12))
-
-ggplot(gopher, aes(x=year, y=shells, color=Site)) +
-  geom_point() +
   facet_wrap(~Site)+
-  labs(caption= "Figure 1 : Le nombre de carapaces en fonction de l'année et du site d'étude",
+  labs(caption= "Figure 2 : Le nombre de carapaces en fonction de l'année et du site d'étude",
        x = "Année") +
   theme(plot.caption = element_text(hjust = 0, face = "italic", size = 12))
+```
 
-ggplot(gopher, aes(x=Site, y=Area,color=Site)) +
-  geom_point() +
-  labs(caption= "Figure 1 : Le nombre de carapaces en fonction de l'année et du site d'étude",
-       x = "Année") +
-  theme(plot.caption = element_text(hjust = 0, face = "italic", size = 12))
 
- 
+
+```{r echo=FALSE}
 ggplot(gopher, aes(x=year, y=prev,color=Site)) +
   geom_point() +
   facet_wrap(~Site)+
   labs(caption= "Figure 1 : Le nombre de carapaces en fonction de l'année et du site d'étude",
        x = "Année") +
   theme(plot.caption = element_text(hjust = 0, face = "italic", size = 12))
+```
 
-ggplot(gopher, aes(x=Area, y=prev,color=Site)) +
-  geom_point() +
-  facet_wrap(~Site)+
-  labs(caption= "Figure 1 : La prevalence de  en fonction de l'année et du site d'étude",
-       x = "Area") +
-  theme(plot.caption = element_text(hjust = 0, face = "italic", size = 12))
-
+```{r echo=FALSE}
 ggplot(gopher, aes(x=density, y=prev,color=Site)) +
   geom_point() +
   geom_jitter(width = 0.06) +
@@ -86,16 +122,19 @@ ggplot(gopher, aes(x=density, y=prev,color=Site)) +
   labs(caption= "Figure 1 : La prevalence de séropositifs en fonction de la densité de tortues trouvées dans la zone",
        x = "Area") +
   theme(plot.caption = element_text(hjust = 0, face = "italic", size = 12))
-
-hist(gopher$shells)
-hist(gopher$Area)
-hist(gopher$prev)
-hist(gopher$density)
-
-mean(gopher$shells)
 ```
 
 
+Graphique qui expliaue pourquoi site en aléatoire 
+Année pourrait être en aléatoire mais pour simplifier on ne le mets pas et donc on estime un coefficient par année
+Motrer que nombre carapces hange en fonciton preval
+Un graphique pour justififer l'offset 
+
+
+```{r echo=FALSE}
+tbl_summary(gopher, statistic = list(all_continuous() ~ "{N_obs}({min})({max})({mean})({median})({sd})"))
+table()
+```
 
 ```{r echo=FALSE, fig.height=7.5, fig.width=14}
 # D'abord, on définit les graphiques

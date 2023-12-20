@@ -27,6 +27,7 @@ gopher <- read.csv(file = "./gopher.csv", header = TRUE, sep = ";", dec=".", str
          total_turtle = density * Area,
          standprev = (prev - mean(prev)) / sd(prev),
          H = ifelse(prev <= 25, 0, 1),
+         Cov.y.0 = ifelse(year == 2004, 1, 0),
          Cov.y.1 = ifelse(year == 2005, 1, 0),
          Cov.y.2 = ifelse(year == 2006, 1, 0))
 ```
@@ -266,4 +267,110 @@ Sur la base du meilleur modèle, donnez les estimations des paramètres ainsi qu
 
 # **Discussion**
 Comparez vos résultats à ceux du papier. Sont-ils semblables ou différents? Pourquoi selon vous? Si cela vous semble pertinent, proposez des pistes d'amélioration de l'analyse.
+
+```{r}
+random_model <- function(){
+  # This model takes into account a random effect for the site
+  # Likelihood
+  for(i in 1:N){
+    S[i] ~ dpois(lambda[i])
+    log(lambda[i]) <- mu.s + alpha.s[site[i]] + b.prev * prev[i] + alpha.y.0* Cov.y.0[i] + alpha.y.1 * Cov.y.1[i] + alpha.y.2 * Cov.y.2[i] + log(A[i])
+  }
+  for (j in 1:nb.sites){
+    alpha.s[j] ~ dnorm(0, tau.s)
+  }
+  # Priors
+  mu.s ~ dnorm(0, 0.001)
+  sd.s ~ dunif(0, 100)
+  tau.s <- 1 / (sd.s * sd.s)
+  b.prev ~ dnorm(0, 1/100)
+  alpha.y.0 ~ dnorm(0, 1/100)
+  alpha.y.1 ~ dnorm(0, 1/100)
+  alpha.y.2 ~ dnorm(0, 1/100)
+} 
+
+# Make the data to use in jags
+datax <- list(
+  N = gopher$year %>% 
+    length(),
+  S = gopher$shells,
+  prev = gopher$standprev,
+  A = gopher$Area,
+  site = gopher$Site %>% 
+    as.numeric(),
+  nb.sites = gopher$Site %>% 
+    unique() %>% 
+    length(),
+  Cov.y.0 = ifelse(gopher$year == 2004, 1, 0),
+  Cov.y.1 = ifelse(gopher$year == 2005, 1, 0),
+  Cov.y.2 = ifelse(gopher$year == 2006, 1, 0)
+)
+
+# Make a list of parameters to save
+params = c("mu.s", "b.prev", "sd.s","alpha.y.0", "alpha.y.1", "alpha.y.2")
+
+# Initial conditions
+init1 <- list(
+  "mu.s" = 0.5,
+  "b.prev" = 0.5,
+  "alpha.y.0" = 0.5,
+  "alpha.y.1" = 0.5,
+  "alpha.y.2" = 0.5,
+  "sd.s" = 0.5
+)
+init2 <- list(
+  "mu.s" = - 0.5,
+  "b.prev" = - 0.5,
+  "alpha.y.0" = -0.5,
+  "alpha.y.1" = -0.5,
+  "alpha.y.2" = -0.5,
+  "sd.s" = 1.5
+)
+init <- list(init1, init2)
+
+# Iteration parameters
+nb.iterations <- 9000
+nb.burnin <- 4500
+
+# Run the model
+M6 <- jags(
+  data = datax,
+  parameters.to.save = params,
+  inits = init,
+  model.file = random_model,
+  n.chains = 2,
+  n.iter = nb.iterations,
+  n.burnin = nb.burnin,
+  n.thin = 1
+)
+
+# Regardons le modèle et les traces
+M6
+traceplot(M6, mfrow=c(2, 3), ask=FALSE)
+par(mfrow=c(1, 1))
+
+# On récupère les paramètres et on regarde leur distribution
+res <- M6$BUGSoutput$sims.matrix %>% 
+  as.data.frame()
+hist(res$b.prev)
+hist(res$mu.s)
+hist(res$alpha.y.0)
+hist(res$alpha.y.1)
+hist(res$alpha.y.2)
+hist(res$sd.s)
+
+# Rétrotransformation
+
+shells6 <- matrix(NA,ncol=nrow(gopher),nrow=nrow(res))
+for (i in 1:nrow(gopher)){
+  shells6[,i] <-gopher$Area * exp(res$mu.s[i] + res$alpha.y.0[i] * gopher$Cov.y.0 + res$alpha.y.1[i] * gopher$Cov.y.1 + res$alpha.y.2[i] * gopher$Cov.y.2 + res$b.prev[i] * gopher$standprev)
+}
+hist(shells6)
+mean(shells6)
+
+max(shells6)
+
+# Récupérons le DIC
+DIC6 <- M6$BUGSoutput$DIC
+```
 

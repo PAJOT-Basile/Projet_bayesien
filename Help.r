@@ -98,6 +98,32 @@ hist(res$alpha.y.2)
 hist(res$sd.s)
 
 # Rétrotransformation : idée 1
+# Moyennes
+beta <- mean(res$b.prev)
+alpha.1 <- mean(res$alpha.y.1)
+alpha.2 <- mean(res$alpha.y.2)
+mu.0 <- mean(res$mu.0)
+
+
+shells6 <- matrix(NA, ncol=nrow(gopher), nrow=nrow(res))
+for (i in 1:nrow(gopher)){
+  shells6[, i] <- gopher$Area[i] * exp(res$mu.0 + 
+                                         res$b.prev * gopher$prev[i] + 
+                                         res$alpha.y.1 * gopher$Cov.y.1[i] + 
+                                         res$alpha.y.2 * gopher$Cov.y.2[i] + 
+                                         rnorm(nrow(res), mean=0, sd=res$sd.s)) 
+}
+head(shells6)
+hist(shells6)
+mean(shells6)
+
+
+
+
+
+
+
+
 simulated_shells <- rep(NA, nrow(res))
 for (i in 1:nrow(res)){
   lambda <- gopher$Area * exp(res$mu.0[i] + res$alpha.y.1[i] * gopher$Cov.y.1 + res$alpha.y.2[i] * gopher$Cov.y.2 + res$b.prev[i] * gopher$standprev + rnorm(1, mean=0, sd=res$sd.s[i]))

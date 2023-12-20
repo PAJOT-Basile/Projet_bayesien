@@ -15,12 +15,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r echo=FALSE,results='hide',,warning=FALSE,message=FALSE}
 # Chargement des pakages nécessaires
-library(tidyverse)
-library(plyr)
-library(cowplot)
-library(R2jags)
-library(lme4)
-library(gtsummary)
+require("anyLib")
+anyLib(c("tidyverse", "cowplot", "R2jags", "lme4", "gtsummary", "plyr"))
 ```
 
 
@@ -30,8 +26,7 @@ gopher <- read.csv(file = "./gopher.csv", header = TRUE, sep = ";", dec=".", str
 gopher$year<-as.factor(gopher$year)
 gopher$total_turtle<-gopher$Area*gopher$density
 summary(gopher)
-str(gopher)
-view(gopher)
+
 ```
 
 # **Lecture et exploration des données**
@@ -44,7 +39,7 @@ tortues récentes trouvées lors des relevés sur le terrain. Cette variable est
 ## Les variables explicatives
 - `Prev` est une variable explicative qualitative qui correspond à la prévalence pour *Mycoplasma agassizii*, soit le rapport entre le nombre de tortues séropositives sur l'effectif total de tortues par année pour chaque site. 
 
-- `Site` est une variable qualitative qui correspond au site d'étude où ont été faits les relevés. Elle a 10 modalités : 
+- `Site` est une variable qualitative qui correspond au site d'échantillonnage. Elle a 10 modalités : 
 le parc national *Big Shoals (BS)*, l'aire de gestion de la faune sauvage *Camp Blanding (CB)*, l'aire de gestion de la faune sauvage et de l'environnement *Cecil Field/Branan Field (CF)*, une *propriété privé en Floride centrale (CE)*, le parc national *Fort Cooper (FC)*, l'aire de gestion de la faune sauvage *Flying Eagle (FE)*, le parc national *Gold Head Branch (GH)*, l'aire de gestion de la faune sauvage et de l'environnement *Perry Oldenburg (OL)*,la station biologique *Ordway-Swisher (OR)*, l'aire de gestion de la pêche *Tenoroc Fish (TE)*.
 
 - `Area` est une variable quantitative qui correspond à l'aire couverte par site lors des relevés. 
@@ -53,12 +48,20 @@ le parc national *Big Shoals (BS)*, l'aire de gestion de la faune sauvage *Camp 
 
 ## Exploration des données
 
+```{r echo=FALSE}
+summary(gopher)
+boxplot(gopher$prev)
+```
+
 Lisez les données, et assurez vous que les variables sont au bon format. Calculez des statistiques descriptives des données, et proposez des visualisations graphiques. Commentez ce que vous retenez de l'exploration des données.
 
 ```{r}
 #Tableau de statistiques desciptives à faire 
 
 hist(gopher$shells)
+
+aggregate(gopher$shells, list(gopher$Site), FUN=mean)
+aggregate(gopher$prev, list(gopher$Site), FUN=mean)
 ```
 
 
@@ -74,12 +77,22 @@ ggplot(gopher, aes(x=prev, y=shells,color=Site, shape=year)) +
 
 La figure 1 donne plusieurs informations sur notre jeu de données.
 
-Tout d'abord, le nombre de carapaces récentes trouvées varie ou non en fonction des années et cette variation n'est pas la même en fonction des sites. Le nombre de carapaces récentes par rapport à l'année précédente reste constante augmente ou diminue. Cette variation peut être globale sur les trois année d'étude (diminution du nombre de carapaces pour le site CF) ou changer (diminution puis augmentation pour le site CB). 
+Tout d'abord, le nombre de carapaces récentes trouvées varie ou non en fonction des années et cette variation n'est pas la même en fonction des sites. Le nombre de carapaces récentes par rapport à l'année précédente reste constante augmente ou diminue. On observe des évolutions différentes pour les sites : on observe une diminution du nombre de carapaces pour le site CF sur les trois ans ou un changement de tendance se traduisant par une diminution puis une augmentation pour le site CB. 
 
-Ensuite, la prévalence en fonction des sites peut également varier en fonction des années. Pareillement, cette variation n'est pas la même en fonction des sites. La prévalence reste constante, augmente ou diminue. La variation peut être globale sur les trois année d'étude (diminution du nombre de carapaces pour le site CF) ou changer (diminution puis augmentation pour le site CB). 
-Lorsque le prevalence augmente d'une année à l'autre `prev[n] < prev[n+1]`, le nombre de carapaces récentes trouvées l'année suivante augmente `shells[n+2]>shells[n+1]` (sites CB, OLD), et inversement (sites CF). 
+Ensuite, la prévalence en fonction des sites peut également varier en fonction des années. Pareillement, cette variation n'est pas la même en fonction des sites. La prévalence reste constante, augmente ou diminue. La variation peut être globale sur les trois année d'étude (augmentation de la prévalence pour le site Old) ou changer (augmentation puis diminution pour le site Cent). 
+Lorsque le prevalence augmente d'une année à l'autre `prev[n] < prev[n+1]`, le nombre de carapaces récentes trouvées l'année suivante augmente `shells[n+2]>shells[n+1]` (sites CB, Old), et inversement (sites CF). 
 Ainsi, les variations du nombre de carapaces récentes trouvées pourrait être expliquée par les variations de la prévalence.
-Nous remqarquons également que certains sites ont de faibles prévalences (BS, Ord, FE) quelque soit l'année et d'autres des prévalences élevées (CF, GH, TE). Ainsi, nous pourrons séparer les sites en deux catégories, ceux à faible ou forte prévalence. Cette variables sera donc traitée de deux manières : de manière continue et de manière discontinue avec deux catégories : 
+
+Nous remqarquons également que certains sites ont de faibles prévalences (BS, Ord, FE) quelque soit l'année et d'autres des prévalences élevées (CF, GH, TE). 
+```{r echo=FALSE}
+ggplot(data=gopher, aes(x=prev)) + 
+  geom_histogram(bins=10, fill="blue", color="black") +
+  labs(caption = "Figure 2 : Distribution de la prévalence",
+       x="Prévalence",
+       y="Densité") +
+  theme(plot.caption = element_text(hjust=0, size=12, face="italic"))
+```
+En considérant l'histogramme, Ainsi, nous pourrons séparer les sites en deux catégories, ceux à faible ou forte prévalence. Cette variables sera donc traitée de deux manières : de manière continue et de manière discontinue avec deux catégories : 
     - faible prévalence (0) : `Prev` < 0.25 
     - haute prévalence (1) : `Prev` > 0.25
 

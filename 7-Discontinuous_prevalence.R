@@ -16,7 +16,7 @@ set.seed(2023)
 gopher_discont_prev <-function(){
   for (i in 1:N){
     S[i] ~ dpois(lambda[i])
-    logit(lambda[i]) <- mu.0 + b.prev * disc_prev[i] + log(A[i])
+    log(lambda[i]) <- mu.0 + b.prev * disc_prev[i] + log(A[i])
   }
   mu.0 ~ dnorm(0,0.001)
   b.prev ~ dnorm(0,0.001)

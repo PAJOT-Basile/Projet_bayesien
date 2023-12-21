@@ -345,7 +345,7 @@ l'année et du site. Nous allons donc ajuster différents modèles qui
 prennent en compte ces deux variables individuellement ou en les
 combinant.
 
-Le modèle null `M0` : $$log(\lambda_i) =  log({aire_{i}}) + \mu_0$$
+Le modèle null `M2` : $$log(\lambda_i) =  log({aire_{i}}) + \mu_0$$
 
 ```{r echo=FALSE, results='hide'}
 # The null model function
@@ -380,7 +380,7 @@ init <- list(init1, init2)
 nb.iterations <- 9000
 nb.burnin <- 4500
 # Run the model using jags
-M0 <- jags(
+M2 <- jags(
   data = datax,
   inits = init,
   parameters.to.save = params,
@@ -393,7 +393,7 @@ M0 <- jags(
 )
 
 # Récupérons le DIC
-DIC0 <- M0$BUGSoutput$DIC
+DIC0 <- M2$BUGSoutput$DIC
 ```
 
 Un modèle avec uniquement l'année `M3` :

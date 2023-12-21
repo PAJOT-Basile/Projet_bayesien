@@ -95,7 +95,7 @@ F1<-ggplot(data=gopher, aes(x=prev)) +
   geom_vline(aes(xintercept=mean(prev)), col = "red") +
   geom_label(aes(x=mean(prev), y=4, label="Mean"), col="red") +
   geom_vline(aes(xintercept=median(prev)), col = "blue") +
-  geom_label(aes(x=median(prev), y=6, label="Median"), col="blue")
+  geom_label(aes(x=median(prev), y=6, label="Median"), col="blue") +
   labs(caption = "Figure 1 : Distribution de la prévalence pour Mycoplasma agassizii",
        x="Prévalence pour Mycoplasma agassizii",
        y="Comptage") +

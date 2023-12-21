@@ -1,0 +1,600 @@
+---
+title: "Untitled"
+author: "Basile_PAJOT"
+date: "2023-12-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+# Chargement des pakages nécessaires
+require("anyLib")
+anyLib(c("plyr", "tidyverse", "cowplot", "R2jags", "lme4", "gtsummary", "knitr", "kableExtra"))
+# Importation du fichier 
+gopher <- read.csv(file = "./gopher.csv", header = TRUE, sep = ";", dec=".", stringsAsFactors = TRUE) %>% 
+  mutate(year = as.character(year),
+         total_turtle = density * Area,
+         standprev = (prev - mean(prev)) / sd(prev),
+         H = ifelse(prev <= 25, 0, 1),
+         Cov_2004 = ifelse(year == 2004, 1, 0),
+         Cov_2005 = ifelse(year == 2005, 1, 0),
+         Cov_2006 = ifelse(year == 2006, 1, 0))
+```
+
+
+```{r}
+# The prevalence model
+prevalence_model <- function(){
+  # We here use the null model and add the prevalence and a its coefficient
+  # Likelihood
+  for (i in 1:N){
+    S[i] ~ dpois(lambda[i])
+    log(lambda[i]) <- mu.0 + b.prev * prev[i] + log(A[i])
+  }
+  # Priors
+  mu.0 ~ dnorm(0, 1/100)
+  b.prev ~ dnorm(0, 1/100)
+}
+
+# We make a list of the data to use in jags
+datax <- list(
+  N = gopher$year %>% 
+    length(),
+  S = gopher$shells,
+  prev = gopher$standprev,
+  A = gopher$Area
+)
+
+# Parameters to estimate
+params <- c("mu.0", "b.prev")
+
+# We initialise the model
+init1 <- list("mu.0"=0.5, "b.prev"=0.5)
+init2 <- list("mu.0"=-0.5, "b.prev"=-0.5)
+init <- list(init1, init2)
+
+# We define the iteration parameters
+nb.iterations <- 9000
+nb.burnin <- 4500
+
+# We run the model
+M1 <- jags(
+  data = datax,
+  inits = init,
+  parameters.to.save = params,
+  model.file = prevalence_model,
+  n.chains = 2,
+  n.iter = nb.iterations,
+  n.burnin = nb.burnin,
+  n.thin=1
+)
+
+# Regardons le modèle 
+M1
+DIC1 <- M1$BUGSoutput$DIC
+```
+```{r}
+# The null model function
+null_model <- function(){
+  # The null model does not take into account any of the variables. We just want to see the evolution of the number of shells
+  # Likelihood
+  for (i in 1:N){  # Loop over observations
+    S[i] ~ dpois(lambda[i])
+    log(lambda[i]) <- mu.0 + log(A[i])
+  }
+  # Priors
+  mu.0 ~ dnorm(0, 1/100)
+}
+
+# Now, we can make list of the data to use in the jags function
+datax <- list(
+  N = gopher$year  %>% 
+    length(),
+  S = gopher$shells,        # Number of shells
+  A = gopher$Area          # Area offset
+)
+
+# Parameters to estimate
+params <- c("mu.0")
+
+# Initialising the chains
+init1 <- list(mu.0 = -0.5)
+init2 <- list(mu.0 = 0.5)
+init <- list(init1, init2)
+
+# Define the iteration parameters
+nb.iterations <- 9000
+nb.burnin <- 4500
+# Run the model using jags
+M0 <- jags(
+  data = datax,
+  inits = init,
+  parameters.to.save = params,
+  model.file = null_model,
+  n.chains = 2,
+  n.iter = nb.iterations,
+  n.burnin = nb.burnin,
+  n.thin = 1,
+  quiet = TRUE
+)
+
+# Récupérons le DIC
+DIC0 <- M0$BUGSoutput$DIC
+```
+```{r}
+# The year model function
+year_model <- function(){
+  # This model takes into account the variable year with it's 3 modalities.
+  # Likelihood
+  for (i in 1:N){  # Loop over observations
+    S[i] ~ dpois(lambda[i])
+    log(lambda[i]) <- mu.0 + alpha_0 * Cov_2004[i] + alpha_1 * Cov_2005[i] + alpha_2 * Cov_2006[i] + log(A[i])
+  }
+  # Priors
+  mu.0 ~ dnorm(0, 1/100)
+  alpha_0 ~ dnorm(0, 1/100)
+  alpha_1 ~ dnorm(0, 1/100)
+  alpha_2 ~ dnorm(0, 1/100)
+}
+
+# Now, we can make list of the data to use in the jags function
+datax <- list(
+  N = gopher$year  %>% 
+    length(),
+  S = gopher$shells,        # Number of shells
+  A = gopher$Area,          # Area offset
+  Cov_2004 = gopher$Cov_2004,  # Effect of the year 2004
+  Cov_2005 = gopher$Cov_2005,  # Effect of the year 2005
+  Cov_2006 = gopher$Cov_2006  # Effect of the year 2006
+)
+
+# Parameters to estimate
+params <- c("mu.0", "alpha_0","alpha_1", "alpha_2")
+
+# Initialising the chains
+init1 <- list(mu.0 = -0.5,alpha_0=-0.5, alpha_1=-0.5, alpha_2=-0.5)
+init2 <- list(mu.0 = 0.5, alpha_0=0.5, alpha_1=0.5, alpha_2=0.5)
+init <- list(init1, init2)
+
+# Define the iteration parameters
+nb.iterations <- 9000
+nb.burnin <- 4500
+# Run the model using jags
+M3 <- jags(
+  data = datax,
+  inits = init,
+  parameters.to.save = params,
+  model.file = year_model,
+  n.chains = 2,
+  n.iter = nb.iterations,
+  n.burnin = nb.burnin,
+  n.thin = 1,
+  quiet = TRUE
+)
+# Récupérons le DIC
+DIC3 <- M3$BUGSoutput$DIC
+```
+```{r}
+# The year model function
+year_prevalence_model <- function(){
+  # This model takes into account the variable year with it's 3 modalities.
+  # Likelihood
+  for (i in 1:N){  # Loop over observations
+    S[i] ~ dpois(lambda[i])
+    log(lambda[i]) <- mu.0 + alpha_0 * Cov_2004[i] + alpha_1 * Cov_2005[i] + alpha_2 * Cov_2006[i] + b.prev * prev[i] + log(A[i])
+  }
+  # Priors
+  mu.0 ~ dnorm(0, 1/100)
+  b.prev ~ dnorm(0, 1/100)
+  alpha_0 ~ dnorm(0, 1/100)
+  alpha_1 ~ dnorm(0, 1/100)
+  alpha_2 ~ dnorm(0, 1/100)
+}
+
+# Now, we can make list of the data to use in the jags function
+datax <- list(
+  N = gopher$year  %>% 
+    length(),
+  S = gopher$shells,        # Number of shells
+  A = gopher$Area,          # Area offset
+  prev=gopher$standprev,     # Standardized prev
+  Cov_2004 = gopher$Cov_2004,  # Effect of the year 2004
+  Cov_2005 = gopher$Cov_2005,  # Effect of the year 2005
+  Cov_2006 = gopher$Cov_2006  # Effect of the year 2006
+)
+
+# Parameters to estimate
+params <- c("mu.0", "alpha_0","alpha_1", "alpha_2","b.prev")
+
+# Initialising the chains
+init1 <- list(mu.0 = -0.5,alpha_0=-0.5, alpha_1=-0.5, alpha_2=-0.5,b.prev =-0.5)
+init2 <- list(mu.0 = 0.5, alpha_0=0.5, alpha_1=0.5, alpha_2=0.5,b.prev=0.5)
+init <- list(init1, init2)
+
+# Define the iteration parameters
+nb.iterations <- 9000
+nb.burnin <- 4500
+# Run the model using jags
+M4 <- jags(
+  data = datax,
+  inits = init,
+  parameters.to.save = params,
+  model.file = year_prevalence_model,
+  n.chains = 2,
+  n.iter = nb.iterations,
+  n.burnin = nb.burnin,
+  n.thin = 1,
+  quiet = TRUE
+)
+
+# Récupérons le DIC
+DIC4 <- M4$BUGSoutput$DIC
+```
+```{r}
+year_site_model <- function(){
+  # This model takes into account a random effect for the site
+  # Likelihood
+  for(i in 1:N){
+    S[i] ~ dpois(lambda[i])
+    log(lambda[i]) <- mu.0 + gamma[site[i]]+ alpha_0* Cov_2004[i] + alpha_1 * Cov_2005[i] + alpha_2 * Cov_2006[i] + log(A[i])
+  }
+  for (j in 1:nb.sites){
+    gamma[j] ~ dnorm(0, tau.s)
+  }
+  # Priors
+  mu.0 ~ dnorm(0, 0.001)
+  sd.s ~ dunif(0, 100)
+  tau.s <- 1 / (sd.s * sd.s)
+  alpha_0 ~ dnorm(0, 1/100)
+  alpha_1 ~ dnorm(0, 1/100)
+  alpha_2 ~ dnorm(0, 1/100)
+} 
+
+# Make the data to use in jags
+datax <- list(
+  N = gopher$year %>% 
+    length(),
+  S = gopher$shells,
+  A = gopher$Area,
+  site = gopher$Site %>% 
+    as.numeric(),
+  nb.sites = gopher$Site %>% 
+    unique() %>% 
+    length(),
+  Cov_2004 = ifelse(gopher$year == 2004, 1, 0),
+  Cov_2005 = ifelse(gopher$year == 2005, 1, 0),
+  Cov_2006 = ifelse(gopher$year == 2006, 1, 0)
+)
+
+# Make a list of parameters to save
+params = c("mu.0", "sd.s","alpha_0", "alpha_1", "alpha_2")
+
+# Initial conditions
+init1 <- list(
+  "mu.0" = 0.5,
+  "alpha_0" = 0.5,
+  "alpha_1" = 0.5,
+  "alpha_2" = 0.5,
+  "sd.s" = 0.5
+)
+init2 <- list(
+  "mu.0" = - 0.5,
+  "alpha_0" = -0.5,
+  "alpha_1" = -0.5,
+  "alpha_2" = -0.5,
+  "sd.s" = 1.5
+)
+init <- list(init1, init2)
+
+# Iteration parameters
+nb.iterations <- 9000
+nb.burnin <- 4500
+
+# Run the model
+M5 <- jags(
+  data = datax,
+  parameters.to.save = params,
+  inits = init,
+  model.file = year_site_model,
+  n.chains = 2,
+  n.iter = nb.iterations,
+  n.burnin = nb.burnin,
+  n.thin = 1,
+  quiet = TRUE
+)
+
+# Récupérons le DIC
+DIC5 <- M5$BUGSoutput$DIC
+```
+```{r}
+random_model <- function(){
+  # This model takes into account a random effect for the site
+  # Likelihood
+  for(i in 1:N){
+    S[i] ~ dpois(lambda[i])
+    log(lambda[i]) <- mu.0 + gamma[site[i]] + b.prev * prev[i] + alpha_0* Cov_2004[i] + alpha_1 * Cov_2005[i] + alpha_2 * Cov_2006[i] + log(A[i])
+  }
+  for (j in 1:nb.sites){
+    gamma[j] ~ dnorm(0, tau.s)
+  }
+  # Priors
+  mu.0 ~ dnorm(0, 0.001)
+  sd.s ~ dunif(0, 100)
+  tau.s <- 1 / (sd.s * sd.s)
+  b.prev ~ dnorm(0, 1/100)
+  alpha_0 ~ dnorm(0, 1/100)
+  alpha_1 ~ dnorm(0, 1/100)
+  alpha_2 ~ dnorm(0, 1/100)
+} 
+
+# Make the data to use in jags
+datax <- list(
+  N = gopher$year %>% 
+    length(),
+  S = gopher$shells,
+  prev = gopher$standprev,
+  A = gopher$Area,
+  site = gopher$Site %>% 
+    as.numeric(),
+  nb.sites = gopher$Site %>% 
+    unique() %>% 
+    length(),
+  Cov_2004 = ifelse(gopher$year == 2004, 1, 0),
+  Cov_2005 = ifelse(gopher$year == 2005, 1, 0),
+  Cov_2006 = ifelse(gopher$year == 2006, 1, 0)
+)
+
+# Make a list of parameters to save
+params = c("mu.0", "b.prev", "sd.s","alpha_0", "alpha_1", "alpha_2")
+
+# Initial conditions
+init1 <- list(
+  "mu.0" = 0.5,
+  "b.prev" = 0.5,
+  "alpha_0" = 0.5,
+  "alpha_1" = 0.5,
+  "alpha_2" = 0.5,
+  "sd.s" = 0.5
+)
+init2 <- list(
+  "mu.0" = - 0.5,
+  "b.prev" = - 0.5,
+  "alpha_0" = -0.5,
+  "alpha_1" = -0.5,
+  "alpha_2" = -0.5,
+  "sd.s" = 1.5
+)
+init <- list(init1, init2)
+
+# Iteration parameters
+nb.iterations <- 9000
+nb.burnin <- 4500
+
+# Run the model
+M6 <- jags(
+  data = datax,
+  parameters.to.save = params,
+  inits = init,
+  model.file = random_model,
+  n.chains = 2,
+  n.iter = nb.iterations,
+  n.burnin = nb.burnin,
+  n.thin = 1,
+  quiet = TRUE
+)
+
+# Récupérons le DIC
+DIC6 <- M6$BUGSoutput$DIC
+```
+
+```{r}
+gopher_discont_prev <- function(){
+  for (i in 1:N){
+    S[i] ~ dpois(lambda[i])
+    log(lambda[i]) <- mu.0 + b.prev * prev[i] + log(A[i])
+  }
+  mu.0 ~ dnorm(0, 0.001)
+  b.prev ~ dnorm(0, 0.001)
+}
+
+datax <- list(N = length(gopher$shells),
+              prev = gopher$H,
+              S = gopher$shells,
+              A = gopher$Area
+)
+
+init1 <- list(mu.0=0.5, b.prev=0.5)
+init2 <- list(mu.0= -0.5, b.prev= -0.5)
+inits <- list(init1, init2)
+
+params <- c("mu.0", "b.prev")
+
+nb.iterations <- 9000
+nb.burnin <- 4500
+
+M7 <- jags(data=datax,
+           inits=inits,
+           parameters.to.save = params,
+           model.file=gopher_discont_prev,
+           n.chains = 2,
+           n.iter = nb.iterations,
+           n.burnin = nb.burnin,
+           n.thin=1,
+  quiet = TRUE
+)
+
+# Récupérons le DIC
+DIC7 <- M7$BUGSoutput$DIC
+```
+
+```{r}
+disc_year_prev_model <- function(){
+  # This model takes into account a random effect for the site
+  # Likelihood
+  for(i in 1:N){
+    S[i] ~ dpois(lambda[i])
+    log(lambda[i]) <- mu.0 + b.prev * prev[i] + alpha_0 * Cov_2004[i] + alpha_1 * Cov_2005[i] + alpha_2 * Cov_2006[i] + log(A[i])
+  }
+  # Priors
+  mu.0 ~ dnorm(0, 1/100)
+  b.prev ~ dnorm(0, 1/100)
+  alpha_0 ~ dnorm(0, 1/100)
+  alpha_1 ~ dnorm(0, 1/100)
+  alpha_2 ~ dnorm(0, 1/100)
+}
+
+# Make the data to use in jags
+datax <- list(
+  N = gopher$year %>% 
+    length(),
+  S = gopher$shells,
+  prev = gopher$H,
+  A = gopher$Area,
+  Cov_2004 = gopher$Cov_2004, 
+  Cov_2005 = gopher$Cov_2005,
+  Cov_2006 = gopher$Cov_2006
+)
+
+# Make a list of parameters to save
+params = c("mu.0", "b.prev", "alpha_0", "alpha_1", "alpha_2")
+
+# Initial conditions
+init1 <- list(
+  "mu.0" = 0.5,
+  "b.prev" = 0.5,
+  "alpha_0" = 0.5,
+  "alpha_1" = 0.5,
+  "alpha_2" = 0.5
+)
+init2 <- list(
+  "mu.0" = - 0.5,
+  "b.prev" = - 0.5,
+  "alpha_0" = -0.5,
+  "alpha_1" = -0.5,
+  "alpha_2" = -0.5
+)
+init <- list(init1, init2)
+
+# Iteration parameters
+nb.iterations <- 9000
+nb.burnin <- 4500
+
+# Run the model
+M8 <- jags(
+  data = datax,
+  parameters.to.save = params,
+  inits = init,
+  model.file = disc_year_prev_model,
+  n.chains = 2,
+  n.iter = nb.iterations,
+  n.burnin = nb.burnin,
+  n.thin = 1,
+  quiet = TRUE
+)
+
+# Récupérons le DIC
+DIC8 <- M8$BUGSoutput$DIC
+```
+```{r}
+disc_full_model <- function(){
+  # This model takes into account a random effect for the site
+  # Likelihood
+  for(i in 1:N){
+    S[i] ~ dpois(lambda[i])
+    log(lambda[i]) <- mu.0 + alpha.s[site[i]] + b.prev * prev[i] + alpha_0 * Cov_2004[i] + alpha_1 * Cov_2005[i] + alpha_2 * Cov_2006[i] + log(A[i])
+  }
+  # Priors
+  mu.0 ~ dnorm(0, 1/100)
+  b.prev ~ dnorm(0, 1/100)
+  for (j in 1:nb.sites){
+    alpha.s[j] ~ dnorm(0, tau.s)
+  }
+  tau.s <- 1 / (sd.s * sd.s)
+  sd.s ~ dunif(0, 100)
+  alpha_0 ~ dnorm(0, 1/100)
+  alpha_1 ~ dnorm(0, 1/100)
+  alpha_2 ~ dnorm(0, 1/100)
+}
+
+# Make the data to use in jags
+datax <- list(
+  N = gopher$year %>% 
+    length(),
+  S = gopher$shells,
+  prev = gopher$H,
+  A = gopher$Area,
+  site = gopher$Site %>% 
+    as.numeric(),
+  nb.sites = gopher$Site %>% 
+    unique() %>% 
+    length(),
+  Cov_2004 = gopher$Cov_2004,
+  Cov_2005 = gopher$Cov_2005,
+  Cov_2006 = gopher$Cov_2006
+)
+
+# Make a list of parameters to save
+params = c("mu.0", "b.prev", "sd.s", "alpha_0", "alpha_1", "alpha_2")
+
+# Initial conditions
+init1 <- list(
+  "mu.0" = 0.5,
+  "b.prev" = 0.5,
+  "sd.s" = 0.5,
+  "alpha_0" = 0.5,
+  "alpha_1" = 0.5,
+  "alpha_2" = 0.5
+)
+init2 <- list(
+  "mu.0" = - 0.5,
+  "b.prev" = - 0.5,
+  "sd.s" =  0.25,
+  "alpha_0" = -0.5,
+  "alpha_1" = -0.5,
+  "alpha_2" = -0.5
+)
+init <- list(init1, init2)
+
+# Iteration parameters
+nb.iterations <- 9000
+nb.burnin <- 4500
+
+# Run the model
+M9 <- jags(
+  data = datax,
+  parameters.to.save = params,
+  inits = init,
+  model.file = disc_full_model,
+  n.chains = 2,
+  n.iter = nb.iterations,
+  n.burnin = nb.burnin,
+  n.thin = 1,
+  quiet = TRUE,
+  progress.bar = "none"
+)
+
+# Récupérons le DIC
+DIC9 <- M9$BUGSoutput$DIC
+```
+
+
+
+# BIN
+```{r echo=FALSE, results='asis'}
+reference_table <- data.frame(
+  Model_name = paste0("M", seq(1, 1, 1)),
+  Formulas = c(
+    "$log(\\lambda) = log(aire_i) + \\mu_0 + \\beta * prev_i$"          # M1
+  ),
+  DIC = c(
+    DIC1          # M1
+  )
+)
+
+x <- kable(reference_table, format="latex", booktabs=TRUE, escape=TRUE) %>% 
+  kable_styling(latex_options = "hold_position")
+x
+```
+

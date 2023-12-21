@@ -214,6 +214,7 @@ par(mfrow=c(1, 1))
 Les 2 chaînes se mélangent bien et convergent toutes deux. Ceci est aussi confirmé par la statistique de Gelman-Rubin $\hat{R}$ qui est inférieure à 1.1 pour chaque paramètre estimé. Nous notons aussi que `n.eff` est supérieur à 100.\newline Nous avons donc des estimations de nos paramètres qui sont stables et des chaines peu autocorrélées.
 
 Nous regardons maintenant la distribution *a posteriori* et le moyenne ($\lambda$) du nombre de carapaces à partir des paramètres estimés par notre modèle. 
+
 ```{r echo=FALSE}
 # On récupère les résultats et on fait des histogrammes
 res1 <- M1$BUGSoutput$sims.matrix %>% 
@@ -226,14 +227,16 @@ for (i in 1:nrow(gopher)){
 }
 
 
-hist(shells1,
-     breaks=5,
-     main="Figure X : Distribution du nombre de carapaces pour M1",
-     xlab="Carapaces",
-     Ylab="Comptage",
-     col="blue",
-     border="black",
-     freq=FALSE)
+shells1_1 <- c(shells1) %>%
+  as.data.frame()
+colnames(shells1_1) <- c("shells")
+
+ggplot(shells1_1, aes(x=shells)) + 
+  geom_histogram(bins=10, fill="blue", color="black")+ 
+  labs(caption="Figure 5 : Distribution du nombre de carapaces pour le modèle 1",
+       x="Carapaces",
+       y="Comptage") + 
+  theme(plot.caption = element_text(hjust=0, size=10, face="italic"),axis.title.x=element_text(size = 8), axis.title.y=element_text(size = 8))
 
 mean(shells1)
 ```
@@ -248,13 +251,13 @@ ggplot(gopher, aes(x=prev, y=shells)) +
   geom_point() +
   geom_line(aes(x=prev, y=mean_mu1+ log(Area)+mean_b1*prev, color='red'))+
   facet_wrap(~Site)+
-  labs(caption= "Figure 5 : Le nombre de carapaces en fonction de la prevalence par site par année",
+  labs(caption= "Figure 6 : Le nombre de carapaces en fonction de la prevalence par site par année",
        x = "Prévalence pour Mycoplasma agassizii",
        y= "Nombre de carapaces ") +
   theme(plot.caption = element_text(hjust=0, size=10, face="italic"),axis.title.x=element_text(size = 8), axis.title.y=element_text(size = 8))
 ```
 
-|   Notre modèle `M1` prédit bien la distribution des carapaces mais elle ne prend pas en compte la variabilité des sites comme le montre les droites de regressions construites à partir de le moyenne de distributions postérieures de nos paramètres (*cf. figure 5*).
+|   Notre modèle `M1` prédit bien la distribution des carapaces (*cf figure 5*) mais elle ne prend pas en compte la variabilité des sites comme le montre les droites de regressions construites à partir de le moyenne de distributions postérieures de nos paramètres (*cf. figure 6*).
 
 ```{r echo=FALSE}
 # On récupère le DIC
@@ -286,6 +289,8 @@ Pour l'ensemble des modèles, nous utilisons comme priors les distributions suiv
 
 
 Nous considérons ici les modèles suivants: 
+
+*Tableau 1 : Modèles construits et testés*
 
 |   Modèles   |                                                               Formules                                                                |
 |:-------------:|:-------------------------------------------------------:|
@@ -811,7 +816,8 @@ M9 <- jags(
 DIC9 <- M9$BUGSoutput$DIC
 ```
 
-Les DICs de ces modèles sont les suivants
+Les DICs de ces modèles sont les suivants : 
+*Tableau 2 : DICs des modèles* 
 ```{r echo=FALSE}
 data.frame(
   row.names = c("Continus", paste0("M", seq(1, 6, 1)), "Discontinus", paste0("M", seq(7, 9, 1))),
@@ -842,7 +848,17 @@ shells6 <- matrix(NA,ncol=nrow(gopher),nrow=nrow(res6))
 for (i in 1:nrow(gopher)){
   shells6[,i] <-gopher$Area[i] * exp(res6$mu.0 + res6$alpha_0 * gopher$Cov_2004[i] + res6$alpha_1 * gopher$Cov_2005[i] + res6$alpha_2 * gopher$Cov_2006[i] + res6$b.prev * gopher$standprev[i]+rnorm(1,mean=0, sd=res6$sd.s))
 }
-hist(shells6)
+
+shells6_1 <- c(shells6) %>%
+  as.data.frame()
+colnames(shells6_1) <- c("shells")
+
+ggplot(shells6_1, aes(x=shells)) + 
+  geom_histogram(bins=10, fill="blue", color="black")+ 
+  labs(caption="Figure 7 : Distribution du nombre de carapaces pour le modèle 6",
+       x="Carapaces",
+       y="Comptage") + 
+  theme(plot.caption = element_text(hjust=0, size=10, face="italic"),axis.title.x=element_text(size = 8), axis.title.y=element_text(size = 8))
 mean(shells6)
 ```
 
@@ -870,7 +886,17 @@ shells9 <- matrix(NA,ncol=nrow(gopher),nrow=nrow(res9))
 for (i in 1:nrow(gopher)){
   shells9[,i] <-gopher$Area[i] * exp(res9$mu.0 + res9$alpha_0 * gopher$Cov_2004[i] + res9$alpha_1 * gopher$Cov_2005[i] + res9$alpha_2 * gopher$Cov_2006[i] + res9$b.prev * gopher$H[i]+rnorm(1,mean=0, sd=res9$sd.s))
 }
-hist(shells9)
+
+shells9_1 <- c(shells9) %>%
+  as.data.frame()
+colnames(shells9_1) <- c("shells")
+
+ggplot(shells9_1, aes(x=shells)) + 
+  geom_histogram(bins=10, fill="blue", color="black")+ 
+  labs(caption="Figure 8 : Distribution du nombre de carapaces pour le modèle 9",
+       x="Carapaces",
+       y="Comptage") + 
+  theme(plot.caption = element_text(hjust=0, size=10, face="italic"),axis.title.x=element_text(size = 8), axis.title.y=element_text(size = 8))
 mean(shells9)
 ```
 

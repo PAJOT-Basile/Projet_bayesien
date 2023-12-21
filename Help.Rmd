@@ -23,8 +23,9 @@ set.seed(2023)
 gopher <- read.csv("gopher.csv", header=TRUE, stringsAsFactors=TRUE, sep=";", dec=".") %>% 
   mutate(standprev = (prev - mean(prev)) / sd(prev),
          H = ifelse(prev <= 25, 0, 1),
-         Cov.y.1 = ifelse(year == 2005, 1, 0),
-         Cov.y.2 = ifelse(year == 2006, 1, 0))
+         Cov_2004 = ifelse(year == 2004, 1, 0),
+         Cov_2005 = ifelse(year == 2005, 1, 0),
+         Cov_2006 = ifelse(year == 2006, 1, 0))
 ```
 
 # 1. The null model
@@ -133,7 +134,7 @@ nb.iterations <- 9000
 nb.burnin <- 4500
 
 # We run the model
-M2 <- jags(
+M1 <- jags(
   data = datax,
   inits = init,
   parameters.to.save = params,
@@ -144,24 +145,36 @@ M2 <- jags(
   n.thin=1
 )
 
-# Regardons le modèle et les traces
-M2
-traceplot(M2, mfrow=c(1, 3), ask=FALSE)
+# Regardons le modèle 
+M1
+```
+
+Nous vérifions que le modèle a bien convergé. 
+
+```{r echo=FALSE}
+# Regardons les traces
+traceplot(M1,mfrow = c(1, 3), varname = c('mu.0','b.prev','deviance'), ask = FALSE)
 par(mfrow=c(1, 1))
+```
+Les 2 chaînes se mélangent bien et convergent toutes deux. Ceci est aussi confirmé par la statistique de Gelman-Rubin  $\hat{R}$ qui est inférieure à 1.1 pour chaque paramètre estimé. Nous notons aussi que `n.eff` est supérieur à 100. Nous avons donc des estimations de nos paramètres qui sont stables et des chaines peu autocorrélées. 
 
+```{r echo=FALSE}
 # On récupère les résultats et on fait des histogrammes
-res <- M2$BUGSoutput$sims.matrix %>% 
+res1 <- M1$BUGSoutput$sims.matrix %>% 
   as.data.frame()
-hist(res$b.prev)
-hist(res$mu.0)
-
 # Tentative de réro-transformation 
-shells <- gopher$Area  * exp(res$mu.0 + res$b.prev * gopher$standprev)
-hist(shells)
-mean(shells)
 
+shells1 <- matrix(NA,ncol=nrow(gopher),nrow=nrow(res))
+for (i in 1:nrow(gopher)){
+  shells1[,i] <-gopher$Area[i] * exp(res1$mu.0 + res1$b.prev * gopher$standprev[i])
+}
+hist(shells1)
+mean(shells1)
+```
+
+```{r}
 # On récupère le DIC
-DIC2 <- M2$BUGSoutput$DIC
+DIC1 <- M1$BUGSoutput$DIC
 
 ```
 # 3. Modèle null avec l'année
@@ -173,12 +186,12 @@ null_year_model <- function(){
   # Likelihood
   for (i in 1:N){  # Loop over years
     S[i] ~ dpois(lambda[i])
-    log(lambda[i]) <- mu.0 + alpha.y.1 * Cov.y.1[i] + alpha.y.2 * Cov.y.2[i] + log(A[i])
+    log(lambda[i]) <- mu.0 + alpha_0 * Cov_2004[i] + alpha_1 * Cov_2005[i] + alpha_2 * Cov_2006[i] + log(A[i])
   }
   # Priors
   mu.0 ~ dnorm(0, 1/100)
-  alpha.y.1 ~ dnorm(0, 1/100)
-  alpha.y.2 ~ dnorm(0, 1/100)
+  alpha_1 ~ dnorm(0, 1/100)
+  alpha_2 ~ dnorm(0, 1/100)
 }
 
 # Now, we can make list of the data to use in the jags function
@@ -187,16 +200,16 @@ datax <- list(
     length(),
   S = gopher$shells,        # Number of shells
   A = gopher$Area,          # Area offset
-  Cov.y.1 = gopher$Cov.y.1,  # Effect of the year 2005
-  Cov.y.2 = gopher$Cov.y.2   # Effect of the year 2006
+  Cov_2005 = gopher$Cov_2005,  # Effect of the year 2005
+  Cov_2006 = gopher$Cov_2006   # Effect of the year 2006
 )
 
 # Parameters to estimate
-params <- c("mu.0", "alpha.y.1", "alpha.y.2")
+params <- c("mu.0", "alpha_0", "alpha_1", "alpha_2")
 
 # Initialising the chains
-init1 <- list(mu.0 = -0.5, alpha.y.1=-0.5, alpha.y.2=-0.5)
-init2 <- list(mu.0 = 0.5, alpha.y.1=0.5, alpha.y.2=0.5)
+init1 <- list(mu.0 =-0.5, alpha_0=-0.5, alpha_1=-0.5, alpha_2=-0.5)
+init2 <- list(mu.0 = 0.5, alpha_0=0.5, alpha_1=0.5, alpha_2=0.5)
 init <- list(init1, init2)
 
 # Define the iteration parameters
@@ -223,11 +236,11 @@ par(mfrow = c(1, 1))
 res <- M3$BUGSoutput$sims.matrix %>% 
   as.data.frame()
 hist(res$mu.0)
-hist(res$alpha.y.1)
-hist(res$alpha.y.2)
+hist(res$alpha_1)
+hist(res$alpha_2)
 
 # Rétrotransformation 
-shells <- gopher$Area  * exp(res$mu.0 + res$alpha.y.1 * gopher$Cov.y.1 + res$alpha.y.2 * gopher$Cov.y.2)
+shells <- gopher$Area  * exp(res$mu.0 + res$alpha_1 * gopher$Cov_2005 + res$alpha_2 * gopher$Cov_2006)
 hist(shells)
 mean(shells)
 
@@ -243,12 +256,12 @@ year_prevalence_model <- function(){
   # Likelihood
   for (i in 1:N){  # Loop over years
     S[i] ~ dpois(lambda[i])
-    log(lambda[i]) <- mu.0 + alpha.y.1 * Cov.y.1[i] + alpha.y.2 * Cov.y.2[i] + b.prev * prev[i] + log(A[i])
+    log(lambda[i]) <- mu.0 + alpha_1 * Cov_2005[i] + alpha_2 * Cov_2006[i] + b.prev * prev[i] + log(A[i])
   }
   # Priors
   mu.0 ~ dnorm(0, 1/100)
-  alpha.y.1 ~ dnorm(0, 1/100)
-  alpha.y.2 ~ dnorm(0, 1/100)
+  alpha_1 ~ dnorm(0, 1/100)
+  alpha_2 ~ dnorm(0, 1/100)
   b.prev ~ dnorm(0, 1/100)
 }
 
@@ -258,17 +271,17 @@ datax <- list(
     length(),
   S = gopher$shells,        # Number of shells
   A = gopher$Area,          # Area offset
-  Cov.y.1 = gopher$Cov.y.1,  # Effect of the year 2005
-  Cov.y.2 = gopher$Cov.y.2,  # Effect of the year 2006
+  Cov_2005 = gopher$Cov_2005,  # Effect of the year 2005
+  Cov_2006 = gopher$Cov_2006,  # Effect of the year 2006
   prev = gopher$standprev    # Prevalence
 )
 
 # Parameters to estimate
-params <- c("mu.0", "alpha.y.1", "alpha.y.2", "b.prev")
+params <- c("mu.0", "alpha_1", "alpha_2", "b.prev")
 
 # Initialising the chains
-init1 <- list(mu.0 = -0.5, alpha.y.1 = -0.5, alpha.y.2 = -0.5, b.prev = -0.5)
-init2 <- list(mu.0 = 0.5, alpha.y.1 = 0.5, alpha.y.2 = 0.5, b.prev = 0.5)
+init1 <- list(mu.0 = -0.5, alpha_1 = -0.5, alpha_2 = -0.5, b.prev = -0.5)
+init2 <- list(mu.0 = 0.5, alpha_1 = 0.5, alpha_2 = 0.5, b.prev = 0.5)
 init <- list(init1, init2)
 
 # Define the iteration parameters
@@ -295,12 +308,12 @@ par(mfrow = c(1, 1))
 res <- M4$BUGSoutput$sims.matrix %>% 
   as.data.frame()
 hist(res$mu.0)
-hist(res$alpha.y.1)
-hist(res$alpha.y.2)
+hist(res$alpha_1)
+hist(res$alpha_2)
 hist(res$b.prev)
 
 # Rétrotransformation
-shells <- gopher$Area  * exp(res$mu.0 + res$alpha.y.1 * gopher$Cov.y.1 + res$alpha.y.2 * gopher$Cov.y.2 + res$b.prev * gopher$standprev)
+shells <- gopher$Area  * exp(res$mu.0 + res$alpha_1 * gopher$Cov_2005 + res$alpha_2 * gopher$Cov_2006 + res$b.prev * gopher$standprev)
 hist(shells)
 mean(shells)
 
@@ -316,12 +329,12 @@ null_year_site_model <- function(){
   # Likelihood
   for (i in 1:N){  # Loop over years
     S[i] ~ dpois(lambda[i])
-    log(lambda[i]) <- mu.0 + alpha.y.1 * Cov.y.1[i] + alpha.y.2 * Cov.y.2[i] + alpha.s[site[i]] + log(A[i])
+    log(lambda[i]) <- mu.0 + alpha_1 * Cov_2005[i] + alpha_2 * Cov_2006[i] + alpha.s[site[i]] + log(A[i])
   }
   # Priors
   mu.0 ~ dnorm(0, 1/100)
-  alpha.y.1 ~ dnorm(0, 1/100)
-  alpha.y.2 ~ dnorm(0, 1/100)
+  alpha_1 ~ dnorm(0, 1/100)
+  alpha_2 ~ dnorm(0, 1/100)
   for (j in 1:nb.sites){
     alpha.s[j] ~ dnorm(0, tau.s)
   }
@@ -335,8 +348,8 @@ datax <- list(
     length(),
   S = gopher$shells,        # Number of shells
   A = gopher$Area,          # Area offset
-  Cov.y.1 = gopher$Cov.y.1,  # Effect of the year 2005
-  Cov.y.2 = gopher$Cov.y.2,   # Effect of the year 2006
+  Cov_2005 = gopher$Cov_2005,  # Effect of the year 2005
+  Cov_2006 = gopher$Cov_2006,   # Effect of the year 2006
   nb.sites = gopher$Site %>%  # Number of sites
     unique() %>% 
     length(),
@@ -345,11 +358,11 @@ datax <- list(
 )
 
 # Parameters to estimate
-params <- c("mu.0", "alpha.y.1", "alpha.y.2", "sigma.s")
+params <- c("mu.0", "alpha_1", "alpha_2", "sigma.s")
 
 # Initialising the chains
-init1 <- list(mu.0 = -0.5, alpha.y.1=-0.5, alpha.y.2=-0.5, sigma.s = 0.5)
-init2 <- list(mu.0 = 0.5, alpha.y.1=0.5, alpha.y.2=0.5, sigma.s = 0.25)
+init1 <- list(mu.0 = -0.5, alpha_1=-0.5, alpha_2=-0.5, sigma.s = 0.5)
+init2 <- list(mu.0 = 0.5, alpha_1=0.5, alpha_2=0.5, sigma.s = 0.25)
 init <- list(init1, init2)
 
 # Define the iteration parameters
@@ -376,14 +389,14 @@ par(mfrow = c(1, 1))
 res <- M5$BUGSoutput$sims.matrix %>% 
   as.data.frame()
 hist(res$mu.0)
-hist(res$alpha.y.1)
-hist(res$alpha.y.2)
+hist(res$alpha_1)
+hist(res$alpha_2)
 hist(res$sigma.s)
 
 # Rétrotransformation
 simulated_shells <- rep(NA, nrow(res))
 for (i in 1:nrow(res)){
-  lambda <- gopher$Area * exp(res$mu.0[i] + res$alpha.y.1[i] * gopher$Cov.y.1 + res$alpha.y.2[i] * gopher$Cov.y.2 + rnorm(1, mean=0, sd=res$sigma.s[i]))
+  lambda <- gopher$Area * exp(res$mu.0[i] + res$alpha_1[i] * gopher$Cov_2005 + res$alpha_2[i] * gopher$Cov_2006 + rnorm(1, mean=0, sd=res$sigma.s[i]))
   simulated_shells[i] <- rpois(1, lambda)
 }
 
@@ -407,7 +420,7 @@ random_model <- function(){
   # Likelihood
   for(i in 1:N){
     S[i] ~ dpois(lambda[i])
-    log(lambda[i]) <- mu.0 + alpha.s[site[i]] + b.prev * prev[i] + alpha.y.1 * Cov.y.1[i] + alpha.y.2 * Cov.y.2[i] + log(A[i])
+    log(lambda[i]) <- mu.0 + alpha.s[site[i]] + b.prev * prev[i] + alpha_1 * Cov_2005[i] + alpha_2 * Cov_2006[i] + log(A[i])
   }
   # Priors
   mu.0 ~ dnorm(0, 1/100)
@@ -417,8 +430,8 @@ random_model <- function(){
   }
   tau.s <- 1 / (sd.s * sd.s)
   sd.s ~ dunif(0, 100)
-  alpha.y.1 ~ dnorm(0, 1/100)
-  alpha.y.2 ~ dnorm(0, 1/100)
+  alpha_1 ~ dnorm(0, 1/100)
+  alpha_2 ~ dnorm(0, 1/100)
 }
 
 # Make the data to use in jags
@@ -433,27 +446,27 @@ datax <- list(
   nb.sites = gopher$Site %>% 
     unique() %>% 
     length(),
-  Cov.y.1 = ifelse(gopher$year == 2005, 1, 0),
-  Cov.y.2 = ifelse(gopher$year == 2006, 1, 0)
+  Cov_2005 = ifelse(gopher$year == 2005, 1, 0),
+  Cov_2006 = ifelse(gopher$year == 2006, 1, 0)
 )
 
 # Make a list of parameters to save
-params = c("mu.0", "b.prev", "sd.s", "alpha.y.1", "alpha.y.2")
+params = c("mu.0", "b.prev", "sd.s", "alpha_1", "alpha_2")
 
 # Initial conditions
 init1 <- list(
   "mu.0" = 0.5,
   "b.prev" = 0.5,
   "sd.s" = 0.5,
-  "alpha.y.1" = 0.5,
-  "alpha.y.2" = 0.5
+  "alpha_1" = 0.5,
+  "alpha_2" = 0.5
 )
 init2 <- list(
   "mu.0" = - 0.5,
   "b.prev" = - 0.5,
   "sd.s" =  0.25,
-  "alpha.y.1" = -0.5,
-  "alpha.y.2" = -0.5
+  "alpha_1" = -0.5,
+  "alpha_2" = -0.5
 )
 init <- list(init1, init2)
 
@@ -483,14 +496,14 @@ res <- M6$BUGSoutput$sims.matrix %>%
   as.data.frame()
 hist(res$b.prev)
 hist(res$mu.0)
-hist(res$alpha.y.1)
-hist(res$alpha.y.2)
+hist(res$alpha_1)
+hist(res$alpha_2)
 hist(res$sd.s)
 
 # Rétrotransformation
 simulated_shells <- rep(NA, nrow(res))
 for (i in 1:nrow(res)){
-  lambda <- gopher$Area * exp(res$mu.0[i] + res$alpha.y.1[i] * gopher$Cov.y.1 + res$alpha.y.2[i] * gopher$Cov.y.2 + res$b.prev[i] * gopher$standprev + rnorm(1, mean=0, sd=res$sd.s[i]))
+  lambda <- gopher$Area * exp(res$mu.0[i] + res$alpha_1[i] * gopher$Cov_2005 + res$alpha_2[i] * gopher$Cov_2006 + res$b.prev[i] * gopher$standprev + rnorm(1, mean=0, sd=res$sd.s[i]))
   simulated_shells[i] <- rpois(1, lambda)
 }
 hist(simulated_shells)
@@ -503,13 +516,13 @@ DIC6 <- M6$BUGSoutput$DIC
 # 7. Discontinu modèle simple de prévalence
 Nous considérons ici simplement l'effet simple de la prévalence mais en discontinu (si prev > 25, nous attribuons la valeur 1 à H et 0 sinon). Cela sert à dissocier les effets de prévalence forte et faible.
 ```{r}
-gopher_discont_prev <-function(){
+gopher_discont_prev <- function(){
   for (i in 1:N){
     S[i] ~ dpois(lambda[i])
     log(lambda[i]) <- mu.0 + b.prev * prev[i] + log(A[i])
   }
-  mu.0 ~ dnorm(0,0.001)
-  b.prev ~ dnorm(0,0.001)
+  mu.0 ~ dnorm(0, 0.001)
+  b.prev ~ dnorm(0, 0.001)
 }
 
 datax <- list(N = length(gopher$shells),
@@ -518,11 +531,11 @@ datax <- list(N = length(gopher$shells),
               A = gopher$Area
 )
 
-init1 <- list(mu.0=0.5,b.prev=0.5)
-init2 <- list(mu.0= -0.5,b.prev= -0.5)
-inits <- list(init1,init2)
+init1 <- list(mu.0=0.5, b.prev=0.5)
+init2 <- list(mu.0= -0.5, b.prev= -0.5)
+inits <- list(init1, init2)
 
-params <- c("mu.0","b.prev")
+params <- c("mu.0", "b.prev")
 
 nb.iterations <- 9000
 nb.burnin <- 4500
@@ -538,19 +551,26 @@ M7 <- jags(data=datax,
 
 # Regardons le modèle et les traces
 M7
+```
+
+```{r}
 traceplot(M7, mfrow=c(1, 3), ask=FALSE)
 par(mfrow = c(1, 1))
+```
 
+
+```{r}
 # Récupérons les paramètres et regardons leur distribution
-res <- M7$BUGSoutput$sims.matrix %>% 
+res7 <- M7$BUGSoutput$sims.matrix %>% 
   as.data.frame()
-hist(res$b.prev)
-hist(res$mu.0)
 
 # Rétrotransformation
-shells <- gopher$Area * exp(res$mu.0 + res$b.prev * gopher$H)
-hist(shells)
-mean(shells)
+shells7 <- matrix(NA, nrow=nrow(res7), ncol=nrow(gopher))
+for (i in 1:nrow(gopher)){
+  shells7[, i] <- gopher$Area[i] * exp(res7$mu.0 + res7$b.prev * gopher$H)
+}
+hist(shells7)
+mean(shells7)
 
 # Récupérons le DIC
 DIC7 <- M7$BUGSoutput$DIC
@@ -564,13 +584,14 @@ disc_year_prev_model <- function(){
   # Likelihood
   for(i in 1:N){
     S[i] ~ dpois(lambda[i])
-    log(lambda[i]) <- mu.0 + b.prev * prev[i] + alpha.y.1 * Cov.y.1[i] + alpha.y.2 * Cov.y.2[i] + log(A[i])
+    log(lambda[i]) <- mu.0 + b.prev * prev[i] + alpha_0 * Cov_2004[i] + alpha_1 * Cov_2005[i] + alpha_2 * Cov_2006[i] + log(A[i])
   }
   # Priors
   mu.0 ~ dnorm(0, 1/100)
   b.prev ~ dnorm(0, 1/100)
-  alpha.y.1 ~ dnorm(0, 1/100)
-  alpha.y.2 ~ dnorm(0, 1/100)
+  alpha_0 ~ dnorm(0, 1/100)
+  alpha_1 ~ dnorm(0, 1/100)
+  alpha_2 ~ dnorm(0, 1/100)
 }
 
 # Make the data to use in jags
@@ -580,25 +601,28 @@ datax <- list(
   S = gopher$shells,
   prev = gopher$H,
   A = gopher$Area,
-  Cov.y.1 = ifelse(gopher$year == 2005, 1, 0),
-  Cov.y.2 = ifelse(gopher$year == 2006, 1, 0)
+  Cov_2004 = gopher$Cov_2004, 
+  Cov_2005 = gopher$Cov_2005,
+  Cov_2006 = gopher$Cov_2006
 )
 
 # Make a list of parameters to save
-params = c("mu.0", "b.prev", "alpha.y.1", "alpha.y.2")
+params = c("mu.0", "b.prev", "alpha_0", "alpha_1", "alpha_2")
 
 # Initial conditions
 init1 <- list(
   "mu.0" = 0.5,
   "b.prev" = 0.5,
-  "alpha.y.1" = 0.5,
-  "alpha.y.2" = 0.5
+  "alpha_0" = 0.5,
+  "alpha_1" = 0.5,
+  "alpha_2" = 0.5
 )
 init2 <- list(
   "mu.0" = - 0.5,
   "b.prev" = - 0.5,
-  "alpha.y.1" = -0.5,
-  "alpha.y.2" = -0.5
+  "alpha_0" = -0.5,
+  "alpha_1" = -0.5,
+  "alpha_2" = -0.5
 )
 init <- list(init1, init2)
 
@@ -620,22 +644,27 @@ M8 <- jags(
 
 # Regardons le modèle et la trace
 M8
+```
+
+```{r}
 traceplot(M8, mfrow=c(2, 3), ask=FALSE)
 par(mfrow=c(1, 1))
+```
 
+
+```{r}
 # On récupère les paramètres estimés et leur distribution
-res <- M8$BUGSoutput$sims.matrix %>% 
+res8 <- M8$BUGSoutput$sims.matrix %>% 
   as.data.frame()
-hist(res$b.prev)
-hist(res$mu.0)
-hist(res$alpha.y.1)
-hist(res$alpha.y.2)
 
 # Calculating the mean number of shells per individual 
-shells <- gopher$Area * exp(res$mu.0 + res$b.prev * gopher$H + res$alpha.y.1 * gopher$Cov.y.1 + res$alpha.y.2 * gopher$Cov.y.2)
+shells8 <- matrix(NA, ncol=nrow(gopher), nrow=nrow(res8))
+for (i in 1:nrow(gopher)){
+  shells8[, i] <- gopher$Area[i] * exp(res8$mu.0 + res8$b.prev * gopher$H[i] + res8$alpha_0 * gopher$Cov_2004[i] + res8$alpha_1 * gopher$Cov_2005[i] + res8$alpha_2 * gopher$Cov_2006[i])
+}
 
-hist(shells)
-mean(shells)
+hist(shells8)
+mean(shells8)
 
 # Récupérons le DIC
 DIC8 <- M8$BUGSoutput$DIC
@@ -653,7 +682,7 @@ disc_full_model <- function(){
   # Likelihood
   for(i in 1:N){
     S[i] ~ dpois(lambda[i])
-    log(lambda[i]) <- mu.0 + alpha.s[site[i]] + b.prev * prev[i] + alpha.y.1 * Cov.y.1[i] + alpha.y.2 * Cov.y.2[i] + log(A[i])
+    log(lambda[i]) <- mu.0 + alpha.s[site[i]] + b.prev * prev[i] + alpha_0 * Cov_2004[i] + alpha_1 * Cov_2005[i] + alpha_2 * Cov_2006[i] + log(A[i])
   }
   # Priors
   mu.0 ~ dnorm(0, 1/100)
@@ -663,8 +692,9 @@ disc_full_model <- function(){
   }
   tau.s <- 1 / (sd.s * sd.s)
   sd.s ~ dunif(0, 100)
-  alpha.y.1 ~ dnorm(0, 1/100)
-  alpha.y.2 ~ dnorm(0, 1/100)
+  alpha_0 ~ dnorm(0, 1/100)
+  alpha_1 ~ dnorm(0, 1/100)
+  alpha_2 ~ dnorm(0, 1/100)
 }
 
 # Make the data to use in jags
@@ -679,27 +709,30 @@ datax <- list(
   nb.sites = gopher$Site %>% 
     unique() %>% 
     length(),
-  Cov.y.1 = ifelse(gopher$year == 2005, 1, 0),
-  Cov.y.2 = ifelse(gopher$year == 2006, 1, 0)
+  Cov_2004 = gopher$Cov_2004,
+  Cov_2005 = gopher$Cov_2005,
+  Cov_2006 = gopher$Cov_2006
 )
 
 # Make a list of parameters to save
-params = c("mu.0", "b.prev", "sd.s", "alpha.y.1", "alpha.y.2")
+params = c("mu.0", "b.prev", "sd.s", "alpha_0", "alpha_1", "alpha_2")
 
 # Initial conditions
 init1 <- list(
   "mu.0" = 0.5,
   "b.prev" = 0.5,
   "sd.s" = 0.5,
-  "alpha.y.1" = 0.5,
-  "alpha.y.2" = 0.5
+  "alpha_0" = 0.5,
+  "alpha_1" = 0.5,
+  "alpha_2" = 0.5
 )
 init2 <- list(
   "mu.0" = - 0.5,
   "b.prev" = - 0.5,
   "sd.s" =  0.25,
-  "alpha.y.1" = -0.5,
-  "alpha.y.2" = -0.5
+  "alpha_0" = -0.5,
+  "alpha_1" = -0.5,
+  "alpha_2" = -0.5
 )
 init <- list(init1, init2)
 
@@ -725,23 +758,22 @@ traceplot(M9, mfrow=c(2, 3), ask=FALSE)
 par(mfrow=c(1, 1))
 
 # Récupérons les paramètres et regardons leur distribution
-res <- M9$BUGSoutput$sims.matrix %>% 
+res9 <- M9$BUGSoutput$sims.matrix %>% 
   as.data.frame()
-hist(res$b.prev)
-hist(res$mu.0)
-hist(res$alpha.y.1)
-hist(res$alpha.y.2)
-hist(res$sd.s)
 
 # Rétrotransformation
-simulated_shells <- rep(NA, nrow(res))
-for (i in 1:nrow(res)){
-  lambda <- gopher$Area * exp(res$mu.0[i] + res$alpha.y.1[i] * gopher$Cov.y.1 + res$alpha.y.2[i] * gopher$Cov.y.2 + res$b.prev[i] * gopher$H + rnorm(1, mean=0, sd=res$sd.s[i]))
-  simulated_shells[i] <- rpois(1, lambda)
+shells9 <- matrix(NA, nrow=nrow(res9), ncol=nrow(gopher))
+for (i in 1:nrow(gopher)){
+  shells9[, i] <- gopher$A[i] * exp(res9$mu.0 +
+                                    res9$b.prev * gopher$H[i] +
+                                    res9$alpha_0 * gopher$Cov_2004[i] +
+                                    res9$alpha_1 * gopher$Cov_2005[i] +
+                                    res9$alpha_2 * gopher$Cov_2006[i] +
+                                    rnorm(1, mean=0, sd=res9$sd.s))
 }
 
-hist(simulated_shells)
-mean(simulated_shells)
+hist(shells9)
+mean(shells9)
 
 # Récupérons le DIC
 DIC9 <- M9$BUGSoutput$DIC

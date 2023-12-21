@@ -98,17 +98,35 @@ hist(res$alpha.y.2)
 hist(res$sd.s)
 
 # Rétrotransformation : idée 1
-# Moyennes
-beta <- mean(res$b.prev)
-alpha.1 <- mean(res$alpha.y.1)
-alpha.2 <- mean(res$alpha.y.2)
-mu.0 <- mean(res$mu.0)
 
+#### Année 2004
+shells_2004 <- matrix(NA, ncol=nrow(gopher), nrow=nrow(res))
+for (i in 1:nrow(gopher)){
+  shells_2004[, i] <- gopher$Area[i] * exp(res$mu.0 + res$b.prev * gopher$standprev[i])
+}
+hist(shells_2004)
+mean(shells_2004)
+
+### Année 2005
+shells_2005 <- matrix(NA, ncol=nrow(gopher), nrow=nrow(res))
+for (i in 1:nrow(gopher)){
+  shells_2005[, i] <- gopher$Area[i] * exp(res$mu.0 + res$b.prev * gopher$standprev[i] + res$alpha.y.1 * gopher$Cov.y.1[i])
+}
+hist(shells_2005)
+mean(shells_2005)
+
+### Année 2006
+shells_2006 <- matrix(NA, ncol=nrow(gopher), nrow=nrow(res))
+for (i in 1:nrow(gopher)){
+  shells_2006[, i] <- gopher$Area[i] * exp(res$mu.0 + res$b.prev * gopher$standprev[i] + res$alpha.y.2 * gopher$Cov.y.2[i])
+}
+hist(shells_2006)
+mean(shells_2006)
 
 shells6 <- matrix(NA, ncol=nrow(gopher), nrow=nrow(res))
 for (i in 1:nrow(gopher)){
   shells6[, i] <- gopher$Area[i] * exp(res$mu.0 + 
-                                         res$b.prev * gopher$prev[i] + 
+                                         res$b.prev * gopher$standprev[i] + 
                                          res$alpha.y.1 * gopher$Cov.y.1[i] + 
                                          res$alpha.y.2 * gopher$Cov.y.2[i] + 
                                          rnorm(nrow(res), mean=0, sd=res$sd.s)) 

@@ -6,11 +6,15 @@ output:
   pdf_document: default
   html_document: default
   word_document: default
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
 ```{r}
 # Chargement des pakages nécessaires
 require("anyLib")
@@ -25,7 +29,6 @@ gopher <- read.csv(file = "./gopher.csv", header = TRUE, sep = ";", dec=".", str
          Cov_2005 = ifelse(year == 2005, 1, 0),
          Cov_2006 = ifelse(year == 2006, 1, 0))
 ```
-
 
 ```{r}
 # The prevalence model
@@ -78,6 +81,7 @@ M1 <- jags(
 M1
 DIC1 <- M1$BUGSoutput$DIC
 ```
+
 ```{r}
 # The null model function
 null_model <- function(){
@@ -111,7 +115,7 @@ init <- list(init1, init2)
 nb.iterations <- 9000
 nb.burnin <- 4500
 # Run the model using jags
-M0 <- jags(
+M2 <- jags(
   data = datax,
   inits = init,
   parameters.to.save = params,
@@ -124,8 +128,9 @@ M0 <- jags(
 )
 
 # Récupérons le DIC
-DIC0 <- M0$BUGSoutput$DIC
+DIC2 <- M0$BUGSoutput$DIC
 ```
+
 ```{r}
 # The year model function
 year_model <- function(){
@@ -179,6 +184,7 @@ M3 <- jags(
 # Récupérons le DIC
 DIC3 <- M3$BUGSoutput$DIC
 ```
+
 ```{r}
 # The year model function
 year_prevalence_model <- function(){
@@ -235,6 +241,9 @@ M4 <- jags(
 # Récupérons le DIC
 DIC4 <- M4$BUGSoutput$DIC
 ```
+
+5
+
 ```{r}
 year_site_model <- function(){
   # This model takes into account a random effect for the site
@@ -311,6 +320,9 @@ M5 <- jags(
 # Récupérons le DIC
 DIC5 <- M5$BUGSoutput$DIC
 ```
+
+6
+
 ```{r}
 random_model <- function(){
   # This model takes into account a random effect for the site
@@ -392,6 +404,8 @@ M6 <- jags(
 DIC6 <- M6$BUGSoutput$DIC
 ```
 
+7
+
 ```{r}
 gopher_discont_prev <- function(){
   for (i in 1:N){
@@ -431,6 +445,8 @@ M7 <- jags(data=datax,
 # Récupérons le DIC
 DIC7 <- M7$BUGSoutput$DIC
 ```
+
+8
 
 ```{r}
 disc_year_prev_model <- function(){
@@ -500,6 +516,9 @@ M8 <- jags(
 # Récupérons le DIC
 DIC8 <- M8$BUGSoutput$DIC
 ```
+
+9
+
 ```{r}
 disc_full_model <- function(){
   # This model takes into account a random effect for the site
@@ -582,9 +601,31 @@ M9 <- jags(
 DIC9 <- M9$BUGSoutput$DIC
 ```
 
+Nous considérons ici les modèles suivants
 
+|   Modèles   |                                                               Formules                                                                |
+|:-------------:|:-------------------------------------------------------:|
+|  Continus   |                                                                                                                                       |
+|     M1      |                                         $log(\lambda) = log(aire_i) + \mu_0 + \beta * prev_i$                                         |
+|     M2      |                                                 $log(\lambda) = log(aire_i) + \mu_0$                                                  |
+|     M3      |              $log(\lambda) = log(aire_i) + \mu_0 + \alpha_0 * Cov_{2004,i} +\alpha_1*Cov_{2005,i}+\alpha_2*Cov_{2006,i}$              |
+|     M4      |       $log(\lambda) = log(aire_i) + \mu_0 + \alpha_0 * Cov_{2004,i} +\alpha_1*Cov_{2005,i}+\alpha_2*Cov_{2006,i}+\beta*prev_i$        |
+|     M5      |       $log(\lambda) = log(aire_i) + \mu_0 + \alpha_0 * Cov_{2004,i} +\alpha_1*Cov_{2005,i}+\alpha_2*Cov_{2006,i}+\gamma_{i,j}$        |
+|     M6      | $log(\lambda) = log(aire_i) + \mu_0 + \alpha_0 * Cov_{2004,i} +\alpha_1*Cov_{2005,i}+\alpha_2*Cov_{2006,i}+\gamma_{i,j}+\beta*prev_i$ |
+| Dicsontinus |                                                                                                                                       |
+|     M7      | $log(\lambda) = log(aire_i) + \mu_0 + \alpha_0 * Cov_{2004,i} +\alpha_1*Cov_{2005,i}+\alpha_2*Cov_{2006,i}+\gamma_{i,j}+\beta*prev_i$ |
+|     M8      |         $log(\lambda) = log(aire_i) + \mu_0 + \alpha_0 * Cov_{2004,i} +\alpha_1*Cov_{2005,i}+\alpha_2*Cov_{2006,i}+\beta*H_i$         |
+|     M9      |  $log(\lambda) = log(aire_i) + \mu_0 + \alpha_0 * Cov_{2004,i} +\alpha_1*Cov_{2005,i}+\alpha_2*Cov_{2006,i}+\beta*H_i+\gamma_{i,j}$   |
 
-# BIN
+Les DICs de ces modèles sont les suivants
+```{r echo=FALSE}
+data.frame(
+  row.names = c("Continus", paste0("M", seq(1, 6, 1)), "Discontinus", paste0("M", seq(7, 9, 1))),
+  DICs = c("", DIC1, DIC2, DIC3, DIC4, DIC5, DIC6, "", DIC7, DIC8, DIC9)
+)
+```
+
+# CLAD
 ```{r echo=FALSE, results='asis'}
 library(xtable)
 reference_table <- data.frame(
@@ -602,4 +643,3 @@ x <- xtable(reference_table, caption="try", label="test", col.names=c("1", "2"))
 print(x, include.rownames=FALSE, floating=FALSE, hline.after=c(-1), footnote="Source")
 
 ```
-

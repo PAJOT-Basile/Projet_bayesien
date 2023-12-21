@@ -65,17 +65,17 @@ F1<-ggplot(data=gopher, aes(x=prev)) +
   geom_label(aes(x=mean(prev), y=4, label="Mean"), col="red") +
   geom_vline(aes(xintercept=median(prev)), col = "blue") +
   geom_label(aes(x=median(prev), y=6, label="Median"), col="blue") +
-  labs(caption = "Figure 1 : Distribution de la prévalence pour Mycoplasma agassizii",
+  labs(caption = "Figure 1 : Distribution de la prévalence pour\nMycoplasma agassizii",
        x="Prévalence pour Mycoplasma agassizii",
        y="Comptage") +
-  theme(plot.caption = element_text(hjust=0, size=12, face="italic"))
+  theme(plot.caption = element_text(hjust=0, size=10, face="italic"),axis.title.x=element_text(size = 8), axis.title.y=element_text(size = 8))
 
 F2<-ggplot(data=gopher, aes(x=shells))+
   geom_histogram(bins=5, fill="blue", color="black")+
-  labs(caption="Figure 2 : Distribution du nombre de carapaces",
+  labs(caption="Figure 2 : Distribution du nombre de\ncarapaces",
        x="Carapaces",
        y="Comptage") + 
-  theme(plot.caption =element_text(hjust=0, size=12,face="italic"))
+  theme(plot.caption = element_text(hjust=0, size=10, face="italic"),axis.title.x=element_text(size = 8), axis.title.y=element_text(size = 8))
 
 plot_grid(nrow=1,ncol=2,
           F1,
@@ -93,7 +93,7 @@ ggplot(gopher, aes(x=prev, y=shells,shape=year)) +
   labs(caption= "Figure 3 : Le nombre de carapaces en fonction de la prevalence par site par année",
        x = "Prévalence pour Mycoplasma agassizii",
        y= "Nombre de carapaces ") +
-  theme(plot.caption = element_text(hjust = 0, face = "italic", size = 12))
+  theme(plot.caption = element_text(hjust=0, size=10, face="italic"),axis.title.x=element_text(size = 8), axis.title.y=element_text(size = 8))
 ```
 
 |   Tout d'abord, le nombre de carapaces récentes trouvées varie ou non en fonction des années et cette variation n'est pas la même en fonction des sites. Le nombre de carapaces récentes par rapport à l'année précédente reste constante augmente ou diminue. On observe des évolutions différentes pour les sites : on observe une diminution du nombre de carapaces pour le site CF sur les trois ans ou un changement de tendance se traduisant par une diminution puis une augmentation pour le site CB.
@@ -118,7 +118,7 @@ ggplot(shells_area,aes(x=area_site, y=shells_mean, color=Sites)) +
   labs(caption= "Figure 4 : Le nombre moyen de carapaces en fonction de l'aire du site d'étude",
        x = "Aire du site",
        y = "Nombre moyen de carapaces") +
-  theme(plot.caption = element_text(hjust = 0, face = "italic", size = 12))
+  theme(plot.caption = element_text(hjust=0, size=10, face="italic"),axis.title.x=element_text(size = 8), axis.title.y=element_text(size = 8)))
 ```
 
 |   D'après la *figure 4* les sites n'ont pas tous la même aire et il semble qu'un plus grand nombre de carapces sont trouvés sur les sites avec une plus grande aire. Afin de pourvoir comparer les sites entre eux, nous allons prendre le rapport entre le nombre de carapaces trouvées par site et l'aire du site.
@@ -241,7 +241,7 @@ ggplot(gopher, aes(x=prev, y=shells)) +
   labs(caption= "Figure 5 : Le nombre de carapaces en fonction de la prevalence par site par année",
        x = "Prévalence pour Mycoplasma agassizii",
        y= "Nombre de carapaces ") +
-  theme(plot.caption = element_text(hjust = 0, face = "italic", size = 12))
+  theme(plot.caption = element_text(hjust=0, size=10, face="italic"),axis.title.x=element_text(size = 8), axis.title.y=element_text(size = 8))
 ```
 
 |   Notre modèle `M1` prédit bien la distribution des carapaces mais elle ne prend pas en compte la variabilité des sites comme le montre les droites de regressions construites à partir de le moyenne de distributions postérieures de nos paramètres (*cf. figure 5*).
@@ -801,8 +801,6 @@ M9 <- jags(
 DIC9 <- M9$BUGSoutput$DIC
 ```
 
-Partir directement avec les effets aléatoires (prendre en compte la
-structuration des données)
 
 # **Inférence et interprétation des résultats**
 
@@ -810,93 +808,7 @@ Sur la base du meilleur modèle, donnez les estimations des paramètres
 ainsi qu'une mesure de l'incertitude associée. Interprétez vos
 résultats.
 
-# **Discussion**
-
-Comparez vos résultats à ceux du papier. Sont-ils semblables ou
-différents? Pourquoi selon vous? Si cela vous semble pertinent, proposez
-des pistes d'amélioration de l'analyse.
-
-```{r}
-random_model <- function(){
-  # This model takes into account a random effect for the site
-  # Likelihood
-  for(i in 1:N){
-    S[i] ~ dpois(lambda[i])
-    log(lambda[i]) <- mu.0 + gamma[site[i]] + b.prev * prev[i] + alpha_0* Cov_2004[i] + alpha_1 * Cov_2005[i] + alpha_2 * Cov_2006[i] + log(A[i])
-  }
-  for (j in 1:nb.sites){
-    gamma[j] ~ dnorm(0, tau.s)
-  }
-  # Priors
-  mu.0 ~ dnorm(0, 0.001)
-  sd.s ~ dunif(0, 100)
-  tau.s <- 1 / (sd.s * sd.s)
-  b.prev ~ dnorm(0, 1/100)
-  alpha_0 ~ dnorm(0, 1/100)
-  alpha_1 ~ dnorm(0, 1/100)
-  alpha_2 ~ dnorm(0, 1/100)
-} 
-
-# Make the data to use in jags
-datax <- list(
-  N = gopher$year %>% 
-    length(),
-  S = gopher$shells,
-  prev = gopher$standprev,
-  A = gopher$Area,
-  site = gopher$Site %>% 
-    as.numeric(),
-  nb.sites = gopher$Site %>% 
-    unique() %>% 
-    length(),
-  Cov_2004 = ifelse(gopher$year == 2004, 1, 0),
-  Cov_2005 = ifelse(gopher$year == 2005, 1, 0),
-  Cov_2006 = ifelse(gopher$year == 2006, 1, 0)
-)
-
-# Make a list of parameters to save
-params = c("mu.0", "b.prev", "sd.s","alpha_0", "alpha_1", "alpha_2")
-
-# Initial conditions
-init1 <- list(
-  "mu.0" = 0.5,
-  "b.prev" = 0.5,
-  "alpha_0" = 0.5,
-  "alpha_1" = 0.5,
-  "alpha_2" = 0.5,
-  "sd.s" = 0.5
-)
-init2 <- list(
-  "mu.0" = - 0.5,
-  "b.prev" = - 0.5,
-  "alpha_0" = -0.5,
-  "alpha_1" = -0.5,
-  "alpha_2" = -0.5,
-  "sd.s" = 1.5
-)
-init <- list(init1, init2)
-
-# Iteration parameters
-nb.iterations <- 9000
-nb.burnin <- 4500
-
-# Run the model
-M6 <- jags(
-  data = datax,
-  parameters.to.save = params,
-  inits = init,
-  model.file = random_model,
-  n.chains = 2,
-  n.iter = nb.iterations,
-  n.burnin = nb.burnin,
-  n.thin = 1
-)
-
-# Regardons le modèle et les traces
-M6
-traceplot(M6, mfrow=c(2, 3), ask=FALSE)
-par(mfrow=c(1, 1))
-
+```{r echo=FALSE}
 # On récupère les paramètres et on regarde leur distribution
 res6 <- M6$BUGSoutput$sims.matrix %>% 
   as.data.frame()
@@ -915,9 +827,11 @@ for (i in 1:nrow(gopher)){
 }
 hist(shells6)
 mean(shells6)
-
-# Récupérons le DIC
-DIC6 <- M6$BUGSoutput$DIC
 ```
 
 
+# **Discussion**
+
+Comparez vos résultats à ceux du papier. Sont-ils semblables ou
+différents? Pourquoi selon vous? Si cela vous semble pertinent, proposez
+des pistes d'amélioration de l'analyse.

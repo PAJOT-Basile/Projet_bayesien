@@ -360,7 +360,8 @@ display: none;
 <pre class="r"><code># Chargement des pakages nécessaires
 require(&quot;anyLib&quot;)</code></pre>
 <pre><code>## Le chargement a nécessité le package : anyLib</code></pre>
-<pre class="r"><code>anyLib(c(&quot;tidyverse&quot;, &quot;cowplot&quot;, &quot;R2jags&quot;, &quot;lme4&quot;, &quot;gtsummary&quot;, &quot;plyr&quot;, &quot;knitr&quot;, &quot;kableExtra&quot;))</code></pre>
+<pre class="r"><code>anyLib(c(&quot;plyr&quot;, &quot;tidyverse&quot;, &quot;cowplot&quot;, &quot;R2jags&quot;, &quot;lme4&quot;, &quot;gtsummary&quot;, &quot;knitr&quot;, &quot;kableExtra&quot;))</code></pre>
+<pre><code>## Le chargement a nécessité le package : plyr</code></pre>
 <pre><code>## Le chargement a nécessité le package : tidyverse</code></pre>
 <pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 ## ✔ dplyr     1.1.4     ✔ readr     2.1.4
@@ -369,8 +370,18 @@ require(&quot;anyLib&quot;)</code></pre>
 ## ✔ lubridate 1.9.3     ✔ tidyr     1.3.0
 ## ✔ purrr     1.0.2     
 ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()
+## ✖ dplyr::arrange()   masks plyr::arrange()
+## ✖ purrr::compact()   masks plyr::compact()
+## ✖ dplyr::count()     masks plyr::count()
+## ✖ dplyr::desc()      masks plyr::desc()
+## ✖ dplyr::failwith()  masks plyr::failwith()
+## ✖ dplyr::filter()    masks stats::filter()
+## ✖ dplyr::id()        masks plyr::id()
+## ✖ dplyr::lag()       masks stats::lag()
+## ✖ dplyr::mutate()    masks plyr::mutate()
+## ✖ dplyr::rename()    masks plyr::rename()
+## ✖ dplyr::summarise() masks plyr::summarise()
+## ✖ dplyr::summarize() masks plyr::summarize()
 ## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors
 ## Le chargement a nécessité le package : cowplot
 ## 
@@ -417,53 +428,29 @@ require(&quot;anyLib&quot;)</code></pre>
 ## 
 ## Le chargement a nécessité le package : gtsummary
 ## 
-## #BlackLivesMatter
-## 
-## Le chargement a nécessité le package : plyr
-## 
-## ------------------------------------------------------------------------------
-## 
-## You have loaded plyr after dplyr - this is likely to cause problems.
-## If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
-## library(plyr); library(dplyr)
-## 
-## ------------------------------------------------------------------------------
+## #StandWithUkraine
 ## 
 ## 
-## Attachement du package : &#39;plyr&#39;
+## Attachement du package : &#39;gtsummary&#39;
 ## 
 ## 
-## L&#39;objet suivant est masqué depuis &#39;package:gtsummary&#39;:
+## L&#39;objet suivant est masqué depuis &#39;package:plyr&#39;:
 ## 
 ##     mutate
-## 
-## 
-## Les objets suivants sont masqués depuis &#39;package:dplyr&#39;:
-## 
-##     arrange, count, desc, failwith, id, mutate, rename, summarise,
-##     summarize
-## 
-## 
-## L&#39;objet suivant est masqué depuis &#39;package:purrr&#39;:
-## 
-##     compact
 ## 
 ## 
 ## Le chargement a nécessité le package : knitr
 ## 
 ## Le chargement a nécessité le package : kableExtra
 ## 
-## 
-## Attachement du package : &#39;kableExtra&#39;
-## 
-## 
-## L&#39;objet suivant est masqué depuis &#39;package:dplyr&#39;:
-## 
-##     group_rows</code></pre>
-<pre><code>##  tidyverse    cowplot     R2jags       lme4  gtsummary       plyr      knitr 
+## Error: le chargement du package ou de l&#39;espace de noms a échoué pour &#39;kableExtra&#39; :
+## .onLoad a échoué dans loadNamespace() pour &#39;kableExtra&#39;, détails :
+##   appel : !is.null(rmarkdown::metadata$output) &amp;&amp; rmarkdown::metadata$output %in% 
+##   erreur : &#39;length = 3&#39; in coercion to &#39;logical(1)&#39;</code></pre>
+<pre><code>##       plyr  tidyverse    cowplot     R2jags       lme4  gtsummary      knitr 
 ##       TRUE       TRUE       TRUE       TRUE       TRUE       TRUE       TRUE 
 ## kableExtra 
-##       TRUE</code></pre>
+##      FALSE</code></pre>
 <pre class="r"><code># Importation du fichier 
 gopher &lt;- read.csv(file = &quot;./gopher.csv&quot;, header = TRUE, sep = &quot;;&quot;, dec=&quot;.&quot;, stringsAsFactors = TRUE) %&gt;% 
   mutate(year = as.character(year),
@@ -530,19 +517,19 @@ M1 &lt;- jags(
 ## Initializing model</code></pre>
 <pre class="r"><code># Regardons le modèle 
 M1</code></pre>
-<pre><code>## Inference for Bugs model at &quot;C:/Users/basil/AppData/Local/Temp/RtmpyoTmDB/model3d4067e66cb6.txt&quot;, fit using jags,
+<pre><code>## Inference for Bugs model at &quot;C:/Users/basil/AppData/Local/Temp/RtmpM1oQLO/model4f34214b2ea2.txt&quot;, fit using jags,
 ##  2 chains, each with 9000 iterations (first 4500 discarded)
 ##  n.sims = 9000 iterations saved
 ##          mu.vect sd.vect   2.5%    25%    50%    75%  97.5%  Rhat n.eff
-## b.prev     0.560   0.116  0.334  0.481  0.559  0.640  0.782 1.003  1600
-## mu.0      -3.001   0.174 -3.347 -3.114 -2.999 -2.884 -2.691 1.006   290
-## deviance  82.274   4.990 80.164 80.725 81.540 82.931 87.539 1.004  9000
+## b.prev     0.562   0.118  0.327  0.484  0.563  0.641  0.798 1.005   340
+## mu.0      -3.011   0.172 -3.356 -3.119 -3.004 -2.901 -2.697 1.003   640
+## deviance  82.361   5.856 80.154 80.696 81.523 83.106 88.047 1.020  6300
 ## 
 ## For each parameter, n.eff is a crude measure of effective sample size,
 ## and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
 ## 
 ## DIC info (using the rule, pD = var(deviance)/2)
-## pD = 12.5 and DIC = 94.7
+## pD = 17.1 and DIC = 99.5
 ## DIC is an estimate of expected predictive error (lower deviance is better).</code></pre>
 <pre class="r"><code>DIC1 &lt;- M1$BUGSoutput$DIC</code></pre>
 <pre class="r"><code># The null model function
@@ -1032,7 +1019,8 @@ M9 &lt;- jags(
 DIC9 &lt;- M9$BUGSoutput$DIC</code></pre>
 <div id="bin" class="section level1">
 <h1>BIN</h1>
-
+% latex table generated in R 4.3.2 by xtable 1.8-4 package % Thu Dec 21
+12:08:37 2023
 </div>
 
 

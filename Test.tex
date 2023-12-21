@@ -1,0 +1,898 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Untitled},
+  pdfauthor={Basile\_PAJOT},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Untitled}
+\author{Basile\_PAJOT}
+\date{2023-12-21}
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Chargement des pakages nécessaires}
+\FunctionTok{require}\NormalTok{(}\StringTok{"anyLib"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Le chargement a nécessité le package : anyLib
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{anyLib}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"plyr"}\NormalTok{, }\StringTok{"tidyverse"}\NormalTok{, }\StringTok{"cowplot"}\NormalTok{, }\StringTok{"R2jags"}\NormalTok{, }\StringTok{"lme4"}\NormalTok{, }\StringTok{"gtsummary"}\NormalTok{, }\StringTok{"knitr"}\NormalTok{, }\StringTok{"kableExtra"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Le chargement a nécessité le package : plyr
+\end{verbatim}
+
+\begin{verbatim}
+## Le chargement a nécessité le package : tidyverse
+\end{verbatim}
+
+\begin{verbatim}
+## -- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+## v dplyr     1.1.4     v readr     2.1.4
+## v forcats   1.0.0     v stringr   1.5.1
+## v ggplot2   3.4.4     v tibble    3.2.1
+## v lubridate 1.9.3     v tidyr     1.3.0
+## v purrr     1.0.2     
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::arrange()   masks plyr::arrange()
+## x purrr::compact()   masks plyr::compact()
+## x dplyr::count()     masks plyr::count()
+## x dplyr::desc()      masks plyr::desc()
+## x dplyr::failwith()  masks plyr::failwith()
+## x dplyr::filter()    masks stats::filter()
+## x dplyr::id()        masks plyr::id()
+## x dplyr::lag()       masks stats::lag()
+## x dplyr::mutate()    masks plyr::mutate()
+## x dplyr::rename()    masks plyr::rename()
+## x dplyr::summarise() masks plyr::summarise()
+## x dplyr::summarize() masks plyr::summarize()
+## i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+## Le chargement a nécessité le package : cowplot
+## 
+## 
+## Attachement du package : 'cowplot'
+## 
+## 
+## L'objet suivant est masqué depuis 'package:lubridate':
+## 
+##     stamp
+## 
+## 
+## Le chargement a nécessité le package : R2jags
+## 
+## Le chargement a nécessité le package : rjags
+## 
+## Le chargement a nécessité le package : coda
+## 
+## Linked to JAGS 4.3.1
+## 
+## Loaded modules: basemod,bugs
+## 
+## 
+## Attachement du package : 'R2jags'
+## 
+## 
+## L'objet suivant est masqué depuis 'package:coda':
+## 
+##     traceplot
+## 
+## 
+## Le chargement a nécessité le package : lme4
+## 
+## Le chargement a nécessité le package : Matrix
+## 
+## 
+## Attachement du package : 'Matrix'
+## 
+## 
+## Les objets suivants sont masqués depuis 'package:tidyr':
+## 
+##     expand, pack, unpack
+## 
+## 
+## Le chargement a nécessité le package : gtsummary
+## 
+## 
+## Attachement du package : 'gtsummary'
+## 
+## 
+## L'objet suivant est masqué depuis 'package:plyr':
+## 
+##     mutate
+## 
+## 
+## Le chargement a nécessité le package : knitr
+## 
+## Le chargement a nécessité le package : kableExtra
+## 
+## Error: le chargement du package ou de l'espace de noms a échoué pour 'kableExtra' :
+## .onLoad a échoué dans loadNamespace() pour 'kableExtra', détails :
+##   appel : !is.null(rmarkdown::metadata$output) && rmarkdown::metadata$output %in% 
+##   erreur : 'length = 3' in coercion to 'logical(1)'
+\end{verbatim}
+
+\begin{verbatim}
+##       plyr  tidyverse    cowplot     R2jags       lme4  gtsummary      knitr 
+##       TRUE       TRUE       TRUE       TRUE       TRUE       TRUE       TRUE 
+## kableExtra 
+##      FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Importation du fichier }
+\NormalTok{gopher }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\AttributeTok{file =} \StringTok{"./gopher.csv"}\NormalTok{, }\AttributeTok{header =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{sep =} \StringTok{";"}\NormalTok{, }\AttributeTok{dec=}\StringTok{"."}\NormalTok{, }\AttributeTok{stringsAsFactors =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{year =} \FunctionTok{as.character}\NormalTok{(year),}
+         \AttributeTok{total\_turtle =}\NormalTok{ density }\SpecialCharTok{*}\NormalTok{ Area,}
+         \AttributeTok{standprev =}\NormalTok{ (prev }\SpecialCharTok{{-}} \FunctionTok{mean}\NormalTok{(prev)) }\SpecialCharTok{/} \FunctionTok{sd}\NormalTok{(prev),}
+         \AttributeTok{H =} \FunctionTok{ifelse}\NormalTok{(prev }\SpecialCharTok{\textless{}=} \DecValTok{25}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{),}
+         \AttributeTok{Cov\_2004 =} \FunctionTok{ifelse}\NormalTok{(year }\SpecialCharTok{==} \DecValTok{2004}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+         \AttributeTok{Cov\_2005 =} \FunctionTok{ifelse}\NormalTok{(year }\SpecialCharTok{==} \DecValTok{2005}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+         \AttributeTok{Cov\_2006 =} \FunctionTok{ifelse}\NormalTok{(year }\SpecialCharTok{==} \DecValTok{2006}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# The prevalence model}
+\NormalTok{prevalence\_model }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{()\{}
+  \CommentTok{\# We here use the null model and add the prevalence and a its coefficient}
+  \CommentTok{\# Likelihood}
+  \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{N)\{}
+\NormalTok{    S[i] }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dpois}\NormalTok{(lambda[i])}
+    \FunctionTok{log}\NormalTok{(lambda[i]) }\OtherTok{\textless{}{-}}\NormalTok{ mu}\FloatTok{.0} \SpecialCharTok{+}\NormalTok{ b.prev }\SpecialCharTok{*}\NormalTok{ prev[i] }\SpecialCharTok{+} \FunctionTok{log}\NormalTok{(A[i])}
+\NormalTok{  \}}
+  \CommentTok{\# Priors}
+\NormalTok{  mu}\FloatTok{.0} \SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  b.prev }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{\}}
+
+\CommentTok{\# We make a list of the data to use in jags}
+\NormalTok{datax }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \AttributeTok{N =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{year }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{length}\NormalTok{(),}
+  \AttributeTok{S =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{shells,}
+  \AttributeTok{prev =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{standprev,}
+  \AttributeTok{A =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Area}
+\NormalTok{)}
+
+\CommentTok{\# Parameters to estimate}
+\NormalTok{params }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"mu.0"}\NormalTok{, }\StringTok{"b.prev"}\NormalTok{)}
+
+\CommentTok{\# We initialise the model}
+\NormalTok{init1 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\StringTok{"mu.0"}\OtherTok{=}\FloatTok{0.5}\NormalTok{, }\StringTok{"b.prev"}\OtherTok{=}\FloatTok{0.5}\NormalTok{)}
+\NormalTok{init2 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\StringTok{"mu.0"}\OtherTok{=}\SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{, }\StringTok{"b.prev"}\OtherTok{=}\SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{)}
+\NormalTok{init }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(init1, init2)}
+
+\CommentTok{\# We define the iteration parameters}
+\NormalTok{nb.iterations }\OtherTok{\textless{}{-}} \DecValTok{9000}
+\NormalTok{nb.burnin }\OtherTok{\textless{}{-}} \DecValTok{4500}
+
+\CommentTok{\# We run the model}
+\NormalTok{M1 }\OtherTok{\textless{}{-}} \FunctionTok{jags}\NormalTok{(}
+  \AttributeTok{data =}\NormalTok{ datax,}
+  \AttributeTok{inits =}\NormalTok{ init,}
+  \AttributeTok{parameters.to.save =}\NormalTok{ params,}
+  \AttributeTok{model.file =}\NormalTok{ prevalence\_model,}
+  \AttributeTok{n.chains =} \DecValTok{2}\NormalTok{,}
+  \AttributeTok{n.iter =}\NormalTok{ nb.iterations,}
+  \AttributeTok{n.burnin =}\NormalTok{ nb.burnin,}
+  \AttributeTok{n.thin=}\DecValTok{1}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## module glm loaded
+\end{verbatim}
+
+\begin{verbatim}
+## Compiling model graph
+##    Resolving undeclared variables
+##    Allocating nodes
+## Graph information:
+##    Observed stochastic nodes: 30
+##    Unobserved stochastic nodes: 2
+##    Total graph size: 182
+## 
+## Initializing model
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Regardons le modèle }
+\NormalTok{M1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Inference for Bugs model at "C:/Users/basil/AppData/Local/Temp/RtmpA9UK1y/model5e884bf61b34.txt", fit using jags,
+##  2 chains, each with 9000 iterations (first 4500 discarded)
+##  n.sims = 9000 iterations saved
+##          mu.vect sd.vect   2.5%    25%    50%    75%  97.5%  Rhat n.eff
+## b.prev     0.558   0.118  0.327  0.480  0.557  0.637  0.789 1.004   580
+## mu.0      -2.994   0.171 -3.345 -3.101 -2.989 -2.883 -2.687 1.008   260
+## deviance  82.280   5.076 80.150 80.684 81.505 82.967 88.017 1.001  9000
+## 
+## For each parameter, n.eff is a crude measure of effective sample size,
+## and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
+## 
+## DIC info (using the rule, pD = var(deviance)/2)
+## pD = 12.9 and DIC = 95.2
+## DIC is an estimate of expected predictive error (lower deviance is better).
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{DIC1 }\OtherTok{\textless{}{-}}\NormalTok{ M1}\SpecialCharTok{$}\NormalTok{BUGSoutput}\SpecialCharTok{$}\NormalTok{DIC}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# The null model function}
+\NormalTok{null\_model }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{()\{}
+  \CommentTok{\# The null model does not take into account any of the variables. We just want to see the evolution of the number of shells}
+  \CommentTok{\# Likelihood}
+  \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{N)\{  }\CommentTok{\# Loop over observations}
+\NormalTok{    S[i] }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dpois}\NormalTok{(lambda[i])}
+    \FunctionTok{log}\NormalTok{(lambda[i]) }\OtherTok{\textless{}{-}}\NormalTok{ mu}\FloatTok{.0} \SpecialCharTok{+} \FunctionTok{log}\NormalTok{(A[i])}
+\NormalTok{  \}}
+  \CommentTok{\# Priors}
+\NormalTok{  mu}\FloatTok{.0} \SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{\}}
+
+\CommentTok{\# Now, we can make list of the data to use in the jags function}
+\NormalTok{datax }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \AttributeTok{N =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{year  }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{length}\NormalTok{(),}
+  \AttributeTok{S =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{shells,        }\CommentTok{\# Number of shells}
+  \AttributeTok{A =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Area          }\CommentTok{\# Area offset}
+\NormalTok{)}
+
+\CommentTok{\# Parameters to estimate}
+\NormalTok{params }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"mu.0"}\NormalTok{)}
+
+\CommentTok{\# Initialising the chains}
+\NormalTok{init1 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\AttributeTok{mu.0 =} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{)}
+\NormalTok{init2 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\AttributeTok{mu.0 =} \FloatTok{0.5}\NormalTok{)}
+\NormalTok{init }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(init1, init2)}
+
+\CommentTok{\# Define the iteration parameters}
+\NormalTok{nb.iterations }\OtherTok{\textless{}{-}} \DecValTok{9000}
+\NormalTok{nb.burnin }\OtherTok{\textless{}{-}} \DecValTok{4500}
+\CommentTok{\# Run the model using jags}
+\NormalTok{M0 }\OtherTok{\textless{}{-}} \FunctionTok{jags}\NormalTok{(}
+  \AttributeTok{data =}\NormalTok{ datax,}
+  \AttributeTok{inits =}\NormalTok{ init,}
+  \AttributeTok{parameters.to.save =}\NormalTok{ params,}
+  \AttributeTok{model.file =}\NormalTok{ null\_model,}
+  \AttributeTok{n.chains =} \DecValTok{2}\NormalTok{,}
+  \AttributeTok{n.iter =}\NormalTok{ nb.iterations,}
+  \AttributeTok{n.burnin =}\NormalTok{ nb.burnin,}
+  \AttributeTok{n.thin =} \DecValTok{1}\NormalTok{,}
+  \AttributeTok{quiet =} \ConstantTok{TRUE}
+\NormalTok{)}
+
+\CommentTok{\# Récupérons le DIC}
+\NormalTok{DIC0 }\OtherTok{\textless{}{-}}\NormalTok{ M0}\SpecialCharTok{$}\NormalTok{BUGSoutput}\SpecialCharTok{$}\NormalTok{DIC}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# The year model function}
+\NormalTok{year\_model }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{()\{}
+  \CommentTok{\# This model takes into account the variable year with it\textquotesingle{}s 3 modalities.}
+  \CommentTok{\# Likelihood}
+  \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{N)\{  }\CommentTok{\# Loop over observations}
+\NormalTok{    S[i] }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dpois}\NormalTok{(lambda[i])}
+    \FunctionTok{log}\NormalTok{(lambda[i]) }\OtherTok{\textless{}{-}}\NormalTok{ mu}\FloatTok{.0} \SpecialCharTok{+}\NormalTok{ alpha\_0 }\SpecialCharTok{*}\NormalTok{ Cov\_2004[i] }\SpecialCharTok{+}\NormalTok{ alpha\_1 }\SpecialCharTok{*}\NormalTok{ Cov\_2005[i] }\SpecialCharTok{+}\NormalTok{ alpha\_2 }\SpecialCharTok{*}\NormalTok{ Cov\_2006[i] }\SpecialCharTok{+} \FunctionTok{log}\NormalTok{(A[i])}
+\NormalTok{  \}}
+  \CommentTok{\# Priors}
+\NormalTok{  mu}\FloatTok{.0} \SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  alpha\_0 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  alpha\_1 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  alpha\_2 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{\}}
+
+\CommentTok{\# Now, we can make list of the data to use in the jags function}
+\NormalTok{datax }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \AttributeTok{N =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{year  }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{length}\NormalTok{(),}
+  \AttributeTok{S =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{shells,        }\CommentTok{\# Number of shells}
+  \AttributeTok{A =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Area,          }\CommentTok{\# Area offset}
+  \AttributeTok{Cov\_2004 =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Cov\_2004,  }\CommentTok{\# Effect of the year 2004}
+  \AttributeTok{Cov\_2005 =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Cov\_2005,  }\CommentTok{\# Effect of the year 2005}
+  \AttributeTok{Cov\_2006 =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Cov\_2006  }\CommentTok{\# Effect of the year 2006}
+\NormalTok{)}
+
+\CommentTok{\# Parameters to estimate}
+\NormalTok{params }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"mu.0"}\NormalTok{, }\StringTok{"alpha\_0"}\NormalTok{,}\StringTok{"alpha\_1"}\NormalTok{, }\StringTok{"alpha\_2"}\NormalTok{)}
+
+\CommentTok{\# Initialising the chains}
+\NormalTok{init1 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\AttributeTok{mu.0 =} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{,}\AttributeTok{alpha\_0=}\SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{, }\AttributeTok{alpha\_1=}\SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{, }\AttributeTok{alpha\_2=}\SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{)}
+\NormalTok{init2 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\AttributeTok{mu.0 =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{alpha\_0=}\FloatTok{0.5}\NormalTok{, }\AttributeTok{alpha\_1=}\FloatTok{0.5}\NormalTok{, }\AttributeTok{alpha\_2=}\FloatTok{0.5}\NormalTok{)}
+\NormalTok{init }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(init1, init2)}
+
+\CommentTok{\# Define the iteration parameters}
+\NormalTok{nb.iterations }\OtherTok{\textless{}{-}} \DecValTok{9000}
+\NormalTok{nb.burnin }\OtherTok{\textless{}{-}} \DecValTok{4500}
+\CommentTok{\# Run the model using jags}
+\NormalTok{M3 }\OtherTok{\textless{}{-}} \FunctionTok{jags}\NormalTok{(}
+  \AttributeTok{data =}\NormalTok{ datax,}
+  \AttributeTok{inits =}\NormalTok{ init,}
+  \AttributeTok{parameters.to.save =}\NormalTok{ params,}
+  \AttributeTok{model.file =}\NormalTok{ year\_model,}
+  \AttributeTok{n.chains =} \DecValTok{2}\NormalTok{,}
+  \AttributeTok{n.iter =}\NormalTok{ nb.iterations,}
+  \AttributeTok{n.burnin =}\NormalTok{ nb.burnin,}
+  \AttributeTok{n.thin =} \DecValTok{1}\NormalTok{,}
+  \AttributeTok{quiet =} \ConstantTok{TRUE}
+\NormalTok{)}
+\CommentTok{\# Récupérons le DIC}
+\NormalTok{DIC3 }\OtherTok{\textless{}{-}}\NormalTok{ M3}\SpecialCharTok{$}\NormalTok{BUGSoutput}\SpecialCharTok{$}\NormalTok{DIC}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# The year model function}
+\NormalTok{year\_prevalence\_model }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{()\{}
+  \CommentTok{\# This model takes into account the variable year with it\textquotesingle{}s 3 modalities.}
+  \CommentTok{\# Likelihood}
+  \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{N)\{  }\CommentTok{\# Loop over observations}
+\NormalTok{    S[i] }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dpois}\NormalTok{(lambda[i])}
+    \FunctionTok{log}\NormalTok{(lambda[i]) }\OtherTok{\textless{}{-}}\NormalTok{ mu}\FloatTok{.0} \SpecialCharTok{+}\NormalTok{ alpha\_0 }\SpecialCharTok{*}\NormalTok{ Cov\_2004[i] }\SpecialCharTok{+}\NormalTok{ alpha\_1 }\SpecialCharTok{*}\NormalTok{ Cov\_2005[i] }\SpecialCharTok{+}\NormalTok{ alpha\_2 }\SpecialCharTok{*}\NormalTok{ Cov\_2006[i] }\SpecialCharTok{+}\NormalTok{ b.prev }\SpecialCharTok{*}\NormalTok{ prev[i] }\SpecialCharTok{+} \FunctionTok{log}\NormalTok{(A[i])}
+\NormalTok{  \}}
+  \CommentTok{\# Priors}
+\NormalTok{  mu}\FloatTok{.0} \SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  b.prev }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  alpha\_0 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  alpha\_1 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  alpha\_2 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{\}}
+
+\CommentTok{\# Now, we can make list of the data to use in the jags function}
+\NormalTok{datax }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \AttributeTok{N =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{year  }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{length}\NormalTok{(),}
+  \AttributeTok{S =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{shells,        }\CommentTok{\# Number of shells}
+  \AttributeTok{A =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Area,          }\CommentTok{\# Area offset}
+  \AttributeTok{prev=}\NormalTok{gopher}\SpecialCharTok{$}\NormalTok{standprev,     }\CommentTok{\# Standardized prev}
+  \AttributeTok{Cov\_2004 =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Cov\_2004,  }\CommentTok{\# Effect of the year 2004}
+  \AttributeTok{Cov\_2005 =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Cov\_2005,  }\CommentTok{\# Effect of the year 2005}
+  \AttributeTok{Cov\_2006 =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Cov\_2006  }\CommentTok{\# Effect of the year 2006}
+\NormalTok{)}
+
+\CommentTok{\# Parameters to estimate}
+\NormalTok{params }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"mu.0"}\NormalTok{, }\StringTok{"alpha\_0"}\NormalTok{,}\StringTok{"alpha\_1"}\NormalTok{, }\StringTok{"alpha\_2"}\NormalTok{,}\StringTok{"b.prev"}\NormalTok{)}
+
+\CommentTok{\# Initialising the chains}
+\NormalTok{init1 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\AttributeTok{mu.0 =} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{,}\AttributeTok{alpha\_0=}\SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{, }\AttributeTok{alpha\_1=}\SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{, }\AttributeTok{alpha\_2=}\SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{,}\AttributeTok{b.prev =}\SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{)}
+\NormalTok{init2 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\AttributeTok{mu.0 =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{alpha\_0=}\FloatTok{0.5}\NormalTok{, }\AttributeTok{alpha\_1=}\FloatTok{0.5}\NormalTok{, }\AttributeTok{alpha\_2=}\FloatTok{0.5}\NormalTok{,}\AttributeTok{b.prev=}\FloatTok{0.5}\NormalTok{)}
+\NormalTok{init }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(init1, init2)}
+
+\CommentTok{\# Define the iteration parameters}
+\NormalTok{nb.iterations }\OtherTok{\textless{}{-}} \DecValTok{9000}
+\NormalTok{nb.burnin }\OtherTok{\textless{}{-}} \DecValTok{4500}
+\CommentTok{\# Run the model using jags}
+\NormalTok{M4 }\OtherTok{\textless{}{-}} \FunctionTok{jags}\NormalTok{(}
+  \AttributeTok{data =}\NormalTok{ datax,}
+  \AttributeTok{inits =}\NormalTok{ init,}
+  \AttributeTok{parameters.to.save =}\NormalTok{ params,}
+  \AttributeTok{model.file =}\NormalTok{ year\_prevalence\_model,}
+  \AttributeTok{n.chains =} \DecValTok{2}\NormalTok{,}
+  \AttributeTok{n.iter =}\NormalTok{ nb.iterations,}
+  \AttributeTok{n.burnin =}\NormalTok{ nb.burnin,}
+  \AttributeTok{n.thin =} \DecValTok{1}\NormalTok{,}
+  \AttributeTok{quiet =} \ConstantTok{TRUE}
+\NormalTok{)}
+
+\CommentTok{\# Récupérons le DIC}
+\NormalTok{DIC4 }\OtherTok{\textless{}{-}}\NormalTok{ M4}\SpecialCharTok{$}\NormalTok{BUGSoutput}\SpecialCharTok{$}\NormalTok{DIC}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{year\_site\_model }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{()\{}
+  \CommentTok{\# This model takes into account a random effect for the site}
+  \CommentTok{\# Likelihood}
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{N)\{}
+\NormalTok{    S[i] }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dpois}\NormalTok{(lambda[i])}
+    \FunctionTok{log}\NormalTok{(lambda[i]) }\OtherTok{\textless{}{-}}\NormalTok{ mu}\FloatTok{.0} \SpecialCharTok{+}\NormalTok{ gamma[site[i]]}\SpecialCharTok{+}\NormalTok{ alpha\_0}\SpecialCharTok{*}\NormalTok{ Cov\_2004[i] }\SpecialCharTok{+}\NormalTok{ alpha\_1 }\SpecialCharTok{*}\NormalTok{ Cov\_2005[i] }\SpecialCharTok{+}\NormalTok{ alpha\_2 }\SpecialCharTok{*}\NormalTok{ Cov\_2006[i] }\SpecialCharTok{+} \FunctionTok{log}\NormalTok{(A[i])}
+\NormalTok{  \}}
+  \ControlFlowTok{for}\NormalTok{ (j }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{nb.sites)\{}
+\NormalTok{    gamma[j] }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, tau.s)}
+\NormalTok{  \}}
+  \CommentTok{\# Priors}
+\NormalTok{  mu}\FloatTok{.0} \SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FloatTok{0.001}\NormalTok{)}
+\NormalTok{  sd.s }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dunif}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{100}\NormalTok{)}
+\NormalTok{  tau.s }\OtherTok{\textless{}{-}} \DecValTok{1} \SpecialCharTok{/}\NormalTok{ (sd.s }\SpecialCharTok{*}\NormalTok{ sd.s)}
+\NormalTok{  alpha\_0 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  alpha\_1 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  alpha\_2 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{\} }
+
+\CommentTok{\# Make the data to use in jags}
+\NormalTok{datax }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \AttributeTok{N =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{year }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{length}\NormalTok{(),}
+  \AttributeTok{S =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{shells,}
+  \AttributeTok{A =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Area,}
+  \AttributeTok{site =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Site }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{as.numeric}\NormalTok{(),}
+  \AttributeTok{nb.sites =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Site }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{unique}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{length}\NormalTok{(),}
+  \AttributeTok{Cov\_2004 =} \FunctionTok{ifelse}\NormalTok{(gopher}\SpecialCharTok{$}\NormalTok{year }\SpecialCharTok{==} \DecValTok{2004}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+  \AttributeTok{Cov\_2005 =} \FunctionTok{ifelse}\NormalTok{(gopher}\SpecialCharTok{$}\NormalTok{year }\SpecialCharTok{==} \DecValTok{2005}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+  \AttributeTok{Cov\_2006 =} \FunctionTok{ifelse}\NormalTok{(gopher}\SpecialCharTok{$}\NormalTok{year }\SpecialCharTok{==} \DecValTok{2006}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{\# Make a list of parameters to save}
+\NormalTok{params }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\StringTok{"mu.0"}\NormalTok{, }\StringTok{"sd.s"}\NormalTok{,}\StringTok{"alpha\_0"}\NormalTok{, }\StringTok{"alpha\_1"}\NormalTok{, }\StringTok{"alpha\_2"}\NormalTok{)}
+
+\CommentTok{\# Initial conditions}
+\NormalTok{init1 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \StringTok{"mu.0"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_0"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_1"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_2"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"sd.s"} \OtherTok{=} \FloatTok{0.5}
+\NormalTok{)}
+\NormalTok{init2 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \StringTok{"mu.0"} \OtherTok{=} \SpecialCharTok{{-}} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_0"} \OtherTok{=} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_1"} \OtherTok{=} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_2"} \OtherTok{=} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{,}
+  \StringTok{"sd.s"} \OtherTok{=} \FloatTok{1.5}
+\NormalTok{)}
+\NormalTok{init }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(init1, init2)}
+
+\CommentTok{\# Iteration parameters}
+\NormalTok{nb.iterations }\OtherTok{\textless{}{-}} \DecValTok{9000}
+\NormalTok{nb.burnin }\OtherTok{\textless{}{-}} \DecValTok{4500}
+
+\CommentTok{\# Run the model}
+\NormalTok{M5 }\OtherTok{\textless{}{-}} \FunctionTok{jags}\NormalTok{(}
+  \AttributeTok{data =}\NormalTok{ datax,}
+  \AttributeTok{parameters.to.save =}\NormalTok{ params,}
+  \AttributeTok{inits =}\NormalTok{ init,}
+  \AttributeTok{model.file =}\NormalTok{ year\_site\_model,}
+  \AttributeTok{n.chains =} \DecValTok{2}\NormalTok{,}
+  \AttributeTok{n.iter =}\NormalTok{ nb.iterations,}
+  \AttributeTok{n.burnin =}\NormalTok{ nb.burnin,}
+  \AttributeTok{n.thin =} \DecValTok{1}\NormalTok{,}
+  \AttributeTok{quiet =} \ConstantTok{TRUE}
+\NormalTok{)}
+
+\CommentTok{\# Récupérons le DIC}
+\NormalTok{DIC5 }\OtherTok{\textless{}{-}}\NormalTok{ M5}\SpecialCharTok{$}\NormalTok{BUGSoutput}\SpecialCharTok{$}\NormalTok{DIC}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{random\_model }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{()\{}
+  \CommentTok{\# This model takes into account a random effect for the site}
+  \CommentTok{\# Likelihood}
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{N)\{}
+\NormalTok{    S[i] }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dpois}\NormalTok{(lambda[i])}
+    \FunctionTok{log}\NormalTok{(lambda[i]) }\OtherTok{\textless{}{-}}\NormalTok{ mu}\FloatTok{.0} \SpecialCharTok{+}\NormalTok{ gamma[site[i]] }\SpecialCharTok{+}\NormalTok{ b.prev }\SpecialCharTok{*}\NormalTok{ prev[i] }\SpecialCharTok{+}\NormalTok{ alpha\_0}\SpecialCharTok{*}\NormalTok{ Cov\_2004[i] }\SpecialCharTok{+}\NormalTok{ alpha\_1 }\SpecialCharTok{*}\NormalTok{ Cov\_2005[i] }\SpecialCharTok{+}\NormalTok{ alpha\_2 }\SpecialCharTok{*}\NormalTok{ Cov\_2006[i] }\SpecialCharTok{+} \FunctionTok{log}\NormalTok{(A[i])}
+\NormalTok{  \}}
+  \ControlFlowTok{for}\NormalTok{ (j }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{nb.sites)\{}
+\NormalTok{    gamma[j] }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, tau.s)}
+\NormalTok{  \}}
+  \CommentTok{\# Priors}
+\NormalTok{  mu}\FloatTok{.0} \SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FloatTok{0.001}\NormalTok{)}
+\NormalTok{  sd.s }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dunif}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{100}\NormalTok{)}
+\NormalTok{  tau.s }\OtherTok{\textless{}{-}} \DecValTok{1} \SpecialCharTok{/}\NormalTok{ (sd.s }\SpecialCharTok{*}\NormalTok{ sd.s)}
+\NormalTok{  b.prev }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  alpha\_0 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  alpha\_1 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  alpha\_2 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{\} }
+
+\CommentTok{\# Make the data to use in jags}
+\NormalTok{datax }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \AttributeTok{N =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{year }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{length}\NormalTok{(),}
+  \AttributeTok{S =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{shells,}
+  \AttributeTok{prev =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{standprev,}
+  \AttributeTok{A =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Area,}
+  \AttributeTok{site =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Site }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{as.numeric}\NormalTok{(),}
+  \AttributeTok{nb.sites =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Site }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{unique}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{length}\NormalTok{(),}
+  \AttributeTok{Cov\_2004 =} \FunctionTok{ifelse}\NormalTok{(gopher}\SpecialCharTok{$}\NormalTok{year }\SpecialCharTok{==} \DecValTok{2004}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+  \AttributeTok{Cov\_2005 =} \FunctionTok{ifelse}\NormalTok{(gopher}\SpecialCharTok{$}\NormalTok{year }\SpecialCharTok{==} \DecValTok{2005}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+  \AttributeTok{Cov\_2006 =} \FunctionTok{ifelse}\NormalTok{(gopher}\SpecialCharTok{$}\NormalTok{year }\SpecialCharTok{==} \DecValTok{2006}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{\# Make a list of parameters to save}
+\NormalTok{params }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\StringTok{"mu.0"}\NormalTok{, }\StringTok{"b.prev"}\NormalTok{, }\StringTok{"sd.s"}\NormalTok{,}\StringTok{"alpha\_0"}\NormalTok{, }\StringTok{"alpha\_1"}\NormalTok{, }\StringTok{"alpha\_2"}\NormalTok{)}
+
+\CommentTok{\# Initial conditions}
+\NormalTok{init1 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \StringTok{"mu.0"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"b.prev"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_0"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_1"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_2"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"sd.s"} \OtherTok{=} \FloatTok{0.5}
+\NormalTok{)}
+\NormalTok{init2 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \StringTok{"mu.0"} \OtherTok{=} \SpecialCharTok{{-}} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"b.prev"} \OtherTok{=} \SpecialCharTok{{-}} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_0"} \OtherTok{=} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_1"} \OtherTok{=} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_2"} \OtherTok{=} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{,}
+  \StringTok{"sd.s"} \OtherTok{=} \FloatTok{1.5}
+\NormalTok{)}
+\NormalTok{init }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(init1, init2)}
+
+\CommentTok{\# Iteration parameters}
+\NormalTok{nb.iterations }\OtherTok{\textless{}{-}} \DecValTok{9000}
+\NormalTok{nb.burnin }\OtherTok{\textless{}{-}} \DecValTok{4500}
+
+\CommentTok{\# Run the model}
+\NormalTok{M6 }\OtherTok{\textless{}{-}} \FunctionTok{jags}\NormalTok{(}
+  \AttributeTok{data =}\NormalTok{ datax,}
+  \AttributeTok{parameters.to.save =}\NormalTok{ params,}
+  \AttributeTok{inits =}\NormalTok{ init,}
+  \AttributeTok{model.file =}\NormalTok{ random\_model,}
+  \AttributeTok{n.chains =} \DecValTok{2}\NormalTok{,}
+  \AttributeTok{n.iter =}\NormalTok{ nb.iterations,}
+  \AttributeTok{n.burnin =}\NormalTok{ nb.burnin,}
+  \AttributeTok{n.thin =} \DecValTok{1}\NormalTok{,}
+  \AttributeTok{quiet =} \ConstantTok{TRUE}
+\NormalTok{)}
+
+\CommentTok{\# Récupérons le DIC}
+\NormalTok{DIC6 }\OtherTok{\textless{}{-}}\NormalTok{ M6}\SpecialCharTok{$}\NormalTok{BUGSoutput}\SpecialCharTok{$}\NormalTok{DIC}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gopher\_discont\_prev }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{()\{}
+  \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{N)\{}
+\NormalTok{    S[i] }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dpois}\NormalTok{(lambda[i])}
+    \FunctionTok{log}\NormalTok{(lambda[i]) }\OtherTok{\textless{}{-}}\NormalTok{ mu}\FloatTok{.0} \SpecialCharTok{+}\NormalTok{ b.prev }\SpecialCharTok{*}\NormalTok{ prev[i] }\SpecialCharTok{+} \FunctionTok{log}\NormalTok{(A[i])}
+\NormalTok{  \}}
+\NormalTok{  mu}\FloatTok{.0} \SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FloatTok{0.001}\NormalTok{)}
+\NormalTok{  b.prev }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FloatTok{0.001}\NormalTok{)}
+\NormalTok{\}}
+
+\NormalTok{datax }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\AttributeTok{N =} \FunctionTok{length}\NormalTok{(gopher}\SpecialCharTok{$}\NormalTok{shells),}
+              \AttributeTok{prev =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{H,}
+              \AttributeTok{S =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{shells,}
+              \AttributeTok{A =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Area}
+\NormalTok{)}
+
+\NormalTok{init1 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\AttributeTok{mu.0=}\FloatTok{0.5}\NormalTok{, }\AttributeTok{b.prev=}\FloatTok{0.5}\NormalTok{)}
+\NormalTok{init2 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\AttributeTok{mu.0=} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{, }\AttributeTok{b.prev=} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{)}
+\NormalTok{inits }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(init1, init2)}
+
+\NormalTok{params }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"mu.0"}\NormalTok{, }\StringTok{"b.prev"}\NormalTok{)}
+
+\NormalTok{nb.iterations }\OtherTok{\textless{}{-}} \DecValTok{9000}
+\NormalTok{nb.burnin }\OtherTok{\textless{}{-}} \DecValTok{4500}
+
+\NormalTok{M7 }\OtherTok{\textless{}{-}} \FunctionTok{jags}\NormalTok{(}\AttributeTok{data=}\NormalTok{datax,}
+           \AttributeTok{inits=}\NormalTok{inits,}
+           \AttributeTok{parameters.to.save =}\NormalTok{ params,}
+           \AttributeTok{model.file=}\NormalTok{gopher\_discont\_prev,}
+           \AttributeTok{n.chains =} \DecValTok{2}\NormalTok{,}
+           \AttributeTok{n.iter =}\NormalTok{ nb.iterations,}
+           \AttributeTok{n.burnin =}\NormalTok{ nb.burnin,}
+           \AttributeTok{n.thin=}\DecValTok{1}\NormalTok{,}
+  \AttributeTok{quiet =} \ConstantTok{TRUE}
+\NormalTok{)}
+
+\CommentTok{\# Récupérons le DIC}
+\NormalTok{DIC7 }\OtherTok{\textless{}{-}}\NormalTok{ M7}\SpecialCharTok{$}\NormalTok{BUGSoutput}\SpecialCharTok{$}\NormalTok{DIC}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{disc\_year\_prev\_model }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{()\{}
+  \CommentTok{\# This model takes into account a random effect for the site}
+  \CommentTok{\# Likelihood}
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{N)\{}
+\NormalTok{    S[i] }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dpois}\NormalTok{(lambda[i])}
+    \FunctionTok{log}\NormalTok{(lambda[i]) }\OtherTok{\textless{}{-}}\NormalTok{ mu}\FloatTok{.0} \SpecialCharTok{+}\NormalTok{ b.prev }\SpecialCharTok{*}\NormalTok{ prev[i] }\SpecialCharTok{+}\NormalTok{ alpha\_0 }\SpecialCharTok{*}\NormalTok{ Cov\_2004[i] }\SpecialCharTok{+}\NormalTok{ alpha\_1 }\SpecialCharTok{*}\NormalTok{ Cov\_2005[i] }\SpecialCharTok{+}\NormalTok{ alpha\_2 }\SpecialCharTok{*}\NormalTok{ Cov\_2006[i] }\SpecialCharTok{+} \FunctionTok{log}\NormalTok{(A[i])}
+\NormalTok{  \}}
+  \CommentTok{\# Priors}
+\NormalTok{  mu}\FloatTok{.0} \SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  b.prev }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  alpha\_0 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  alpha\_1 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  alpha\_2 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{\}}
+
+\CommentTok{\# Make the data to use in jags}
+\NormalTok{datax }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \AttributeTok{N =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{year }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{length}\NormalTok{(),}
+  \AttributeTok{S =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{shells,}
+  \AttributeTok{prev =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{H,}
+  \AttributeTok{A =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Area,}
+  \AttributeTok{Cov\_2004 =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Cov\_2004, }
+  \AttributeTok{Cov\_2005 =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Cov\_2005,}
+  \AttributeTok{Cov\_2006 =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Cov\_2006}
+\NormalTok{)}
+
+\CommentTok{\# Make a list of parameters to save}
+\NormalTok{params }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\StringTok{"mu.0"}\NormalTok{, }\StringTok{"b.prev"}\NormalTok{, }\StringTok{"alpha\_0"}\NormalTok{, }\StringTok{"alpha\_1"}\NormalTok{, }\StringTok{"alpha\_2"}\NormalTok{)}
+
+\CommentTok{\# Initial conditions}
+\NormalTok{init1 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \StringTok{"mu.0"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"b.prev"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_0"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_1"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_2"} \OtherTok{=} \FloatTok{0.5}
+\NormalTok{)}
+\NormalTok{init2 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \StringTok{"mu.0"} \OtherTok{=} \SpecialCharTok{{-}} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"b.prev"} \OtherTok{=} \SpecialCharTok{{-}} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_0"} \OtherTok{=} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_1"} \OtherTok{=} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_2"} \OtherTok{=} \SpecialCharTok{{-}}\FloatTok{0.5}
+\NormalTok{)}
+\NormalTok{init }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(init1, init2)}
+
+\CommentTok{\# Iteration parameters}
+\NormalTok{nb.iterations }\OtherTok{\textless{}{-}} \DecValTok{9000}
+\NormalTok{nb.burnin }\OtherTok{\textless{}{-}} \DecValTok{4500}
+
+\CommentTok{\# Run the model}
+\NormalTok{M8 }\OtherTok{\textless{}{-}} \FunctionTok{jags}\NormalTok{(}
+  \AttributeTok{data =}\NormalTok{ datax,}
+  \AttributeTok{parameters.to.save =}\NormalTok{ params,}
+  \AttributeTok{inits =}\NormalTok{ init,}
+  \AttributeTok{model.file =}\NormalTok{ disc\_year\_prev\_model,}
+  \AttributeTok{n.chains =} \DecValTok{2}\NormalTok{,}
+  \AttributeTok{n.iter =}\NormalTok{ nb.iterations,}
+  \AttributeTok{n.burnin =}\NormalTok{ nb.burnin,}
+  \AttributeTok{n.thin =} \DecValTok{1}\NormalTok{,}
+  \AttributeTok{quiet =} \ConstantTok{TRUE}
+\NormalTok{)}
+
+\CommentTok{\# Récupérons le DIC}
+\NormalTok{DIC8 }\OtherTok{\textless{}{-}}\NormalTok{ M8}\SpecialCharTok{$}\NormalTok{BUGSoutput}\SpecialCharTok{$}\NormalTok{DIC}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{disc\_full\_model }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{()\{}
+  \CommentTok{\# This model takes into account a random effect for the site}
+  \CommentTok{\# Likelihood}
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{N)\{}
+\NormalTok{    S[i] }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dpois}\NormalTok{(lambda[i])}
+    \FunctionTok{log}\NormalTok{(lambda[i]) }\OtherTok{\textless{}{-}}\NormalTok{ mu}\FloatTok{.0} \SpecialCharTok{+}\NormalTok{ alpha.s[site[i]] }\SpecialCharTok{+}\NormalTok{ b.prev }\SpecialCharTok{*}\NormalTok{ prev[i] }\SpecialCharTok{+}\NormalTok{ alpha\_0 }\SpecialCharTok{*}\NormalTok{ Cov\_2004[i] }\SpecialCharTok{+}\NormalTok{ alpha\_1 }\SpecialCharTok{*}\NormalTok{ Cov\_2005[i] }\SpecialCharTok{+}\NormalTok{ alpha\_2 }\SpecialCharTok{*}\NormalTok{ Cov\_2006[i] }\SpecialCharTok{+} \FunctionTok{log}\NormalTok{(A[i])}
+\NormalTok{  \}}
+  \CommentTok{\# Priors}
+\NormalTok{  mu}\FloatTok{.0} \SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  b.prev }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+  \ControlFlowTok{for}\NormalTok{ (j }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{nb.sites)\{}
+\NormalTok{    alpha.s[j] }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, tau.s)}
+\NormalTok{  \}}
+\NormalTok{  tau.s }\OtherTok{\textless{}{-}} \DecValTok{1} \SpecialCharTok{/}\NormalTok{ (sd.s }\SpecialCharTok{*}\NormalTok{ sd.s)}
+\NormalTok{  sd.s }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dunif}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{100}\NormalTok{)}
+\NormalTok{  alpha\_0 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  alpha\_1 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  alpha\_2 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{\}}
+
+\CommentTok{\# Make the data to use in jags}
+\NormalTok{datax }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \AttributeTok{N =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{year }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{length}\NormalTok{(),}
+  \AttributeTok{S =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{shells,}
+  \AttributeTok{prev =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{H,}
+  \AttributeTok{A =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Area,}
+  \AttributeTok{site =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Site }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{as.numeric}\NormalTok{(),}
+  \AttributeTok{nb.sites =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Site }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{unique}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{length}\NormalTok{(),}
+  \AttributeTok{Cov\_2004 =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Cov\_2004,}
+  \AttributeTok{Cov\_2005 =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Cov\_2005,}
+  \AttributeTok{Cov\_2006 =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Cov\_2006}
+\NormalTok{)}
+
+\CommentTok{\# Make a list of parameters to save}
+\NormalTok{params }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\StringTok{"mu.0"}\NormalTok{, }\StringTok{"b.prev"}\NormalTok{, }\StringTok{"sd.s"}\NormalTok{, }\StringTok{"alpha\_0"}\NormalTok{, }\StringTok{"alpha\_1"}\NormalTok{, }\StringTok{"alpha\_2"}\NormalTok{)}
+
+\CommentTok{\# Initial conditions}
+\NormalTok{init1 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \StringTok{"mu.0"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"b.prev"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"sd.s"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_0"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_1"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_2"} \OtherTok{=} \FloatTok{0.5}
+\NormalTok{)}
+\NormalTok{init2 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \StringTok{"mu.0"} \OtherTok{=} \SpecialCharTok{{-}} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"b.prev"} \OtherTok{=} \SpecialCharTok{{-}} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"sd.s"} \OtherTok{=}  \FloatTok{0.25}\NormalTok{,}
+  \StringTok{"alpha\_0"} \OtherTok{=} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_1"} \OtherTok{=} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_2"} \OtherTok{=} \SpecialCharTok{{-}}\FloatTok{0.5}
+\NormalTok{)}
+\NormalTok{init }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(init1, init2)}
+
+\CommentTok{\# Iteration parameters}
+\NormalTok{nb.iterations }\OtherTok{\textless{}{-}} \DecValTok{9000}
+\NormalTok{nb.burnin }\OtherTok{\textless{}{-}} \DecValTok{4500}
+
+\CommentTok{\# Run the model}
+\NormalTok{M9 }\OtherTok{\textless{}{-}} \FunctionTok{jags}\NormalTok{(}
+  \AttributeTok{data =}\NormalTok{ datax,}
+  \AttributeTok{parameters.to.save =}\NormalTok{ params,}
+  \AttributeTok{inits =}\NormalTok{ init,}
+  \AttributeTok{model.file =}\NormalTok{ disc\_full\_model,}
+  \AttributeTok{n.chains =} \DecValTok{2}\NormalTok{,}
+  \AttributeTok{n.iter =}\NormalTok{ nb.iterations,}
+  \AttributeTok{n.burnin =}\NormalTok{ nb.burnin,}
+  \AttributeTok{n.thin =} \DecValTok{1}\NormalTok{,}
+  \AttributeTok{quiet =} \ConstantTok{TRUE}\NormalTok{,}
+  \AttributeTok{progress.bar =} \StringTok{"none"}
+\NormalTok{)}
+
+\CommentTok{\# Récupérons le DIC}
+\NormalTok{DIC9 }\OtherTok{\textless{}{-}}\NormalTok{ M9}\SpecialCharTok{$}\NormalTok{BUGSoutput}\SpecialCharTok{$}\NormalTok{DIC}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{bin}{%
+\section{BIN}\label{bin}}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-11}Table 1 : Comparaison des DICs par modèle}
+\centering
+\begin{tabular}[t]{llr}
+\toprule
+Model_name & Formulas & DIC\\
+\midrule
+M1 & $log(\lambda) = log(aire_i) + \mu_0 + \beta * prev_i$ & 95.16672\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}

@@ -2,7 +2,9 @@
 title: "Untitled"
 author: "Basile_PAJOT"
 date: "2023-12-21"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}

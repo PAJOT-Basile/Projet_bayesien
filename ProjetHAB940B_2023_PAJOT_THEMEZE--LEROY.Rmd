@@ -118,7 +118,7 @@ ggplot(shells_area,aes(x=area_site, y=shells_mean, color=Sites)) +
   labs(caption= "Figure 4 : Le nombre moyen de carapaces en fonction de l'aire du site d'étude",
        x = "Aire du site",
        y = "Nombre moyen de carapaces") +
-  theme(plot.caption = element_text(hjust=0, size=10, face="italic"),axis.title.x=element_text(size = 8), axis.title.y=element_text(size = 8)))
+  theme(plot.caption = element_text(hjust=0, size=10, face="italic"),axis.title.x=element_text(size = 8), axis.title.y=element_text(size = 8))
 ```
 
 |   D'après la *figure 4* les sites n'ont pas tous la même aire et il semble qu'un plus grand nombre de carapces sont trouvés sur les sites avec une plus grande aire. Afin de pourvoir comparer les sites entre eux, nous allons prendre le rapport entre le nombre de carapaces trouvées par site et l'aire du site.
@@ -224,7 +224,17 @@ shells1 <- matrix(NA,ncol=nrow(gopher),nrow=nrow(res1))
 for (i in 1:nrow(gopher)){
   shells1[,i] <-gopher$Area[i] * exp(res1$mu.0 + res1$b.prev * gopher$standprev[i])
 }
-hist(shells1)
+
+
+hist(shells1,
+     breaks=5,
+     main="Figure X : Distribution du nombre de carapaces pour M1",
+     xlab="Carapaces",
+     Ylab="Comptage",
+     col="blue",
+     border="black",
+     freq=FALSE)
+
 mean(shells1)
 ```
 
@@ -257,7 +267,7 @@ DIC1 <- M1$BUGSoutput$DIC
 |   Bien qu'il y ait une variabilité entre sites, nous souhaitons avant tout connaître l'effet de la prévalence sur le nombre de carapaces récentes d'une année sur l'autre, quel que soit le site. Afin de pouvoir généraliser à tout site, nous allons mettre un effet aléatoire du site sur l'ordonnée à l'origine pour prendre en compte cette variabilité, sans pour autant l'estimer.
 
 Le modèle le plus complet qui répond à cette hypothèse est le suivant : 
-$$log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \gamma_j + \alpha_0 * cov_{2004}+\alpha_1 * cov_{2005} +\alpha_2 * cov_{2006}+ \beta * prev_i,\:\:avec\:\:i=1,...,30\:\:et\:\:j=1,...,10$$
+$$log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \gamma_{i,j} + \alpha_0 * Cov_{2004,i}+\alpha_1 * Cov_{2005,i} +\alpha_2 * Cov_{2006,i}+ \beta * prev_i,\:\:avec\:\:i=1,...,30\:\:et\:\:j=1,...,10$$
 Il est poossible que seulement l'une de ces variables ou des combinaisons deux par deux expliquent le mieux la variabilité du nombre de carapaces récentes. Nous allons donc ajuster différents modèles qui prennent en compte ces trois variables individuellement ou en les combinant pour étudier uniquement l'effet de l'année, l'effet de l'année et du site, ou l'effet de l'année et de la prévalence. Dans les modèles avec la prévalence comme varibale continue, celle-ci est standardisée. 
 
 |   Pour répondre à notre deuxième question concenrant l'influence des sites à haute prévalence par rapport aux sites à faible prévalence, nous allons étudier trois modèles utilisant la prévalence en tant que covariable discontinue ${H}$, avec $H = \left\{\begin{array}{ll}1 & \mbox{si prevalence > 25}\\0 & \mbox{sinon}\end{array}\right.$.\newline
@@ -271,11 +281,26 @@ Pour l'ensemble des modèles, nous utilisons comme priors les distributions suiv
 - $\alpha_0\:{\sim}\:\mathcal{N}(0, 100),\:avec\:\:\alpha_0\:\:le\:\:coefficient\:\:associé\:\:à\:\:l'effet\:\:spécifique\:\:de\:\:l'année\:\:2004$
 - $\alpha_1\:{\sim}\:\mathcal{N}(0, 100),\:avec\:\:\alpha_1\:\:le\:\:coefficient\:\:associé\:\:à\:\:l'effet\:\:spécifique\:\:de\:\:l'année\:\:2005$
 - $\alpha_2\:{\sim}\:\mathcal{N}(0, 100),\:avec\:\:\alpha_2\:\:le\:\:coefficient\:\:associé\:\:à\:\:l'effet\:\:spécifique\:\:de\:\:l'année\:\:2006$
-- $\gamma_j\:{\sim}\:\mathcal{N}(0,\tau),\:avec\:\:\gamma_j\:\:le\:\:coefficient\:\:spécifique\:\:sur\:\:l'intercept\:\: associé\:\:\:à\:\:\:l'effet\:\:du\:\:j^{ème}\:\:site,avec\:\:\tau\:=\:\sigma_{s}^2$
+- $\gamma_{i,j}\:{\sim}\:\mathcal{N}(0,\tau),\:avec\:\:\gamma_{i,j}\:\:le\:\:coefficient\:\:spécifique\:\:sur\:\:l'intercept\:\: associé\:\:\:à\:\:\:l'effet\:\:du\:\:j^{ème}\:\:site \ \:pour\:la\:i^{ème}\:observation\:,avec\:\:\tau\:=\:\sigma_{s}^2$
 - $\sigma_s\:{\sim}\:\mathcal{U}(0,100)$
 
 
-Le modèle null `M2` : $$log(\lambda_i) =  log({aire_{i}}) + \mu_0$$
+Nous considérons ici les modèles suivants: 
+
+|   Modèles   |                                                               Formules                                                                |
+|:-------------:|:-------------------------------------------------------:|
+|  Continus   |                                                                                                                                       |
+|     M1      |                                         $log(\lambda) = log(aire_i) + \mu_0 + \beta * prev_i$                                         |
+|     M2      |                                                 $log(\lambda) = log(aire_i) + \mu_0$                                                  |
+|     M3      |              $log(\lambda) = log(aire_i) + \mu_0 + \alpha_0 * Cov_{2004,i} +\alpha_1*Cov_{2005,i}+\alpha_2*Cov_{2006,i}$              |
+|     M4      |       $log(\lambda) = log(aire_i) + \mu_0 + \alpha_0 * Cov_{2004,i} +\alpha_1*Cov_{2005,i}+\alpha_2*Cov_{2006,i}+\beta*prev_i$        |
+|     M5      |       $log(\lambda) = log(aire_i) + \mu_0 + \alpha_0 * Cov_{2004,i} +\alpha_1*Cov_{2005,i}+\alpha_2*Cov_{2006,i}+\gamma_{i,j}$        |
+|     M6      | $log(\lambda) = log(aire_i) + \mu_0 + \alpha_0 * Cov_{2004,i} +\alpha_1*Cov_{2005,i}+\alpha_2*Cov_{2006,i}+\gamma_{i,j}+\beta*prev_i$ |
+| Dicsontinus |                                                                                                                                       |
+|     M7      | $log(\lambda) = log(aire_i) + \mu_0 + \alpha_0 * Cov_{2004,i} +\alpha_1*Cov_{2005,i}+\alpha_2*Cov_{2006,i}+\gamma_{i,j}+\beta*H_i$ |
+|     M8      |         $log(\lambda) = log(aire_i) + \mu_0 + \alpha_0 * Cov_{2004,i} +\alpha_1*Cov_{2005,i}+\alpha_2*Cov_{2006,i}+\beta*H_i$         |
+|     M9      |  $log(\lambda) = log(aire_i) + \mu_0 + \alpha_0 * Cov_{2004,i} +\alpha_1*Cov_{2005,i}+\alpha_2*Cov_{2006,i}+\beta*H_i+\gamma_{i,j}$   |
+
 
 ```{r echo=FALSE, results='hide'}
 # The null model function
@@ -323,11 +348,8 @@ M2 <- jags(
 )
 
 # Récupérons le DIC
-DIC0 <- M2$BUGSoutput$DIC
+DIC2 <- M2$BUGSoutput$DIC
 ```
-
-Un modèle avec uniquement l'année `M3` :
-$$log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \alpha_0 * cov_{2004}+\alpha_1 * cov_{2005} +\alpha_2 * cov_{2006}$$
 
 ```{r echo=FALSE, results='hide'}
 # The year model function
@@ -382,9 +404,6 @@ M3 <- jags(
 # Récupérons le DIC
 DIC3 <- M3$BUGSoutput$DIC
 ```
-
-Un modèle avec l'année et la prévalence (continue) `M4` :
-$$log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \alpha_0 * cov_{2004}+\alpha_1 * cov_{2005} +\alpha_2 * cov_{2006} + \beta * prev_i $$
 
 ```{r echo=FALSE, results='hide'}
 # The year model function
@@ -442,9 +461,6 @@ M4 <- jags(
 # Récupérons le DIC
 DIC4 <- M4$BUGSoutput$DIC
 ```
-
-Modèle avec année et site `M5` :
-$$log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \alpha_0 * cov_{2004}+\alpha_1 * cov_{2005} +\alpha_2 * cov_{2006}+ \gamma_j\:\:avec\:\:j=1,...,10$$
 
 ```{r echo=FALSE, results='hide'}
 year_site_model <- function(){
@@ -522,8 +538,7 @@ M5 <- jags(
 # Récupérons le DIC
 DIC5 <- M5$BUGSoutput$DIC
 ```
-Modèle avec année et site et la prévalence`M6` :
-$$log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \alpha_0 * cov_{2004}+\alpha_1 * cov_{2005} +\alpha_2 * cov_{2006}+ \gamma_j + \beta * prev_i\:\:avec\:\:j=1,...,10$$
+
 ```{r echo=FALSE, results='hide'}
 random_model <- function(){
   # This model takes into account a random effect for the site
@@ -605,8 +620,7 @@ M6 <- jags(
 DIC6 <- M6$BUGSoutput$DIC
 
 ```
-Modèle avec la prévalence (discontinue) `M7` :
-$$log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \beta * disc\_prev_i\:\:avec\:\:j=1,...,10$$
+
 ```{r echo=FALSE, results='hide'}
 gopher_discont_prev <- function(){
   for (i in 1:N){
@@ -647,8 +661,6 @@ M7 <- jags(data=datax,
 DIC7 <- M7$BUGSoutput$DIC
 ```
 
-Modèle avec l'année et la prévalence (discontinue) `M8` :
-$$log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \beta * disc\_prev_i + \alpha_0 * Cov_{2004} + \alpha_1 * Cov_{2005} + \alpha_2*Cov_{2006}$$
 ```{r echo=FALSE, results='hide'}
 disc_year_prev_model <- function(){
   # This model takes into account a random effect for the site
@@ -718,8 +730,6 @@ M8 <- jags(
 DIC8 <- M8$BUGSoutput$DIC
 ```
 
-Modèle avec l'année, le site et la prévalence (discontinue) `M9` :
-$$log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \beta * disc\_prev_i + \alpha_0 * Cov_{2004} + \alpha_1 * Cov_{2005} + \alpha_2*Cov_{2006} + \gamma_j \:\: avec j = 1,...,10$$
 ```{r echo=FALSE, results='hide'}
 disc_full_model <- function(){
   # This model takes into account a random effect for the site
@@ -801,24 +811,31 @@ M9 <- jags(
 DIC9 <- M9$BUGSoutput$DIC
 ```
 
-
+Les DICs de ces modèles sont les suivants
+```{r echo=FALSE}
+data.frame(
+  row.names = c("Continus", paste0("M", seq(1, 6, 1)), "Discontinus", paste0("M", seq(7, 9, 1))),
+  DICs = c("", DIC1, DIC2, DIC3, DIC4, DIC5, DIC6, "", DIC7, DIC8, DIC9)
+)
+```
 # **Inférence et interprétation des résultats**
 
 Sur la base du meilleur modèle, donnez les estimations des paramètres
 ainsi qu'une mesure de l'incertitude associée. Interprétez vos
 résultats.
+## Prévalence continue
+|   D'après le tableau des DIC, le modèle 6 est le meilleur avec les résultats de simulations ci-dessous. 
+```{r echo=FALSE}
+# On sort les résutats du modèle
+M6
+```
+D'après la statistique de Gelman-Rubin $\hat{R}$ qui est inférieure à 1.1 pour chaque paramètre estimé, les chaînes convergent bien. Le `n.eff` de chaque paramètre est supérieur à 100.\newline Nous avons donc des estimations de nos paramètres qui sont stables et des chaines peu autocorrélées.
 
+Regardons maintenant, la distribution *a posteriori* et la moyenne du nombre de carapaces à partir des paramètres estimés par `M6`.
 ```{r echo=FALSE}
 # On récupère les paramètres et on regarde leur distribution
 res6 <- M6$BUGSoutput$sims.matrix %>% 
   as.data.frame()
-hist(res6$b.prev)
-hist(res6$mu.0)
-hist(res6$alpha_0)
-hist(res6$alpha_1)
-hist(res6$alpha_2)
-hist(res6$sd.s)
-
 # Rétrotransformation
 
 shells6 <- matrix(NA,ncol=nrow(gopher),nrow=nrow(res6))
@@ -829,9 +846,46 @@ hist(shells6)
 mean(shells6)
 ```
 
+La moyenne a posteriori pour $\mu_0$ est de -2.99 et de $\beta$ est de 0.57.
+Nous avons, toutes choses égales par ailleurs, une augmentation de $5*e^{-2.99-0.42+\gamma}=0.19$ carapaces (avec $gamma{\sim}\:\mathcal{N}(0,0.32^2)$ à $5*e^{-2.99+5*0.57-0.42+\gamma}=3$ carapaces (avec $gamma{\sim}\:\mathcal{N}(0,0.32^2)$ pour une augmentation de 0% a 5% de la prévalence pour un site d'aire 5 unités de surface, l'année 2005.
+La moyenne a posteriori de l'écart-type pour l'effet aléatoire du site est de $\sigma_s=0.32$, soit un effet plutôt faible.
+Aucun des intervalles de confiance ne contiennent 0, a part ceux pour le paramètre `année`. Ainsi, à part l'année qui pourrait ne pas avoir d'effet, la prévalence explique bien les variations du nombre de carapaces. 
+
+## Prévalence discontinue
+|   D'après le tableau des DIC, le modèle 9 est le meilleur modèle avec la prévalence discontinue. Les résultats du modèle sont ci-dessous. 
+```{r echo=FALSE}
+# On sort les résutats du modèle
+M9
+```
+D'après la statistqiue de Gelman-Rubin $\hat{R}$ qui est inférieure à 1.1 pour chaque paramètre estimé, les chaînes convergent bien. Le `n.eff` de chaque paramètre est supérieur à 100.\newline Nous avons donc des estimations de nos paramètres qui sont stables et des chaines peu autocorrélées.
+
+Regardons maintenant, la distribution *a posteriori* et la moyenne du nombre de carapaces à partir des paramètres estimés par `M9`.
+```{r echo=FALSE}
+# On récupère les paramètres et on regarde leur distribution
+res9 <- M9$BUGSoutput$sims.matrix %>% 
+  as.data.frame()
+# Rétrotransformation
+
+shells9 <- matrix(NA,ncol=nrow(gopher),nrow=nrow(res9))
+for (i in 1:nrow(gopher)){
+  shells9[,i] <-gopher$Area[i] * exp(res9$mu.0 + res9$alpha_0 * gopher$Cov_2004[i] + res9$alpha_1 * gopher$Cov_2005[i] + res9$alpha_2 * gopher$Cov_2006[i] + res9$b.prev * gopher$H[i]+rnorm(1,mean=0, sd=res9$sd.s))
+}
+hist(shells9)
+mean(shells9)
+```
+
+La moyenne a posteriori pour$\beta$ est de 1.16 ce qui correspond, toutes choses égales par ailleurs à une augmentation moyenne de $e^{1.16}=3.2$ carapaces pour les sites à haute prévalence.
+La moyenne a posteriori de l'écart-type pour l'effet aléatoire du site est de $\sigma_s=0.58$, soit un effet plus marqué que pour `M6` mais qui demeure relativement faible.
+Aucun des intervalles de confiance ne contiennent 0, a part ceux pour le paramètre `année`. Ainsi, à part l'année qui pourrait ne pas avoir d'effet, il y aurait bien une différence entre les istes à haute et faible prévalence. 
 
 # **Discussion**
+Comme dans l'article, nous avons eu des DIC proches entre `M6` avec la prévalence continue et `M9` avec la prévalence discontinue.
+Nous avons également eu des résultats semblables à ceux de l'article en ce qui concerne l'interprétation. Cependant, les estimateurs de nos paramètres sont plus élevés que ceux de l'article. Par exemple, pour le modèle 6, nous avons $\mu_0 = -2.9 > a_0 = -4.8$ et $\beta =0.57 > a_1=0.02$. Par contre, notre estimation de l'écart-type pour l'effet aléatoire du site est similaire (autour de 0.30). 
 
-Comparez vos résultats à ceux du papier. Sont-ils semblables ou
-différents? Pourquoi selon vous? Si cela vous semble pertinent, proposez
-des pistes d'amélioration de l'analyse.
+Selon nous, plusieurs choses pourraient éventuellement expliquer ces différences :
+
+- le choix de l'offset : nous avons pris l'aire des sites comme offset, alors que dans l'article ils utilisent le nombre de tortues totales par site.
+- des différences d'implémentation de la covariable `année` car nous ne mettons pas l'année en effet aléatoire
+- le choix des priors pour les effets aléatoires; car les auteurs ont testé deux implémentations possibles et nous ne savons pas s'ils ont retenu celle ou la variance inverse suit une loi uniforme ou celle où l'écart-type suit une loi uniforme.
+
+Eventuellement, mais moins probable selon nous, le f

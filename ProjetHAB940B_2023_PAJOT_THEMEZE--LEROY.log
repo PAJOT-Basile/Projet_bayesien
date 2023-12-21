@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.21)  21 DEC 2023 15:09
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.21)  21 DEC 2023 15:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -483,90 +483,86 @@ File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [1
 
 {/Users/budo/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/Users/budo/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/budo/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
-<ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-4-1.pdf, id=66, 469.755pt x 325.215pt>
+<ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-4-1.pdf, id=66, 469.755pt x 216.81pt>
 File: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-4-1.pdf Graphic file (type pdf)
 <use ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-4-1.pdf>
 Package pdftex.def Info: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-4-1.pdf  used on input line 180.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+(pdftex.def)             Requested size: 469.75386pt x 216.80946pt.
 [2]
-<ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-5-1.pdf, id=72, 469.755pt x 325.215pt>
+<ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-5-1.pdf, id=72, 469.755pt x 289.08pt>
 File: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-5-1.pdf Graphic file (type pdf)
 <use ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-5-1.pdf>
 Package pdftex.def Info: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-5-1.pdf  used on input line 187.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[3 <./ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-4-1.pdf>]
-<ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-6-1.pdf, id=83, 469.755pt x 325.215pt>
+(pdftex.def)             Requested size: 469.75386pt x 289.07928pt.
+[3 <./ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-4-1.pdf> <./ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-5-1.pdf>]
+<ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-6-1.pdf, id=89, 469.755pt x 289.08pt>
 File: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file (type pdf)
 <use ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-6-1.pdf>
 Package pdftex.def Info: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-6-1.pdf  used on input line 237.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[4 <./ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-5-1.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 262--265
+(pdftex.def)             Requested size: 469.75386pt x 289.07928pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+
+ []
+
+[4 <./ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-6-1.pdf>]
+Underfull \hbox (badness 10000) in paragraph at lines 264--267
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 266--268
-
- []
-
-[5{/Users/budo/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/budo/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/budo/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc} <./ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-6-1.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 291--292
+Underfull \hbox (badness 10000) in paragraph at lines 268--270
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 292--294
+Underfull \hbox (badness 10000) in paragraph at lines 293--294
 
  []
 
 
-Overfull \hbox (223.24297pt too wide) in paragraph at lines 314--314
-[]\T1/lmtt/m/n/10 ## Inference for Bugs model at "/var/folders/l9/dzz054qd4_q8g63vvgsts36w0000gn/T//Rtmp0sfhvx/modelba15519e76b6.txt", fit using jags,[] 
+Underfull \hbox (badness 10000) in paragraph at lines 294--296
+
  []
 
-<ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-8-1.pdf, id=110, 469.755pt x 325.215pt>
+
+Overfull \hbox (223.24297pt too wide) in paragraph at lines 316--316
+[]\T1/lmtt/m/n/10 ## Inference for Bugs model at "/var/folders/l9/dzz054qd4_q8g63vvgsts36w0000gn/T//RtmpbgmBe2/modelc3f015f540c2.txt", fit using jags,[] 
+ []
+
+[5{/Users/budo/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/budo/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/budo/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
+<ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-8-1.pdf, id=111, 469.755pt x 216.81pt>
 File: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-8-1.pdf Graphic file (type pdf)
 <use ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-8-1.pdf>
-Package pdftex.def Info: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-8-1.pdf  used on input line 318.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[6]
-<ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-9-1.pdf, id=116, 469.755pt x 325.215pt>
+Package pdftex.def Info: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-8-1.pdf  used on input line 320.
+(pdftex.def)             Requested size: 469.75386pt x 216.80946pt.
+<ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-9-1.pdf, id=112, 469.755pt x 216.81pt>
 File: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-9-1.pdf Graphic file (type pdf)
 <use ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-9-1.pdf>
-Package pdftex.def Info: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-9-1.pdf  used on input line 331.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[7 <./ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-8-1.pdf>]
-<ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-10-1.pdf, id=128, 469.755pt x 325.215pt>
+Package pdftex.def Info: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-9-1.pdf  used on input line 333.
+(pdftex.def)             Requested size: 469.75386pt x 216.80946pt.
+[6 <./ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-8-1.pdf> <./ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-9-1.pdf>]
+<ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-10-1.pdf, id=129, 469.755pt x 289.08pt>
 File: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file (type pdf)
 <use ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-10-1.pdf>
-Package pdftex.def Info: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-10-1.pdf  used on input line 342.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[8 <./ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-9-1.pdf>]
-Overfull \hbox (18.42648pt too wide) detected at line 366
+Package pdftex.def Info: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-10-1.pdf  used on input line 344.
+(pdftex.def)             Requested size: 469.75386pt x 289.07928pt.
+
+Overfull \hbox (18.42648pt too wide) detected at line 368
 \OML/lmm/m/it/10 log\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 ^^U[]\OT1/lmr/m/n/10 ) = \OML/lmm/m/it/10 log\OT1/lmr/m/n/10 ([]) + \OML/lmm/m/it/10 ^^V[] \OT1/lmr/m/n/10 + \OML/lmm/m/it/10 ^^M[] \OT1/lmr/m/n/10 + \OML/lmm/m/it/10 [] \OMS/lmsy/m/n/10 ^^C \OML/lmm/m/it/10 Cov[] \OT1/lmr/m/n/10 + \OML/lmm/m/it/10 [] \OMS/lmsy/m/n/10 ^^C \OML/lmm/m/it/10 Cov[] \OT1/lmr/m/n/10 + \OML/lmm/m/it/10 [] \OMS/lmsy/m/n/10 ^^C \OML/lmm/m/it/10 Cov[] \OT1/lmr/m/n/10 + \OML/lmm/m/it/10 ^^L \OMS/lmsy/m/n/10 ^^C \OML/lmm/m/it/10 prev[];   avec  i \OT1/lmr/m/n/10 = 1\OML/lmm/m/it/10 ; :::; \OT1/lmr/m/n/10 30  \OML/lmm/m/it/10 et  j \OT1/lmr/m/n/10 = 1\OML/lmm/m/it/10 ; :::; \OT1/lmr/m/n/10 10
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 375--380
+Underfull \hbox (badness 10000) in paragraph at lines 377--382
 
  []
 
-[9 <./ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-10-1.pdf>]
-
-LaTeX Warning: Command \' invalid in math mode on input line 392.
-
-
-LaTeX Warning: Command \` invalid in math mode on input line 392.
-
+[7 <./ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-10-1.pdf>]
 
 LaTeX Warning: Command \' invalid in math mode on input line 394.
 
 
 LaTeX Warning: Command \` invalid in math mode on input line 394.
-
-
-LaTeX Warning: Command \' invalid in math mode on input line 394.
 
 
 LaTeX Warning: Command \' invalid in math mode on input line 396.
@@ -582,9 +578,6 @@ LaTeX Warning: Command \' invalid in math mode on input line 398.
 
 
 LaTeX Warning: Command \` invalid in math mode on input line 398.
-
-
-LaTeX Warning: Command \' invalid in math mode on input line 398.
 
 
 LaTeX Warning: Command \' invalid in math mode on input line 398.
@@ -617,54 +610,41 @@ LaTeX Warning: Command \' invalid in math mode on input line 402.
 LaTeX Warning: Command \' invalid in math mode on input line 404.
 
 
+LaTeX Warning: Command \` invalid in math mode on input line 404.
+
+
 LaTeX Warning: Command \' invalid in math mode on input line 404.
 
 
-LaTeX Warning: Command \` invalid in math mode on input line 404.
+LaTeX Warning: Command \' invalid in math mode on input line 404.
 
 
-LaTeX Warning: Command \` invalid in math mode on input line 404.
+LaTeX Warning: Command \` invalid in math mode on input line 408.
 
 
-LaTeX Warning: Command \` invalid in math mode on input line 404.
+LaTeX Warning: Command \` invalid in math mode on input line 408.
 
-
-Overfull \hbox (71.2867pt too wide) in paragraph at lines 404--406
-[]$\OML/lmm/m/it/10 ^^M[] [] \OMS/lmsy/m/n/10 N\OT1/lmr/m/n/10 (0\OML/lmm/m/it/10 ; ^^\\OT1/lmr/m/n/10 )\OML/lmm/m/it/10 ;  avec  ^^M[]  le  coefficient  sp\OT1/lmr/m/n/10 é\OML/lmm/m/it/10 cifique  sur  l[]intercept  associ\OT1/lmr/m/n/10 é   à   \OML/lmm/m/it/10 l[]effet  du  j[]  site  pour la i[] observation ; avec  ^^\  \OT1/lmr/m/n/10 =
+[8{/Users/budo/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}]
+Overfull \hbox (223.24297pt too wide) in paragraph at lines 499--499
+[]\T1/lmtt/m/n/10 ## Inference for Bugs model at "/var/folders/l9/dzz054qd4_q8g63vvgsts36w0000gn/T//RtmpbgmBe2/modelc3f03d00b6bf.txt", fit using jags,[] 
  []
 
-[10{/Users/budo/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}]
-Overfull \hbox (223.24297pt too wide) in paragraph at lines 493--493
-[]\T1/lmtt/m/n/10 ## Inference for Bugs model at "/var/folders/l9/dzz054qd4_q8g63vvgsts36w0000gn/T//Rtmp0sfhvx/modelba1557627ecd.txt", fit using jags,[] 
- []
-
-<ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-22-1.pdf, id=158, 469.755pt x 325.215pt>
+<ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-22-1.pdf, id=149, 469.755pt x 216.81pt>
 File: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-22-1.pdf Graphic file (type pdf)
 <use ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-22-1.pdf>
-Package pdftex.def Info: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-22-1.pdf  used on input line 503.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-
-Overfull \hbox (118.71265pt too wide) in paragraph at lines 501--504
-\T1/lmr/m/n/10 paramètres es-timés par \T1/lmtt/m/n/10 M6\T1/lmr/m/n/10 . [] 
+Package pdftex.def Info: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-22-1.pdf  used on input line 510.
+(pdftex.def)             Requested size: 469.75386pt x 216.80946pt.
+[9 <./ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-22-1.pdf>]
+Overfull \hbox (223.24297pt too wide) in paragraph at lines 554--554
+[]\T1/lmtt/m/n/10 ## Inference for Bugs model at "/var/folders/l9/dzz054qd4_q8g63vvgsts36w0000gn/T//RtmpbgmBe2/modelc3f07e02d77e.txt", fit using jags,[] 
  []
 
-[11]
-Overfull \hbox (223.24297pt too wide) in paragraph at lines 547--547
-[]\T1/lmtt/m/n/10 ## Inference for Bugs model at "/var/folders/l9/dzz054qd4_q8g63vvgsts36w0000gn/T//Rtmp0sfhvx/modelba151cdddbdf.txt", fit using jags,[] 
- []
-
-[12 <./ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-22-1.pdf>]
-<ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-24-1.pdf, id=174, 469.755pt x 325.215pt>
+<ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-24-1.pdf, id=161, 469.755pt x 216.81pt>
 File: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-24-1.pdf Graphic file (type pdf)
 <use ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-24-1.pdf>
-Package pdftex.def Info: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-24-1.pdf  used on input line 557.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-
-Overfull \hbox (118.71265pt too wide) in paragraph at lines 555--558
-\T1/lmr/m/n/10 paramètres es-timés par \T1/lmtt/m/n/10 M9\T1/lmr/m/n/10 . [] 
- []
-
-[13 <./ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-24-1.pdf>] [14] (./ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY.aux)
+Package pdftex.def Info: ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-24-1.pdf  used on input line 565.
+(pdftex.def)             Requested size: 469.75386pt x 216.80946pt.
+[10] [11 <./ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-24-1.pdf>] (./ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-12-11>
@@ -673,18 +653,18 @@ Package rerunfilecheck Info: File `ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY.out' 
 (rerunfilecheck)             Checksum: C932A1F1D8D18C9F82A5EFF706FF6D0A;1683.
  ) 
 Here is how much of TeX's memory you used:
- 11227 strings out of 476135
- 177380 string characters out of 5794271
+ 11240 strings out of 476135
+ 178677 string characters out of 5794271
  1948457 words of memory out of 5000000
- 33049 multiletter control sequences out of 15000+600000
+ 33065 multiletter control sequences out of 15000+600000
  609064 words of font info for 78 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,8n,79p,402b,595s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,8n,79p,402b,593s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </Users/budo/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/budo/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/budo/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></Users/budo/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/budo/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/budo/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/budo/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/budo/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/budo/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/budo/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/budo/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/budo/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></Users/budo/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY.pdf (14 pages, 449315 bytes).
+Output written on ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY.pdf (11 pages, 441885 bytes).
 PDF statistics:
- 266 PDF objects out of 1000 (max. 8388607)
- 203 compressed objects within 3 object streams
- 35 named destinations out of 1000 (max. 500000)
+ 252 PDF objects out of 1000 (max. 8388607)
+ 193 compressed objects within 2 object streams
+ 32 named destinations out of 1000 (max. 500000)
  113 words of extra memory for PDF output out of 10000 (max. 10000000)
 

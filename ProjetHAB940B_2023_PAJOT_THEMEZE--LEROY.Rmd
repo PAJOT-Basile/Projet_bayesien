@@ -347,7 +347,7 @@ combinant.
 
 Le modèle null `M0` : $$log(\lambda_i) =  log({aire_{i}}) + \mu_0$$
 
-```{r echo=FALSE}
+```{r echo=FALSE, results='hide'}
 # The null model function
 null_model <- function(){
   # The null model does not take into account any of the variables. We just want to see the evolution of the number of shells
@@ -388,7 +388,8 @@ M0 <- jags(
   n.chains = 2,
   n.iter = nb.iterations,
   n.burnin = nb.burnin,
-  n.thin = 1
+  n.thin = 1,
+  quiet = TRUE
 )
 
 # Récupérons le DIC
@@ -398,7 +399,7 @@ DIC0 <- M0$BUGSoutput$DIC
 Un modèle avec uniquement l'année `M3` :
 $$log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \alpha_0 * cov_{2004}+\alpha_1 * cov_{2005} +\alpha_2 * cov_{2006}$$
 
-```{r echo=FALSE}
+```{r echo=FALSE, results='hide'}
 # The year model function
 year_model <- function(){
   # This model takes into account the variable year with it's 3 modalities.
@@ -445,7 +446,8 @@ M3 <- jags(
   n.chains = 2,
   n.iter = nb.iterations,
   n.burnin = nb.burnin,
-  n.thin = 1
+  n.thin = 1,
+  quiet = TRUE
 )
 # Récupérons le DIC
 DIC3 <- M3$BUGSoutput$DIC
@@ -454,7 +456,7 @@ DIC3 <- M3$BUGSoutput$DIC
 Un modèle avec l'année et la prévalence (continue) `M4` :
 $$log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \alpha_0 * cov_{2004}+\alpha_1 * cov_{2005} +\alpha_2 * cov_{2006} + \beta * prev_i $$
 
-```{r echo=FALSE}
+```{r echo=FALSE, results='hide'}
 # The year model function
 year_prevalence_model <- function(){
   # This model takes into account the variable year with it's 3 modalities.
@@ -503,7 +505,8 @@ M4 <- jags(
   n.chains = 2,
   n.iter = nb.iterations,
   n.burnin = nb.burnin,
-  n.thin = 1
+  n.thin = 1,
+  quiet = TRUE
 )
 
 # Récupérons le DIC
@@ -513,7 +516,7 @@ DIC4 <- M4$BUGSoutput$DIC
 Modèle avec année et site `M5` :
 $$log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \alpha_0 * cov_{2004}+\alpha_1 * cov_{2005} +\alpha_2 * cov_{2006}+ \gamma_j\:\:avec\:\:j=1,...,10$$
 
-```{r}
+```{r echo=FALSE, results='hide'}
 year_site_model <- function(){
   # This model takes into account a random effect for the site
   # Likelihood
@@ -582,7 +585,8 @@ M5 <- jags(
   n.chains = 2,
   n.iter = nb.iterations,
   n.burnin = nb.burnin,
-  n.thin = 1
+  n.thin = 1,
+  quiet = TRUE
 )
 
 # Récupérons le DIC
@@ -590,7 +594,7 @@ DIC5 <- M5$BUGSoutput$DIC
 ```
 Modèle avec année et site et la prévalence`M6` :
 $$log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \alpha_0 * cov_{2004}+\alpha_1 * cov_{2005} +\alpha_2 * cov_{2006}+ \gamma_j + \beta * prev_i\:\:avec\:\:j=1,...,10$$
-```{r}
+```{r echo=FALSE, results='hide'}
 random_model <- function(){
   # This model takes into account a random effect for the site
   # Likelihood
@@ -663,7 +667,8 @@ M6 <- jags(
   n.chains = 2,
   n.iter = nb.iterations,
   n.burnin = nb.burnin,
-  n.thin = 1
+  n.thin = 1,
+  quiet = TRUE
 )
 
 # Récupérons le DIC
@@ -672,7 +677,7 @@ DIC6 <- M6$BUGSoutput$DIC
 ```
 Modèle avec la prévalence (discontinue) `M7` :
 $$log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \beta * disc\_prev_i\:\:avec\:\:j=1,...,10$$
-```{r}
+```{r echo=FALSE, results='hide'}
 gopher_discont_prev <- function(){
   for (i in 1:N){
     S[i] ~ dpois(lambda[i])
@@ -704,7 +709,8 @@ M7 <- jags(data=datax,
            n.chains = 2,
            n.iter = nb.iterations,
            n.burnin = nb.burnin,
-           n.thin=1
+           n.thin=1,
+  quiet = TRUE
 )
 
 # Récupérons le DIC
@@ -713,7 +719,7 @@ DIC7 <- M7$BUGSoutput$DIC
 
 Modèle avec l'année et la prévalence (discontinue) `M8` :
 $$log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \beta * disc\_prev_i + \alpha_0 * Cov_{2004} + \alpha_1 * Cov_{2005} + \alpha_2*Cov_{2006}$$
-```{r}
+```{r echo=FALSE, results='hide'}
 disc_year_prev_model <- function(){
   # This model takes into account a random effect for the site
   # Likelihood
@@ -774,7 +780,8 @@ M8 <- jags(
   n.chains = 2,
   n.iter = nb.iterations,
   n.burnin = nb.burnin,
-  n.thin = 1
+  n.thin = 1,
+  quiet = TRUE
 )
 
 # Récupérons le DIC
@@ -783,7 +790,7 @@ DIC8 <- M8$BUGSoutput$DIC
 
 Modèle avec l'année, le site et la prévalence (discontinue) `M9` :
 $$log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \beta * disc\_prev_i + \alpha_0 * Cov_{2004} + \alpha_1 * Cov_{2005} + \alpha_2*Cov_{2006} + \gamma_j \:\: avec j = 1,...,10$$
-```{r}
+```{r echo=FALSE, results='hide'}
 disc_full_model <- function(){
   # This model takes into account a random effect for the site
   # Likelihood
@@ -856,7 +863,8 @@ M9 <- jags(
   n.chains = 2,
   n.iter = nb.iterations,
   n.burnin = nb.burnin,
-  n.thin = 1
+  n.thin = 1,
+  quiet = TRUE
 )
 
 # Récupérons le DIC

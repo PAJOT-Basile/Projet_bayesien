@@ -1,0 +1,665 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Projet HAB904B},
+  pdfauthor={Basile Pajot (DARWIN), Marion Themeze--Leroy(ECOSYSTEMES),},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Projet HAB904B}
+\author{Basile Pajot (DARWIN), Marion Themeze--Leroy(ECOSYSTEMES),}
+\date{2023-12-21}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\hypertarget{lecture-et-exploration-des-donnuxe9es}{%
+\section{\texorpdfstring{\textbf{Lecture et exploration des
+données}}{Lecture et exploration des données}}\label{lecture-et-exploration-des-donnuxe9es}}
+
+\hypertarget{la-variable-uxe0-expliquer}{%
+\subsection{La variable à expliquer}\label{la-variable-uxe0-expliquer}}
+
+La variable d'intérêt à expliquer, est \texttt{Shells}, soit le nombre
+de carapaces de tortues récentes trouvées lors des relevés sur le
+terrain. Cette variable est un proxy pour estimer le nombre de tortues
+mortes d'une année sur l'autre.
+
+\hypertarget{les-variables-explicatives}{%
+\subsection{Les variables
+explicatives}\label{les-variables-explicatives}}
+
+\begin{itemize}
+\item
+  \texttt{Prev} est une variable explicative qualitative qui correspond
+  à la prévalence pour \emph{Mycoplasma agassizii}, soit le rapport
+  entre le nombre de tortues séropositives sur l'effectif total de
+  tortues par année pour chaque site.
+\item
+  \texttt{Site} est une variable qualitative qui correspond au site
+  d'échantillonnage. Elle a 10 modalités : le parc national \emph{Big
+  Shoals (BS)}, l'aire de gestion de la faune sauvage \emph{Camp
+  Blanding (CB)}, l'aire de gestion de la faune sauvage et de
+  l'environnement \emph{Cecil Field/Branan Field (CF)}, une
+  \emph{propriété privé en Floride centrale (CE)}, le parc national
+  \emph{Fort Cooper (FC)}, l'aire de gestion de la faune sauvage
+  \emph{Flying Eagle (FE)}, le parc national \emph{Gold Head Branch
+  (GH)}, l'aire de gestion de la faune sauvage et de l'environnement
+  \emph{Perry Oldenburg (OL)},la station biologique \emph{Ordway-Swisher
+  (OR)}, l'aire de gestion de la pêche \emph{Tenoroc Fish (TE)}.
+\item
+  \texttt{Area} est une variable quantitative qui correspond à l'aire
+  couverte par site lors des relevés.
+\item
+  \texttt{Year} est une variable qualitative qui correspond à l'année
+  pour laquelle les relevés ont été faits. Elle a 3 modalités : 2004,
+  2005,
+
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \setcounter{enumi}{2005}
+  \tightlist
+  \item
+  \end{enumerate}
+\end{itemize}
+
+\hypertarget{exploration-des-donnuxe9es}{%
+\subsection{Exploration des données}\label{exploration-des-donnuxe9es}}
+
+Nous regardons un résumé statistique des variables de notre jeu de
+donnée.
+
+\begin{verbatim}
+##       Site        year               shells        type         Area      
+##  BS     : 3   Length:30          Min.   :0.00   Fresh:30   Min.   : 5.30  
+##  CB     : 3   Class :character   1st Qu.:0.00              1st Qu.:15.20  
+##  Cent   : 3   Mode  :character   Median :1.00              Median :27.30  
+##  CF     : 3                      Mean   :1.80              Mean   :29.02  
+##  FC     : 3                      3rd Qu.:2.75              3rd Qu.:43.20  
+##  FE     : 3                      Max.   :9.00              Max.   :61.00  
+##  (Other):12                                                               
+##     density           prev        total_turtle      standprev      
+##  Min.   : 1.80   Min.   : 1.00   Min.   : 44.80   Min.   :-0.9163  
+##  1st Qu.: 2.50   1st Qu.: 1.20   1st Qu.: 74.75   1st Qu.:-0.9088  
+##  Median : 3.50   Median :15.95   Median :104.22   Median :-0.3559  
+##  Mean   : 8.76   Mean   :25.45   Mean   :119.72   Mean   : 0.0000  
+##  3rd Qu.: 4.80   3rd Qu.:42.05   3rd Qu.:174.90   3rd Qu.: 0.6223  
+##  Max.   :33.00   Max.   :80.70   Max.   :200.79   Max.   : 2.0709  
+##                                                                    
+##        H             Cov_2004         Cov_2005         Cov_2006     
+##  Min.   :0.0000   Min.   :0.0000   Min.   :0.0000   Min.   :0.0000  
+##  1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.0000  
+##  Median :0.0000   Median :0.0000   Median :0.0000   Median :0.0000  
+##  Mean   :0.4333   Mean   :0.3333   Mean   :0.3333   Mean   :0.3333  
+##  3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:1.0000  
+##  Max.   :1.0000   Max.   :1.0000   Max.   :1.0000   Max.   :1.0000  
+## 
+\end{verbatim}
+
+Nous avons un plan d'expérience équilibré avec un même nombre
+d'observations par site et par année.\newline 
+
+Pour la prevalence \texttt{prev} la moyenne est supérieure à la médiane,
+c'est-à-dire que plus de 50\% des valeurs sont inférieures à la moyenne.
+Il en est de même pour le nombre de carapces \texttt{shells}. De plus,
+pour la prévalence, la différence entre le troisème quartile et le
+minimum est d'environ 40, tout comme la différence entre le maximum et
+le 3ème quartile. Ainsi, la gamme de valeurs prise par 25\% des données
+est égales à celle prise par 75\% des données. Pour le nombre de
+carapaces, la gamme de valeurs prise par 25\% des données est plus de
+trois fois supérieur à celle prise par 75\% des données. Ceci est
+illustré par les \emph{figures 1 et 2}.
+
+\begin{verbatim}
+## NULL
+\end{verbatim}
+
+\includegraphics{ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+La distribution du nombre de carapaces ressemble à une distribution de
+Poisson.
+
+La figure 3 donne plusieurs informations sur notre jeu de données.
+
+\includegraphics{ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+Tout d'abord, le nombre de carapaces récentes trouvées varie ou non en
+fonction des années et cette variation n'est pas la même en fonction des
+sites. Le nombre de carapaces récentes par rapport à l'année précédente
+reste constante augmente ou diminue. On observe des évolutions
+différentes pour les sites : on observe une diminution du nombre de
+carapaces pour le site CF sur les trois ans ou un changement de tendance
+se traduisant par une diminution puis une augmentation pour le site
+CB.\newline Ensuite, la prévalence en fonction des sites peut également
+varier en fonction des années. Comme précédemment, cette variation n'est
+pas la même en fonction des sites. La prévalence reste constante,
+augmente ou diminue. La variation peut être globale sur les trois année
+d'étude (augmentation de la prévalence pour le site Old) ou changer
+(augmentation puis diminution pour le site Cent). Lorsque le prevalence
+augmente d'une année à l'autre
+\texttt{prev{[}n{]}\ \textless{}\ prev{[}n+1{]}}, le nombre de carapaces
+récentes trouvées l'année suivante augmente
+\texttt{shells{[}n+2{]}\textgreater{}shells{[}n+1{]}} (sites CB, Old),
+et inversement (sites CF).\newline Ainsi, les variations du nombre de
+carapaces récentes trouvées pourrait être expliquée par les variations
+de la prévalence.
+
+Il apparaît également que certains sites ont de faibles prévalences (BS,
+Ord, FE) quelque soit l'année et d'autres des prévalences élevées (CF,
+GH, TE). Ceci concourt avec les observations faites précedemments avec
+le résumé de la variable \texttt{prev} et la distribution de la
+prévalence. Ainsi, nous pourrons séparer les sites en deux catégories,
+ceux à faible ou forte prévalence. Cette variables sera donc traitée de
+deux manières : de manière continue et de manière discontinue avec deux
+catégories : - faible prévalence (0) : \texttt{Prev} \textless{} 0.25 -
+haute prévalence (1) : \texttt{Prev} \textgreater{} 0.25
+
+Nous allons donc essayer de déterminer si la prévalence et l'année
+permettent d'expliquer les variations du nombre de carapaces. Nous avons
+vu que la prévalence et le nombre de carapaces trouvées diffère entre
+les sites et entre les années. Afin de pouvoir nous concentrer sur
+l'effet de la prévalence, nous allons mettre un effet aléatoire sur la
+variable \texttt{Site}. Nous pourrions faire de même pour la variable
+\texttt{Année} mais par souci de simplification, nous allons garder
+cette variable en effet fixe.
+
+\includegraphics{ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+D'après la \emph{figure 4} les sites n'ont pas tous la même aire et il
+semble qu'un plus grand nombre de carapces sont trouvés sur les sites
+avec une plus grande aire. Afin de pourvoir comparer les sites entre
+eux, nous allons prendre le rapport entre le nombre de carapaces
+trouvées par site et l'aire du site.
+
+D'après les observations faites précedemment, nous souhaitons donc
+déterminer si : - le nombre de carapaces récentes trouvées est correlée
+avec la prevalence pour \emph{Mycoplasma agassizii} pour une année
+donnée. - le nombre de carapces récentes trouvées est plus grand dans
+les sites à haute prévalence par rapport aux sites à basse prévalence.
+
+\hypertarget{ajustement-dun-moduxe8le-simple}{%
+\section{\texorpdfstring{\textbf{Ajustement d'un modèle
+simple}}{Ajustement d'un modèle simple}}\label{ajustement-dun-moduxe8le-simple}}
+
+Nous commençons par un modèle simple \texttt{M1} en considérant
+uniquement l'effet de la prévalence sur le nombre de carapces récentes
+trouvées.
+
+L'équation (approche fréquentiste) du modèle linéaire simple est la
+manière suivante : \newline 
+\[\frac {shells} {aire_{site}} = \mu_0 + \beta * prev\] Ceci se traduit
+en approche bayesienne par un modèle considérant les hypothèses
+suivantes :
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{shells} suit un loi de poisson de paramètre \(\lambda\)
+  (\emph{cf figure 2}), c'est-à-dire que c'est une variable discrète de
+  comptage dans un intervale de temps et un espace donnés ; avec une
+  variance égale à la moyenne \(E(shells)=V(shells)= \lambda\)
+\item
+  toutes les observations de \texttt{shells} sont \textbf{indépendantes}
+\item
+  le logarithme de la moyenne de \texttt{shells} peut être exprimée
+  comme la combinaison linéaire des variables explicatives
+  sélectionnées.
+\item
+  que les paramètres à estimer (ordonnée à l'origine et coefficients de
+  regression) suivent des lois connues, explicités ci-après.
+\end{itemize}
+
+Nous avons donc :
+\[Shells_i\:\stackrel{i.i.d}{\sim} \: Pois(\lambda_i)\:avec\:i=1,..30\:le\:nombre\:d'observations\]\\
+\[log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \beta * prev_i\] \newline 
+Nous utilisons comme priors les distribution suivantes : \newline 
+\[\mu_0\:{\sim}\:\mathcal{N}(0, 100)\]
+\[\beta\:{\sim}\:\mathcal{N}(0, 100)\]
+
+\begin{verbatim}
+## module glm loaded
+\end{verbatim}
+
+\begin{verbatim}
+## Compiling model graph
+##    Resolving undeclared variables
+##    Allocating nodes
+## Graph information:
+##    Observed stochastic nodes: 30
+##    Unobserved stochastic nodes: 2
+##    Total graph size: 182
+## 
+## Initializing model
+\end{verbatim}
+
+\begin{verbatim}
+## Inference for Bugs model at "C:/Users/basil/AppData/Local/Temp/RtmpiuyyIp/model56806cd32283.txt", fit using jags,
+##  2 chains, each with 9000 iterations (first 4500 discarded)
+##  n.sims = 9000 iterations saved
+##          mu.vect sd.vect   2.5%    25%    50%    75%  97.5%  Rhat n.eff
+## b.prev     0.562   0.113  0.336  0.488  0.564  0.639  0.780 1.001  9000
+## mu.0      -3.000   0.166 -3.331 -3.105 -2.996 -2.891 -2.702 1.001  2600
+## deviance  82.173   5.346 80.146 80.648 81.445 82.809 87.288 1.011  9000
+## 
+## For each parameter, n.eff is a crude measure of effective sample size,
+## and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
+## 
+## DIC info (using the rule, pD = var(deviance)/2)
+## pD = 14.3 and DIC = 96.5
+## DIC is an estimate of expected predictive error (lower deviance is better).
+\end{verbatim}
+
+Nous vérifions que le modèle a bien convergé.
+
+\includegraphics{ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+Les 2 chaînes se mélangent bien et convergent toutes deux. Ceci est
+aussi confirmé par la statistique de Gelman-Rubin \(\hat{R}\) qui est
+inférieure à 1.1 pour chaque paramètre estimé. Nous notons aussi que
+\texttt{n.eff} est supérieur à 100. Nous avons donc des estimations de
+nos paramètres qui sont stables et des chaines peu autocorrélées.
+
+\includegraphics{ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+\begin{verbatim}
+## [1] 1.811165
+\end{verbatim}
+
+Les valeurs estimées du modèle se prettent assez bien à prédire la
+distribution du nombre de carapaces. Regardons ce qu'il en est sur le
+nombre de carapaces en fonction de la prévalence en fonction du site et
+de l'année.
+
+\includegraphics{ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+Notre modèle \texttt{M1} prédit bien la distribution des carapaces mais
+elle ne prend pas en compte la variabilité des sites comme le montre les
+droites de regressions construites à partir de le moyenne de
+distributions postérieures de nos paramètres (\emph{cf.~figure 5}).
+
+\hypertarget{comparaison-de-moduxe8les}{%
+\section{\texorpdfstring{\textbf{Comparaison de
+modèles}}{Comparaison de modèles}}\label{comparaison-de-moduxe8les}}
+
+En vous aidant de l'article, formez quelques hypothèses et construirez
+les modèles correspondant. Ajustez et comparez ces modèles pour
+déterminer l'hypothèse la mieux supportée par les données. N'oubliez de
+standardiser les variables explicatives continues avec la fonction
+scale() de R par exemple. Dans le cas d'une variable année, la
+standardisation est un peu différente, n'utilisez pas la fonction
+scale(). Si year \textless- c(2006, 2007, \ldots{} 2021) par exemple,
+utilisez simplement la variable year - 2005 qui vaut (1, 2, \ldots. 16)
+pour avoir toujours une variable entière, mais qui commence à 1 et ne
+prend plus de grandes valeurs.
+
+Comme vu dans la partie 1, le nombre de carapace varie en fonction de
+l'année et du site. Nous allons donc ajuster différents modèles qui
+prennent en compte ces deux variables individuellement ou en les
+combinant.
+
+Le modèle null \texttt{M0} :
+\[log(\lambda_i) =  log({aire_{i}}) + \mu_0\]
+
+Un modèle avec uniquement l'année \texttt{M3} :
+\[log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \alpha_0 * cov_{2004}+\alpha_1 * cov_{2005} +\alpha_2 * cov_{2006}\]
+
+Un modèle avec l'année et la prévalence (continue) \texttt{M4} :
+\[log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \alpha_0 * cov_{2004}+\alpha_1 * cov_{2005} +\alpha_2 * cov_{2006} + \beta * prev_i \]
+
+Modèle avec année et site \texttt{M5} :
+\[log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \alpha_0 * cov_{2004}+\alpha_1 * cov_{2005} +\alpha_2 * cov_{2006}+ \gamma_j\:\:avec\:\:j=1,...,10\]
+
+Modèle avec année et site et la prévalence\texttt{M6} :
+\[log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \alpha_0 * cov_{2004}+\alpha_1 * cov_{2005} +\alpha_2 * cov_{2006}+ \gamma_j + \beta * prev_i\:\:avec\:\:j=1,...,10\]
+
+Modèle avec la prévalence (discontinue) \texttt{M7} :
+\[log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \beta * disc\_prev_i\:\:avec\:\:j=1,...,10\]
+
+Modèle avec l'année et la prévalence (discontinue) \texttt{M8} :
+\[log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \beta * disc\_prev_i + \alpha_0 * Cov_{2004} + \alpha_1 * Cov_{2005} + \alpha_2*Cov_{2006}\]
+
+Modèle avec l'année, le site et la prévalence (discontinue) \texttt{M9}
+:
+\[log(\lambda_i) =  log({aire_{i}}) + \mu_0 + \beta * disc\_prev_i + \alpha_0 * Cov_{2004} + \alpha_1 * Cov_{2005} + \alpha_2*Cov_{2006} + \gamma_j \:\: avec j = 1,...,10\]
+
+Partir directement avec les effets aléatoires (prendre en compte la
+structuration des données)
+
+\hypertarget{infuxe9rence-et-interpruxe9tation-des-ruxe9sultats}{%
+\section{\texorpdfstring{\textbf{Inférence et interprétation des
+résultats}}{Inférence et interprétation des résultats}}\label{infuxe9rence-et-interpruxe9tation-des-ruxe9sultats}}
+
+Sur la base du meilleur modèle, donnez les estimations des paramètres
+ainsi qu'une mesure de l'incertitude associée. Interprétez vos
+résultats.
+
+\hypertarget{discussion}{%
+\section{\texorpdfstring{\textbf{Discussion}}{Discussion}}\label{discussion}}
+
+Comparez vos résultats à ceux du papier. Sont-ils semblables ou
+différents? Pourquoi selon vous? Si cela vous semble pertinent, proposez
+des pistes d'amélioration de l'analyse.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{random\_model }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{()\{}
+  \CommentTok{\# This model takes into account a random effect for the site}
+  \CommentTok{\# Likelihood}
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{N)\{}
+\NormalTok{    S[i] }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dpois}\NormalTok{(lambda[i])}
+    \FunctionTok{log}\NormalTok{(lambda[i]) }\OtherTok{\textless{}{-}}\NormalTok{ mu}\FloatTok{.0} \SpecialCharTok{+}\NormalTok{ gamma[site[i]] }\SpecialCharTok{+}\NormalTok{ b.prev }\SpecialCharTok{*}\NormalTok{ prev[i] }\SpecialCharTok{+}\NormalTok{ alpha\_0}\SpecialCharTok{*}\NormalTok{ Cov\_2004[i] }\SpecialCharTok{+}\NormalTok{ alpha\_1 }\SpecialCharTok{*}\NormalTok{ Cov\_2005[i] }\SpecialCharTok{+}\NormalTok{ alpha\_2 }\SpecialCharTok{*}\NormalTok{ Cov\_2006[i] }\SpecialCharTok{+} \FunctionTok{log}\NormalTok{(A[i])}
+\NormalTok{  \}}
+  \ControlFlowTok{for}\NormalTok{ (j }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{nb.sites)\{}
+\NormalTok{    gamma[j] }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, tau.s)}
+\NormalTok{  \}}
+  \CommentTok{\# Priors}
+\NormalTok{  mu}\FloatTok{.0} \SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FloatTok{0.001}\NormalTok{)}
+\NormalTok{  sd.s }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dunif}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{100}\NormalTok{)}
+\NormalTok{  tau.s }\OtherTok{\textless{}{-}} \DecValTok{1} \SpecialCharTok{/}\NormalTok{ (sd.s }\SpecialCharTok{*}\NormalTok{ sd.s)}
+\NormalTok{  b.prev }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  alpha\_0 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  alpha\_1 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{  alpha\_2 }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}
+\NormalTok{\} }
+
+\CommentTok{\# Make the data to use in jags}
+\NormalTok{datax }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \AttributeTok{N =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{year }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{length}\NormalTok{(),}
+  \AttributeTok{S =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{shells,}
+  \AttributeTok{prev =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{standprev,}
+  \AttributeTok{A =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Area,}
+  \AttributeTok{site =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Site }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{as.numeric}\NormalTok{(),}
+  \AttributeTok{nb.sites =}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Site }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{unique}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{length}\NormalTok{(),}
+  \AttributeTok{Cov\_2004 =} \FunctionTok{ifelse}\NormalTok{(gopher}\SpecialCharTok{$}\NormalTok{year }\SpecialCharTok{==} \DecValTok{2004}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+  \AttributeTok{Cov\_2005 =} \FunctionTok{ifelse}\NormalTok{(gopher}\SpecialCharTok{$}\NormalTok{year }\SpecialCharTok{==} \DecValTok{2005}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+  \AttributeTok{Cov\_2006 =} \FunctionTok{ifelse}\NormalTok{(gopher}\SpecialCharTok{$}\NormalTok{year }\SpecialCharTok{==} \DecValTok{2006}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{\# Make a list of parameters to save}
+\NormalTok{params }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\StringTok{"mu.0"}\NormalTok{, }\StringTok{"b.prev"}\NormalTok{, }\StringTok{"sd.s"}\NormalTok{,}\StringTok{"alpha\_0"}\NormalTok{, }\StringTok{"alpha\_1"}\NormalTok{, }\StringTok{"alpha\_2"}\NormalTok{)}
+
+\CommentTok{\# Initial conditions}
+\NormalTok{init1 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \StringTok{"mu.0"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"b.prev"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_0"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_1"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_2"} \OtherTok{=} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"sd.s"} \OtherTok{=} \FloatTok{0.5}
+\NormalTok{)}
+\NormalTok{init2 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \StringTok{"mu.0"} \OtherTok{=} \SpecialCharTok{{-}} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"b.prev"} \OtherTok{=} \SpecialCharTok{{-}} \FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_0"} \OtherTok{=} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_1"} \OtherTok{=} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{,}
+  \StringTok{"alpha\_2"} \OtherTok{=} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{,}
+  \StringTok{"sd.s"} \OtherTok{=} \FloatTok{1.5}
+\NormalTok{)}
+\NormalTok{init }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(init1, init2)}
+
+\CommentTok{\# Iteration parameters}
+\NormalTok{nb.iterations }\OtherTok{\textless{}{-}} \DecValTok{9000}
+\NormalTok{nb.burnin }\OtherTok{\textless{}{-}} \DecValTok{4500}
+
+\CommentTok{\# Run the model}
+\NormalTok{M6 }\OtherTok{\textless{}{-}} \FunctionTok{jags}\NormalTok{(}
+  \AttributeTok{data =}\NormalTok{ datax,}
+  \AttributeTok{parameters.to.save =}\NormalTok{ params,}
+  \AttributeTok{inits =}\NormalTok{ init,}
+  \AttributeTok{model.file =}\NormalTok{ random\_model,}
+  \AttributeTok{n.chains =} \DecValTok{2}\NormalTok{,}
+  \AttributeTok{n.iter =}\NormalTok{ nb.iterations,}
+  \AttributeTok{n.burnin =}\NormalTok{ nb.burnin,}
+  \AttributeTok{n.thin =} \DecValTok{1}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Compiling model graph
+##    Resolving undeclared variables
+##    Allocating nodes
+## Graph information:
+##    Observed stochastic nodes: 30
+##    Unobserved stochastic nodes: 16
+##    Total graph size: 334
+## 
+## Initializing model
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Regardons le modèle et les traces}
+\NormalTok{M6}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Inference for Bugs model at "C:/Users/basil/AppData/Local/Temp/RtmpiuyyIp/model568060b24ba0.txt", fit using jags,
+##  2 chains, each with 9000 iterations (first 4500 discarded)
+##  n.sims = 9000 iterations saved
+##          mu.vect sd.vect    2.5%    25%    50%    75%  97.5%  Rhat n.eff
+## alpha_0    0.362   5.679 -10.683 -3.474  0.330  4.219 11.483 1.001  6400
+## alpha_1   -0.307   5.682 -11.367 -4.132 -0.358  3.531 10.869 1.001  8000
+## alpha_2   -0.070   5.677 -11.091 -3.864 -0.120  3.768 11.091 1.001  4900
+## b.prev     0.576   0.161   0.278  0.477  0.570  0.668  0.925 1.007   240
+## mu.0      -3.077   5.678 -14.194 -6.927 -3.041  0.728  8.023 1.001  6800
+## sd.s       0.293   0.278   0.006  0.108  0.230  0.390  0.961 1.100    69
+## deviance  79.513   3.381  74.011 77.200 79.053 81.339 87.431 1.006   990
+## 
+## For each parameter, n.eff is a crude measure of effective sample size,
+## and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
+## 
+## DIC info (using the rule, pD = var(deviance)/2)
+## pD = 5.7 and DIC = 85.2
+## DIC is an estimate of expected predictive error (lower deviance is better).
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{traceplot}\NormalTok{(M6, }\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{), }\AttributeTok{ask=}\ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-20-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-20-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# On récupère les paramètres et on regarde leur distribution}
+\NormalTok{res6 }\OtherTok{\textless{}{-}}\NormalTok{ M6}\SpecialCharTok{$}\NormalTok{BUGSoutput}\SpecialCharTok{$}\NormalTok{sims.matrix }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{as.data.frame}\NormalTok{()}
+\FunctionTok{hist}\NormalTok{(res6}\SpecialCharTok{$}\NormalTok{b.prev)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-20-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{hist}\NormalTok{(res6}\SpecialCharTok{$}\NormalTok{mu}\FloatTok{.0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-20-4.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{hist}\NormalTok{(res6}\SpecialCharTok{$}\NormalTok{alpha\_0)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-20-5.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{hist}\NormalTok{(res6}\SpecialCharTok{$}\NormalTok{alpha\_1)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-20-6.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{hist}\NormalTok{(res6}\SpecialCharTok{$}\NormalTok{alpha\_2)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-20-7.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{hist}\NormalTok{(res6}\SpecialCharTok{$}\NormalTok{sd.s)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-20-8.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Rétrotransformation}
+
+\NormalTok{shells6 }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\ConstantTok{NA}\NormalTok{,}\AttributeTok{ncol=}\FunctionTok{nrow}\NormalTok{(gopher),}\AttributeTok{nrow=}\FunctionTok{nrow}\NormalTok{(res6))}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(gopher))\{}
+\NormalTok{  shells6[,i] }\OtherTok{\textless{}{-}}\NormalTok{gopher}\SpecialCharTok{$}\NormalTok{Area[i] }\SpecialCharTok{*} \FunctionTok{exp}\NormalTok{(res6}\SpecialCharTok{$}\NormalTok{mu}\FloatTok{.0} \SpecialCharTok{+}\NormalTok{ res6}\SpecialCharTok{$}\NormalTok{alpha\_0 }\SpecialCharTok{*}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Cov\_2004[i] }\SpecialCharTok{+}\NormalTok{ res6}\SpecialCharTok{$}\NormalTok{alpha\_1 }\SpecialCharTok{*}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Cov\_2005[i] }\SpecialCharTok{+}\NormalTok{ res6}\SpecialCharTok{$}\NormalTok{alpha\_2 }\SpecialCharTok{*}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{Cov\_2006[i] }\SpecialCharTok{+}\NormalTok{ res6}\SpecialCharTok{$}\NormalTok{b.prev }\SpecialCharTok{*}\NormalTok{ gopher}\SpecialCharTok{$}\NormalTok{standprev[i]}\SpecialCharTok{+}\FunctionTok{rnorm}\NormalTok{(}\DecValTok{1}\NormalTok{,}\AttributeTok{mean=}\DecValTok{0}\NormalTok{, }\AttributeTok{sd=}\NormalTok{res6}\SpecialCharTok{$}\NormalTok{sd.s))}
+\NormalTok{\}}
+\FunctionTok{hist}\NormalTok{(shells6)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{ProjetHAB940B_2023_PAJOT_THEMEZE--LEROY_files/figure-latex/unnamed-chunk-20-9.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{mean}\NormalTok{(shells6)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1.671726
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Récupérons le DIC}
+\NormalTok{DIC6 }\OtherTok{\textless{}{-}}\NormalTok{ M6}\SpecialCharTok{$}\NormalTok{BUGSoutput}\SpecialCharTok{$}\NormalTok{DIC}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}

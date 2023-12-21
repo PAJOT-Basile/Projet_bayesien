@@ -135,7 +135,7 @@
 \end{Shaded}
 
 \begin{verbatim}
-## Le chargement a nécessité le package : anyLib
+## Loading required package: anyLib
 \end{verbatim}
 
 \begin{Shaded}
@@ -145,17 +145,17 @@
 \end{Shaded}
 
 \begin{verbatim}
-## Le chargement a nécessité le package : plyr
+## Loading required package: plyr
 \end{verbatim}
 
 \begin{verbatim}
-## Le chargement a nécessité le package : tidyverse
+## Loading required package: tidyverse
 \end{verbatim}
 
 \begin{verbatim}
 ## -- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
-## v dplyr     1.1.4     v readr     2.1.4
-## v forcats   1.0.0     v stringr   1.5.1
+## v dplyr     1.1.3     v readr     2.1.4
+## v forcats   1.0.0     v stringr   1.5.0
 ## v ggplot2   3.4.4     v tibble    3.2.1
 ## v lubridate 1.9.3     v tidyr     1.3.0
 ## v purrr     1.0.2     
@@ -173,68 +173,68 @@
 ## x dplyr::summarise() masks plyr::summarise()
 ## x dplyr::summarize() masks plyr::summarize()
 ## i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-## Le chargement a nécessité le package : cowplot
+## Loading required package: cowplot
 ## 
 ## 
-## Attachement du package : 'cowplot'
+## Attaching package: 'cowplot'
 ## 
 ## 
-## L'objet suivant est masqué depuis 'package:lubridate':
+## The following object is masked from 'package:lubridate':
 ## 
 ##     stamp
 ## 
 ## 
-## Le chargement a nécessité le package : R2jags
+## Loading required package: R2jags
 ## 
-## Le chargement a nécessité le package : rjags
+## Loading required package: rjags
 ## 
-## Le chargement a nécessité le package : coda
+## Loading required package: coda
 ## 
-## Linked to JAGS 4.3.1
+## Linked to JAGS 4.3.2
 ## 
 ## Loaded modules: basemod,bugs
 ## 
 ## 
-## Attachement du package : 'R2jags'
+## Attaching package: 'R2jags'
 ## 
 ## 
-## L'objet suivant est masqué depuis 'package:coda':
+## The following object is masked from 'package:coda':
 ## 
 ##     traceplot
 ## 
 ## 
-## Le chargement a nécessité le package : lme4
+## Loading required package: lme4
 ## 
-## Le chargement a nécessité le package : Matrix
-## 
-## 
-## Attachement du package : 'Matrix'
+## Loading required package: Matrix
 ## 
 ## 
-## Les objets suivants sont masqués depuis 'package:tidyr':
+## Attaching package: 'Matrix'
+## 
+## 
+## The following objects are masked from 'package:tidyr':
 ## 
 ##     expand, pack, unpack
 ## 
 ## 
-## Le chargement a nécessité le package : gtsummary
+## Loading required package: gtsummary
 ## 
 ## 
-## Attachement du package : 'gtsummary'
+## Attaching package: 'gtsummary'
 ## 
 ## 
-## L'objet suivant est masqué depuis 'package:plyr':
+## The following object is masked from 'package:plyr':
 ## 
 ##     mutate
 ## 
 ## 
-## Le chargement a nécessité le package : knitr
+## Loading required package: knitr
 ## 
-## Le chargement a nécessité le package : kableExtra
+## Loading required package: kableExtra
 ## 
-## Error: le chargement du package ou de l'espace de noms a échoué pour 'kableExtra' :
-## .onLoad a échoué dans loadNamespace() pour 'kableExtra', détails :
-##   appel : !is.null(rmarkdown::metadata$output) && rmarkdown::metadata$output %in% 
-##   erreur : 'length = 3' in coercion to 'logical(1)'
+## Error: package or namespace load failed for 'kableExtra':
+##  .onLoad failed in loadNamespace() for 'kableExtra', details:
+##   call: !is.null(rmarkdown::metadata$output) && rmarkdown::metadata$output %in% 
+##   error: 'length = 3' in coercion to 'logical(1)'
 \end{verbatim}
 
 \begin{verbatim}
@@ -332,19 +332,19 @@
 \end{Shaded}
 
 \begin{verbatim}
-## Inference for Bugs model at "C:/Users/basil/AppData/Local/Temp/RtmpA9UK1y/model5e884bf61b34.txt", fit using jags,
+## Inference for Bugs model at "/var/folders/l9/dzz054qd4_q8g63vvgsts36w0000gn/T//RtmpHsHX34/model8063568b0f3f.txt", fit using jags,
 ##  2 chains, each with 9000 iterations (first 4500 discarded)
 ##  n.sims = 9000 iterations saved
 ##          mu.vect sd.vect   2.5%    25%    50%    75%  97.5%  Rhat n.eff
-## b.prev     0.558   0.118  0.327  0.480  0.557  0.637  0.789 1.004   580
-## mu.0      -2.994   0.171 -3.345 -3.101 -2.989 -2.883 -2.687 1.008   260
-## deviance  82.280   5.076 80.150 80.684 81.505 82.967 88.017 1.001  9000
+## b.prev     0.552   0.116  0.317  0.475  0.552  0.633  0.773 1.002  2200
+## mu.0      -2.995   0.162 -3.311 -3.097 -2.994 -2.891 -2.688 1.007   230
+## deviance  82.162   4.990 80.152 80.653 81.416 82.762 87.433 1.005  9000
 ## 
 ## For each parameter, n.eff is a crude measure of effective sample size,
 ## and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
 ## 
 ## DIC info (using the rule, pD = var(deviance)/2)
-## pD = 12.9 and DIC = 95.2
+## pD = 12.5 and DIC = 94.6
 ## DIC is an estimate of expected predictive error (lower deviance is better).
 \end{verbatim}
 
@@ -882,17 +882,13 @@
 \hypertarget{bin}{%
 \section{BIN}\label{bin}}
 
-\begin{table}
+\% latex table generated in R 4.3.2 by xtable 1.8-4 package \% Thu Dec
+21 12:11:43 2023
 
-\caption{\label{tab:unnamed-chunk-11}Table 1 : Comparaison des DICs par modèle}
-\centering
-\begin{tabular}[t]{llr}
-\toprule
-Model_name & Formulas & DIC\\
-\midrule
-M1 & $log(\lambda) = log(aire_i) + \mu_0 + \beta * prev_i$ & 95.16672\\
-\bottomrule
-\end{tabular}
-\end{table}
+\begin{tabular}{llr}
+  \hline
+Model\_name & Formulas & DIC \\ 
+ M1 & \$log($\backslash$lambda) = log(aire\_i) + $\backslash$mu\_0 + $\backslash$beta * prev\_i\$ & 94.62 \\ 
+  \end{tabular}
 
 \end{document}

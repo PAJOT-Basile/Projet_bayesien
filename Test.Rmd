@@ -3,8 +3,9 @@ title: "Untitled"
 author: "Basile_PAJOT"
 date: "2023-12-21"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -585,6 +586,7 @@ DIC9 <- M9$BUGSoutput$DIC
 
 # BIN
 ```{r echo=FALSE, results='asis'}
+library(xtable)
 reference_table <- data.frame(
   Model_name = paste0("M", seq(1, 1, 1)),
   Formulas = c(
@@ -595,8 +597,9 @@ reference_table <- data.frame(
   )
 )
 
-x <- kable(reference_table, format="latex", booktabs=TRUE, escape=TRUE) %>% 
-  kable_styling(latex_options = "hold_position")
-x
+#kable(reference_table, format="latex", booktabs=TRUE, escape=FALSE, caption="Table 1 : Comparaison des DICs par modèle")
+x <- xtable(reference_table, caption="try", label="test", col.names=c("1", "2"))
+print(x, include.rownames=FALSE, floating=FALSE, hline.after=c(-1), footnote="Source")
+
 ```
 

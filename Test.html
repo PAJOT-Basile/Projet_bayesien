@@ -359,13 +359,13 @@ display: none;
 
 <pre class="r"><code># Chargement des pakages nécessaires
 require(&quot;anyLib&quot;)</code></pre>
-<pre><code>## Loading required package: anyLib</code></pre>
+<pre><code>## Le chargement a nécessité le package : anyLib</code></pre>
 <pre class="r"><code>anyLib(c(&quot;plyr&quot;, &quot;tidyverse&quot;, &quot;cowplot&quot;, &quot;R2jags&quot;, &quot;lme4&quot;, &quot;gtsummary&quot;, &quot;knitr&quot;, &quot;kableExtra&quot;))</code></pre>
-<pre><code>## Loading required package: plyr</code></pre>
-<pre><code>## Loading required package: tidyverse</code></pre>
+<pre><code>## Le chargement a nécessité le package : plyr</code></pre>
+<pre><code>## Le chargement a nécessité le package : tidyverse</code></pre>
 <pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-## ✔ dplyr     1.1.3     ✔ readr     2.1.4
-## ✔ forcats   1.0.0     ✔ stringr   1.5.0
+## ✔ dplyr     1.1.4     ✔ readr     2.1.4
+## ✔ forcats   1.0.0     ✔ stringr   1.5.1
 ## ✔ ggplot2   3.4.4     ✔ tibble    3.2.1
 ## ✔ lubridate 1.9.3     ✔ tidyr     1.3.0
 ## ✔ purrr     1.0.2     
@@ -383,75 +383,74 @@ require(&quot;anyLib&quot;)</code></pre>
 ## ✖ dplyr::summarise() masks plyr::summarise()
 ## ✖ dplyr::summarize() masks plyr::summarize()
 ## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors
-## Loading required package: cowplot
+## Le chargement a nécessité le package : cowplot
 ## 
 ## 
-## Attaching package: &#39;cowplot&#39;
+## Attachement du package : &#39;cowplot&#39;
 ## 
 ## 
-## The following object is masked from &#39;package:lubridate&#39;:
+## L&#39;objet suivant est masqué depuis &#39;package:lubridate&#39;:
 ## 
 ##     stamp
 ## 
 ## 
-## Loading required package: R2jags
+## Le chargement a nécessité le package : R2jags
 ## 
-## Loading required package: rjags
+## Le chargement a nécessité le package : rjags
 ## 
-## Loading required package: coda
+## Le chargement a nécessité le package : coda
 ## 
-## Linked to JAGS 4.3.2
+## Linked to JAGS 4.3.1
 ## 
 ## Loaded modules: basemod,bugs
 ## 
 ## 
-## Attaching package: &#39;R2jags&#39;
+## Attachement du package : &#39;R2jags&#39;
 ## 
 ## 
-## The following object is masked from &#39;package:coda&#39;:
+## L&#39;objet suivant est masqué depuis &#39;package:coda&#39;:
 ## 
 ##     traceplot
 ## 
 ## 
-## Loading required package: lme4
+## Le chargement a nécessité le package : lme4
 ## 
-## Loading required package: Matrix
-## 
-## 
-## Attaching package: &#39;Matrix&#39;
+## Le chargement a nécessité le package : Matrix
 ## 
 ## 
-## The following objects are masked from &#39;package:tidyr&#39;:
+## Attachement du package : &#39;Matrix&#39;
+## 
+## 
+## Les objets suivants sont masqués depuis &#39;package:tidyr&#39;:
 ## 
 ##     expand, pack, unpack
 ## 
 ## 
-## Loading required package: gtsummary
+## Le chargement a nécessité le package : gtsummary
+## 
+## #StandWithUkraine
 ## 
 ## 
-## Attaching package: &#39;gtsummary&#39;
+## Attachement du package : &#39;gtsummary&#39;
 ## 
 ## 
-## The following object is masked from &#39;package:plyr&#39;:
+## L&#39;objet suivant est masqué depuis &#39;package:plyr&#39;:
 ## 
 ##     mutate
 ## 
 ## 
-## Loading required package: knitr
+## Le chargement a nécessité le package : knitr
 ## 
-## Loading required package: kableExtra
+## Le chargement a nécessité le package : kableExtra
 ## 
-## 
-## Attaching package: &#39;kableExtra&#39;
-## 
-## 
-## The following object is masked from &#39;package:dplyr&#39;:
-## 
-##     group_rows</code></pre>
+## Error: le chargement du package ou de l&#39;espace de noms a échoué pour &#39;kableExtra&#39; :
+## .onLoad a échoué dans loadNamespace() pour &#39;kableExtra&#39;, détails :
+##   appel : !is.null(rmarkdown::metadata$output) &amp;&amp; rmarkdown::metadata$output %in% 
+##   erreur : &#39;length = 3&#39; in coercion to &#39;logical(1)&#39;</code></pre>
 <pre><code>##       plyr  tidyverse    cowplot     R2jags       lme4  gtsummary      knitr 
 ##       TRUE       TRUE       TRUE       TRUE       TRUE       TRUE       TRUE 
 ## kableExtra 
-##       TRUE</code></pre>
+##      FALSE</code></pre>
 <pre class="r"><code># Importation du fichier 
 gopher &lt;- read.csv(file = &quot;./gopher.csv&quot;, header = TRUE, sep = &quot;;&quot;, dec=&quot;.&quot;, stringsAsFactors = TRUE) %&gt;% 
   mutate(year = as.character(year),
@@ -518,19 +517,19 @@ M1 &lt;- jags(
 ## Initializing model</code></pre>
 <pre class="r"><code># Regardons le modèle 
 M1</code></pre>
-<pre><code>## Inference for Bugs model at &quot;/var/folders/l9/dzz054qd4_q8g63vvgsts36w0000gn/T//RtmpGy3yyn/model72f752201be2.txt&quot;, fit using jags,
+<pre><code>## Inference for Bugs model at &quot;C:/Users/basil/AppData/Local/Temp/RtmpM1oQLO/model4f34214b2ea2.txt&quot;, fit using jags,
 ##  2 chains, each with 9000 iterations (first 4500 discarded)
 ##  n.sims = 9000 iterations saved
 ##          mu.vect sd.vect   2.5%    25%    50%    75%  97.5%  Rhat n.eff
-## b.prev     0.564   0.118  0.334  0.486  0.566  0.644  0.790 1.010   170
-## mu.0      -3.015   0.175 -3.358 -3.126 -3.012 -2.902 -2.683 1.012   140
-## deviance  82.282   4.727 80.155 80.664 81.493 82.970 87.891 1.001  5400
+## b.prev     0.562   0.118  0.327  0.484  0.563  0.641  0.798 1.005   340
+## mu.0      -3.011   0.172 -3.356 -3.119 -3.004 -2.901 -2.697 1.003   640
+## deviance  82.361   5.856 80.154 80.696 81.523 83.106 88.047 1.020  6300
 ## 
 ## For each parameter, n.eff is a crude measure of effective sample size,
 ## and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
 ## 
 ## DIC info (using the rule, pD = var(deviance)/2)
-## pD = 11.2 and DIC = 93.5
+## pD = 17.1 and DIC = 99.5
 ## DIC is an estimate of expected predictive error (lower deviance is better).</code></pre>
 <pre class="r"><code>DIC1 &lt;- M1$BUGSoutput$DIC</code></pre>
 <pre class="r"><code># The null model function
@@ -1020,7 +1019,8 @@ M9 &lt;- jags(
 DIC9 &lt;- M9$BUGSoutput$DIC</code></pre>
 <div id="bin" class="section level1">
 <h1>BIN</h1>
-
+% latex table generated in R 4.3.2 by xtable 1.8-4 package % Thu Dec 21
+12:08:37 2023
 </div>
 
 

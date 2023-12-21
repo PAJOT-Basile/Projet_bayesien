@@ -54,6 +54,7 @@ M1 <- jags(
 
 M1
 
+# Evaluation de la convergence
 traceplot(M1, mfrow=c(1, 2), ask=FALSE)
 par(mfrow = c(1, 1))
 

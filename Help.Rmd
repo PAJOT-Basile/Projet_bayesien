@@ -20,8 +20,10 @@ anyLib(c("tidyverse", "R2jags", "lme4", "cowplot"))
 set.seed(2023)
 
 # Data importation
-gopher <- read.csv("gopher.csv", header=TRUE, stringsAsFactors=TRUE, sep=";", dec=".") %>% 
-  mutate(standprev = (prev - mean(prev)) / sd(prev),
+gopher <- read.csv(file = "./gopher.csv", header = TRUE, sep = ";", dec=".", stringsAsFactors = TRUE) %>% 
+  mutate(year = as.character(year),
+         total_turtle = density * Area,
+         standprev = (prev - mean(prev)) / sd(prev),
          H = ifelse(prev <= 25, 0, 1),
          Cov_2004 = ifelse(year == 2004, 1, 0),
          Cov_2005 = ifelse(year == 2005, 1, 0),
@@ -513,19 +515,20 @@ random_model <- function(){
   # Likelihood
   for(i in 1:N){
     S[i] ~ dpois(lambda[i])
-    log(lambda[i]) <- mu.0 + alpha.s[site[i]] + b.prev * prev[i] + alpha_1 * Cov_2005[i] + alpha_2 * Cov_2006[i] + log(A[i])
+    log(lambda[i]) <- mu.0 + gamma[site[i]] + b.prev * prev[i] + alpha_0* Cov_2004[i] + alpha_1 * Cov_2005[i] + alpha_2 * Cov_2006[i] + log(A[i])
+  }
+  for (j in 1:nb.sites){
+    gamma[j] ~ dnorm(0, tau.s)
   }
   # Priors
-  mu.0 ~ dnorm(0, 1/100)
-  b.prev ~ dnorm(0, 1/100)
-  for (j in 1:nb.sites){
-    alpha.s[j] ~ dnorm(0, tau.s)
-  }
-  tau.s <- 1 / (sd.s * sd.s)
+  mu.0 ~ dnorm(0, 0.001)
   sd.s ~ dunif(0, 100)
+  tau.s <- 1 / (sd.s * sd.s)
+  b.prev ~ dnorm(0, 1/100)
+  alpha_0 ~ dnorm(0, 1/100)
   alpha_1 ~ dnorm(0, 1/100)
   alpha_2 ~ dnorm(0, 1/100)
-}
+} 
 
 # Make the data to use in jags
 datax <- list(
@@ -539,27 +542,30 @@ datax <- list(
   nb.sites = gopher$Site %>% 
     unique() %>% 
     length(),
+  Cov_2004 = ifelse(gopher$year == 2004, 1, 0),
   Cov_2005 = ifelse(gopher$year == 2005, 1, 0),
   Cov_2006 = ifelse(gopher$year == 2006, 1, 0)
 )
 
 # Make a list of parameters to save
-params = c("mu.0", "b.prev", "sd.s", "alpha_1", "alpha_2")
+params = c("mu.0", "b.prev", "sd.s","alpha_0", "alpha_1", "alpha_2")
 
 # Initial conditions
 init1 <- list(
   "mu.0" = 0.5,
   "b.prev" = 0.5,
-  "sd.s" = 0.5,
+  "alpha_0" = 0.5,
   "alpha_1" = 0.5,
-  "alpha_2" = 0.5
+  "alpha_2" = 0.5,
+  "sd.s" = 0.5
 )
 init2 <- list(
   "mu.0" = - 0.5,
   "b.prev" = - 0.5,
-  "sd.s" =  0.25,
+  "alpha_0" = -0.5,
   "alpha_1" = -0.5,
-  "alpha_2" = -0.5
+  "alpha_2" = -0.5,
+  "sd.s" = 1.5
 )
 init <- list(init1, init2)
 
@@ -576,31 +582,27 @@ M6 <- jags(
   n.chains = 2,
   n.iter = nb.iterations,
   n.burnin = nb.burnin,
-  n.thin = 1
+  n.thin = 1,
+  quiet = TRUE
 )
 
-# Regardons le modèle et les traces
-M6
-traceplot(M6, mfrow=c(2, 3), ask=FALSE)
-par(mfrow=c(1, 1))
 
 # On récupère les paramètres et on regarde leur distribution
-res <- M6$BUGSoutput$sims.matrix %>% 
+res6 <- M6$BUGSoutput$sims.matrix %>% 
   as.data.frame()
-hist(res$b.prev)
-hist(res$mu.0)
-hist(res$alpha_1)
-hist(res$alpha_2)
-hist(res$sd.s)
 
 # Rétrotransformation
-simulated_shells <- rep(NA, nrow(res))
-for (i in 1:nrow(res)){
-  lambda <- gopher$Area * exp(res$mu.0[i] + res$alpha_1[i] * gopher$Cov_2005 + res$alpha_2[i] * gopher$Cov_2006 + res$b.prev[i] * gopher$standprev + rnorm(1, mean=0, sd=res$sd.s[i]))
-  simulated_shells[i] <- rpois(1, lambda)
+shells6 <- matrix(NA, ncol=nrow(gopher), nrow=nrow(res6))
+for (i in 1:nrow(gopher)){
+  shells6[, i] <- gopher$Area[i] * exp(res6$mu.0 + res6$alpha_0 * gopher$Cov_2004[i] + res6$alpha_1 * gopher$Cov_2005[i] + res6$alpha_2 * gopher$Cov_2006[i] + res6$b.prev * gopher$standprev[i] + rnorm(1, mean=0, sd=res6$sd.s))
 }
-hist(simulated_shells)
-mean(simulated_shells)
+
+shells6_1 <- c(shells6) %>%
+  as.data.frame()
+colnames(shells6_1) <- c("shells")
+head(shells6_1)
+ggplot(shells6_1, aes(x=shells)) + 
+  geom_histogram()
 
 # Récupérons le DIC
 DIC6 <- M6$BUGSoutput$DIC
